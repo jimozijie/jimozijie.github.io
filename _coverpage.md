@@ -10,5 +10,5 @@
 - 记录科学研究进展
 - 记录项目研发历程
 
-[关于作者](https://space.bilibili.com/145083815?spm_id_from=333.1007.0.0)
+[黄姗姗看这里](https://space.bilibili.com/145083815?spm_id_from=333.1007.0.0)
 [开始使用](#欢迎使用)
