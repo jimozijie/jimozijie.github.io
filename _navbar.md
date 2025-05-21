@@ -7,5 +7,5 @@
     * [GitHub](https://github.com/jimozijie)
 
 
-* 联系我们
+* 联系我
     * [邮箱](contacts/email.md)

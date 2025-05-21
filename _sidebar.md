@@ -2,4 +2,4 @@
 
 - mozijie笔记（自用）
     - [1. Python工作积累](/mozijie_notebook/base/1.python工作积累.md)
-
+    - [2. 测试](/mozijie_notebook/base/2.测试.md)
