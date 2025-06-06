@@ -6,3 +6,4 @@
 
 - 硕士学习
   - [1.PyTorch深度学习实战笔记](master_studies/PyTorch_Deep_Learning_Practice（By_LiuEr）/mozijie_notebook.md)
+  - [2.计算机视觉-深度学习-pytorch学习路线](master_studies/计算机视觉-深度学习-pytorch学习路线/computer_vision_learning_path.md)
