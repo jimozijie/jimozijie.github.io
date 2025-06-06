@@ -1,8 +1,8 @@
-## 计算机视觉-深度学习-pytorch学习路线
+# 计算机视觉-深度学习-pytorch学习路线
 
 ***个人进度：第三阶段***
 
-###  第一阶段：OpenCV机器学习
+##  第一阶段：OpenCV机器学习
 
 0基础或者喜欢看视频的建议看这个视频入门，对着代码敲一遍
 【黑马程序员人工智能教程_10小时学会图像处理OpenCV入门教程】
@@ -23,7 +23,7 @@
 【墨子杰自己用的仓库】
 [OpenCV-Python-Practical-Comba](https://gitee.com/ji-mo-zijie/open-cv-python-practical-comba "OpenCV-Python-Practical-Comba")
 
-### 第1.5阶段：机器学习理论及实践
+## 第1.5阶段：机器学习理论及实践
 
 视频学习地址：
 【[机器学习初步 - 南京大学 - 学堂在线](https://www.xuetangx.com/learn/nju0802bt/nju0802bt/23901450/video/58570079)】
@@ -34,7 +34,7 @@
 
 配套教材：西瓜书
 
-### 第二阶段：PyTorch深度学习理论
+## 第二阶段：PyTorch深度学习理论
 
 电子pytorch参考文档：[深入浅出PyTorch — 深入浅出PyTorch](https://datawhalechina.github.io/thorough-pytorch/index.html)
 
@@ -47,7 +47,7 @@
 课件地址：
 https://pan.baidu.com/s/1cUI518pgLWY1oCn2DkjuEQ?pwd=kif1
 
-### 第三阶段：PyTorch深度学习代码项目实战
+## 第三阶段：PyTorch深度学习代码项目实战
 
 【PyTorch深度学习快速入门教程（绝对通俗易懂！）【小土堆】】
 【用时10个小时】
@@ -57,15 +57,15 @@ https://pan.baidu.com/s/1cUI518pgLWY1oCn2DkjuEQ?pwd=kif1
 课程资源（包含源代码，数据集，课件，环境配置等）：
 https://pan.baidu.com/s/1CvTIjuXT4tMonG0WltF-vQ?pwd=jnnp
 
-### 第3.5阶段：论文精读
+## 第3.5阶段：论文精读
 
 [mli/paper-reading: 深度学习经典、新论文逐段精读](https://github.com/mli/paper-reading?tab=readme-ov-file)
 
 
-### 如果想水论文毕业到这就结束了，后面不用学
-### 如果你想深入科研，发高水平论文，读博，往下学
+***如果想水论文毕业到这就结束了，后面不用学***
+***如果你想深入科研，发高水平论文，读博，往下学***
 
-### 第四阶段（强化深入阶段）：深度学习实战
+## 第四阶段（强化深入阶段）：深度学习实战
 【动手学深度学习——最牛最全最好的深度学习课程，放在最后学】
 
 课程地址：
