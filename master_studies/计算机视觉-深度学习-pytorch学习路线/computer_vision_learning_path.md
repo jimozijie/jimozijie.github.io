@@ -2,30 +2,48 @@
 
 ***个人进度：第三阶段***
 
-##  第一阶段：OpenCV机器学习
+##  第1阶段：OpenCV机器学习
 
-0基础或者喜欢看视频的建议看这个视频入门，对着代码敲一遍
+**0基础或者喜欢看视频的建议看这个视频入门，对着代码敲一遍**
+
 【黑马程序员人工智能教程_10小时学会图像处理OpenCV入门教程】
+
 【用时10个小时】
+
 这个课程不仅讲理论，还讲代码实战。适合0基础或者基础比较差的
+
  https://www.bilibili.com/video/BV1Fo4y1d7JL/?share_source=copy_web&vd_source=045013cf777e03ce7e15765414fadc02
 
-有一定基础或者喜欢看文档学习的建议不要看课，直接对着这个仓库和文档敲
+ 
+
+**有一定基础或者喜欢看文档学习的建议不要看课，直接对着这个仓库和文档敲**
+
 【面向初学者的 OpenCV-Python 教程】
+
 【用时5个小时】
+
 入门机器学习可以直接学这个教程，里面的代码一定要自己敲一遍
+
 基本的OpenCV机器学习的知识学完这个仓库就掌握了
+
 教学文档地址：
+
 [面向初学者的 OpenCV-Python 教程 | Arthur Wang](https://codec.wang/docs/opencv)
+
 配套的代码仓库：
+
 【代码再3.x分支下，可以拉下来自己看，省的敲了】
+
 [CodecWang/opencv-python-tutorial: 📖 OpenCV-Python image processing tutorial for beginners](https://github.com/CodecWang/opencv-python-tutorial/tree/master?tab=readme-ov-file)
+
 【墨子杰自己用的仓库】
+
 [OpenCV-Python-Practical-Comba](https://gitee.com/ji-mo-zijie/open-cv-python-practical-comba "OpenCV-Python-Practical-Comba")
 
 ## 第1.5阶段：机器学习理论及实践
 
 视频学习地址：
+
 【[机器学习初步 - 南京大学 - 学堂在线](https://www.xuetangx.com/learn/nju0802bt/nju0802bt/23901450/video/58570079)】
 
 【[机器学习进步 - 南京大学 - 学堂在线](https://www.xuetangx.com/learn/nju08021014500/nju08021014500/23954852/video/59030312)】
@@ -34,11 +52,12 @@
 
 配套教材：西瓜书
 
-## 第二阶段：PyTorch深度学习理论
+## 第2阶段：PyTorch深度学习理论
 
 电子pytorch参考文档：[深入浅出PyTorch — 深入浅出PyTorch](https://datawhalechina.github.io/thorough-pytorch/index.html)
 
 【《PyTorch深度学习实践》完结合集——河北工业大学人工智能与数据科学学院刘二老师】
+
 【用时12个小时】
 
 视频地址：
@@ -47,7 +66,7 @@
 课件地址：
 https://pan.baidu.com/s/1cUI518pgLWY1oCn2DkjuEQ?pwd=kif1
 
-## 第三阶段：PyTorch深度学习代码项目实战
+## 第3阶段：PyTorch深度学习代码项目实战
 
 【PyTorch深度学习快速入门教程（绝对通俗易懂！）【小土堆】】
 【用时10个小时】
@@ -65,7 +84,7 @@ https://pan.baidu.com/s/1CvTIjuXT4tMonG0WltF-vQ?pwd=jnnp
 ***如果想水论文毕业到这就结束了，后面不用学***
 ***如果你想深入科研，发高水平论文，读博，往下学***
 
-## 第四阶段（强化深入阶段）：深度学习实战
+## 第4阶段（强化深入阶段）：深度学习实战
 【动手学深度学习——最牛最全最好的深度学习课程，放在最后学】
 
 课程地址：
