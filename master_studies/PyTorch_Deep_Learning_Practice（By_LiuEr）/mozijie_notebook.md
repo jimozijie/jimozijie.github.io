@@ -2,7 +2,11 @@
 
 ## ——BY mozijie
 
-## 当前学习进度：反向传播
+本课程为河北工业大学刘洪普老师所授
+
+课程地址：https://www.bilibili.com/video/BV1Y7411d7Ys?spm_id_from=333.788.videopod.episodes&vd_source=7c23485904ea3584fb46e603e43ca789
+
+## 本人学习进度：12.循环神经网络（基础篇）
 
 ## 1.Overview
 
