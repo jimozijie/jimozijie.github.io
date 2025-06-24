@@ -1,10 +1,11 @@
 # 实用的科研插件
 
-## 作者：墨子杰
+## 推荐人：墨子杰
 
 ## 1.easyScholar（edge插件）
 
 1. 插件地址：https://microsoftedge.microsoft.com/addons/detail/easyscholar/bpepicgagmdchlkjjeeiekpoafehpagm
+
 2. 插件介绍：
 
 > 工欲善其事，必先利其器。好的科研工具，能够让您提升数倍的学习效率。
@@ -32,3 +33,18 @@
 <img alt="产品图像" src="master_studies/实用的科研插件/practical_research_plugin.assets/apps.58017.de848fbc-bf0f-40eb-8dbc-2dadae6d43e5.7fb661c9-51ac-474d-93ff-522bfaac3127.jpeg"/>
 
 <img alt="产品图像" src="master_studies/实用的科研插件/practical_research_plugin.assets/apps.30765.de848fbc-bf0f-40eb-8dbc-2dadae6d43e5.7fb661c9-51ac-474d-93ff-522bfaac3127.jpeg"/>
+
+
+## 2.SCIHUB（edge插件）
+
+1. 插件地址：https://microsoftedge.microsoft.com/addons/detail/scihub/kikgdjdacicfhblmiddmcdolmkdmbcdc
+
+2. 插件介绍：
+
+> 右键选中DOI快捷搜索下载文献PDF
+
+3. 图片介绍
+
+<img alt="step1：鼠标左键选中文献DOI号" src="master_studies/实用的科研插件/practical_research_plugin.assets/apps.2571.bd83bfca-31b1-4dbd-a228-0d82cfdf36cf.8684f48a-6098-4b81-acc2-ca708ad0cc79.jpeg"/>
+
+<img alt="step2：点击鼠标右键" src="master_studies/实用的科研插件/practical_research_plugin.assets/apps.39453.bd83bfca-31b1-4dbd-a228-0d82cfdf36cf.8684f48a-6098-4b81-acc2-ca708ad0cc79.jpeg"/>
