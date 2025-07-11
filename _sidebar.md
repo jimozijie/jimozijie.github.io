@@ -12,7 +12,8 @@
   - [2.实用的科研插件](master_studies/实用的科研插件/practical_research_plugin.md)
 
 - 计算机视觉相关课程与项目笔记
-  - [1.《PyTorch深度学习实践》学习笔记](computer_vision_notebook/PyTorch_Deep_Learning_Practice（By_LiuEr）/mozijie_notebook.md)
+  - [1.《OpenCV-Python-Tutorial》学习笔记](computer_vision_notebook/OpenCV-Python-Tutorial/mozijie_notebook.md)
+  - [2.《PyTorch深度学习实践》学习笔记](computer_vision_notebook/PyTorch_Deep_Learning_Practice（By_LiuEr）/mozijie_notebook.md)
   
 - java相关课程与项目笔记
   - [1.]()
