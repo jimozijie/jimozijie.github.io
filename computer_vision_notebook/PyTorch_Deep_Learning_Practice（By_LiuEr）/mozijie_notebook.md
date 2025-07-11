@@ -84,7 +84,7 @@ plt.show()
 
 **运行结果：**
 
-<img alt="img" src="master_studies/PyTorch_Deep_Learning_Practice（By_LiuEr）/mozijie_notebook.assets/img.png"/>
+<img alt="img" src="computer_vision_notebook/PyTorch_Deep_Learning_Practice（By_LiuEr）/mozijie_notebook.assets/img.png"/>
 
 
 
@@ -202,7 +202,7 @@ plt.show()
 
 **运行结果：**
 
-<img alt="exercise_img" src="master_studies/PyTorch_Deep_Learning_Practice（By_LiuEr）/mozijie_notebook.assets/exercise_img.png"/>
+<img alt="exercise_img" src="computer_vision_notebook/PyTorch_Deep_Learning_Practice（By_LiuEr）/mozijie_notebook.assets/exercise_img.png"/>
 
 ## 3.梯度下降算法
 
@@ -217,7 +217,7 @@ plt.show()
 
 > 按照我们传统算法设计思路，我么也会联想到用分治法：
 >
-> <img alt="在这里插入图片描述" src="master_studies/PyTorch_Deep_Learning_Practice（By_LiuEr）/mozijie_notebook.assets/7652a32f6ad226aa81cbd4f32014a48e.png"/>
+> <img alt="在这里插入图片描述" src="computer_vision_notebook/PyTorch_Deep_Learning_Practice（By_LiuEr）/mozijie_notebook.assets/7652a32f6ad226aa81cbd4f32014a48e.png"/>
 >
 > - 其一，在现在深度学习网络中，权重参数实在过多，分治法也很难应付；
 > - 其二，分治法很容易陷入局部最优的困境中
@@ -226,7 +226,7 @@ plt.show()
 
 > 所谓梯度下降法，就是在每一步权重更新时，沿着**当前负梯度方向（最小化问题）**按照规定的步长进行下一步搜寻。
 >
-> <img alt="在这里插入图片描述" src="master_studies/PyTorch_Deep_Learning_Practice（By_LiuEr）/mozijie_notebook.assets/6532908dcc8eff4a7b35216d93a9fcce.png"/>
+> <img alt="在这里插入图片描述" src="computer_vision_notebook/PyTorch_Deep_Learning_Practice（By_LiuEr）/mozijie_notebook.assets/6532908dcc8eff4a7b35216d93a9fcce.png"/>
 >
 > - 本质就是贪心算法——也就是按照当前最优的策略进行搜寻；
 >
@@ -234,7 +234,7 @@ plt.show()
 >
 > - 虽然梯度下降算法存在着这样的问题，但是它依然被广泛应用于深度学习之中，因为在深度学习模型所使用的激活函数中“局部最优”的问题并不显著，往往找到的都是全局最优点。反而更应该关注“鞍点”梯度消失的问题。如下图，当g等于0时，也就是图像为水平时，w就不在改变。梯度下降算法也就不再迭代。
 >
->   <img alt="image-20250507153014194" src="master_studies/PyTorch_Deep_Learning_Practice（By_LiuEr）/mozijie_notebook.assets/image-20250507153014194.png"/>
+>   <img alt="image-20250507153014194" src="computer_vision_notebook/PyTorch_Deep_Learning_Practice（By_LiuEr）/mozijie_notebook.assets/image-20250507153014194.png"/>
 >
 > - 
 
@@ -246,7 +246,7 @@ plt.show()
 >
 > 将损失函数对w进行求导，计算导数，作为梯度下降公式里面的更新权重，这里面的α作为学习率，**在训练过程中，如果损失值出现增大的情况，说明训练失败，最多的原因就是学习率设置过大，降低学习率重新计算即可**
 >
-> <img alt="image-20250507153641703" src="master_studies/PyTorch_Deep_Learning_Practice（By_LiuEr）/mozijie_notebook.assets/image-20250507153641703.png"/>
+> <img alt="image-20250507153641703" src="computer_vision_notebook/PyTorch_Deep_Learning_Practice（By_LiuEr）/mozijie_notebook.assets/image-20250507153641703.png"/>
 >
 > ①比较其二者的权重更新公式
 >
@@ -254,7 +254,7 @@ plt.show()
 >
 > - 随机梯度下降和梯度下降都是batch-梯度下降的特况
 >
-> <img alt="在这里插入图片描述" src="master_studies/PyTorch_Deep_Learning_Practice（By_LiuEr）/mozijie_notebook.assets/68bdbd4271de9fa723f9efdbc83d0dc9.png"/>
+> <img alt="在这里插入图片描述" src="computer_vision_notebook/PyTorch_Deep_Learning_Practice（By_LiuEr）/mozijie_notebook.assets/68bdbd4271de9fa723f9efdbc83d0dc9.png"/>
 >
 > ②随机梯度下降的特点
 >
@@ -322,7 +322,7 @@ plt.show()
 
 **运行结果：**
 
-<img alt="image-20250507161107286" src="master_studies/PyTorch_Deep_Learning_Practice（By_LiuEr）/mozijie_notebook.assets/image-20250507161107286.png"/>
+<img alt="image-20250507161107286" src="computer_vision_notebook/PyTorch_Deep_Learning_Practice（By_LiuEr）/mozijie_notebook.assets/image-20250507161107286.png"/>
 
 ### 3.6 随机梯度下降代码实现
 
@@ -391,7 +391,7 @@ plt.show()
 
 **运行结果：**
 
-<img alt="image-20250509172538777" src="master_studies/PyTorch_Deep_Learning_Practice（By_LiuEr）/mozijie_notebook.assets/image-20250509172538777.png"/>
+<img alt="image-20250509172538777" src="computer_vision_notebook/PyTorch_Deep_Learning_Practice（By_LiuEr）/mozijie_notebook.assets/image-20250509172538777.png"/>
 
 ## 4.反向传播
 
@@ -400,33 +400,33 @@ plt.show()
 如图：输入层5个节点，第一层6个节点，第二层7个节点
 w相当于每层之前的权重矩阵，维度取决于左右两层的节点个数
 
-<img alt="image-20250512163842664" src="master_studies/PyTorch_Deep_Learning_Practice（By_LiuEr）/mozijie_notebook.assets/image-20250512163842664.png"/>
+<img alt="image-20250512163842664" src="computer_vision_notebook/PyTorch_Deep_Learning_Practice（By_LiuEr）/mozijie_notebook.assets/image-20250512163842664.png"/>
 
 ### 4.2 什么是计算图？
 
-<img alt="image-20250512164758713" src="master_studies/PyTorch_Deep_Learning_Practice（By_LiuEr）/mozijie_notebook.assets/image-20250512164758713.png"/>
+<img alt="image-20250512164758713" src="computer_vision_notebook/PyTorch_Deep_Learning_Practice（By_LiuEr）/mozijie_notebook.assets/image-20250512164758713.png"/>
 
 ### 4.3 以上两层神经网络出现的问题
 
 不论几层神经网络，只要是每层神经网络都做线性运算，那么最终计算公式都会被化简为一个简单的线性模型。因此增加神经网络的层数就显得没有意义了。为了解决这个问题。我们在每一层计算后增加一个非线性函数的向量计算。
 
-<img alt="image-20250512165617373" src="master_studies/PyTorch_Deep_Learning_Practice（By_LiuEr）/mozijie_notebook.assets/image-20250512165617373.png"/>
+<img alt="image-20250512165617373" src="computer_vision_notebook/PyTorch_Deep_Learning_Practice（By_LiuEr）/mozijie_notebook.assets/image-20250512165617373.png"/>
 
 ### 4.4 反向传播示例
 
-<img alt="image-20250512172642006" src="master_studies/PyTorch_Deep_Learning_Practice（By_LiuEr）/mozijie_notebook.assets/image-20250512172642006.png"/>
+<img alt="image-20250512172642006" src="computer_vision_notebook/PyTorch_Deep_Learning_Practice（By_LiuEr）/mozijie_notebook.assets/image-20250512172642006.png"/>
 
 ### 4.5 线性模型y=w*x的反向传播
 
-<img alt="image-20250512175533637" src="master_studies/PyTorch_Deep_Learning_Practice（By_LiuEr）/mozijie_notebook.assets/image-20250512175533637.png"/>
+<img alt="image-20250512175533637" src="computer_vision_notebook/PyTorch_Deep_Learning_Practice（By_LiuEr）/mozijie_notebook.assets/image-20250512175533637.png"/>
 
 ### 4.6 线性模型y=w*x的反向传播作业
 
-<img src="master_studies/PyTorch_Deep_Learning_Practice（By_LiuEr）/mozijie_notebook.assets/image-20250513101723963.png" alt="image-20250513101723963" style="zoom:25%;" />
+<img src="computer_vision_notebook/PyTorch_Deep_Learning_Practice（By_LiuEr）/mozijie_notebook.assets/image-20250513101723963.png" alt="image-20250513101723963" style="zoom:25%;" />
 
 ### 4.7 线性模型y=w*x+b的反向传播作业
 
-<img src="master_studies/PyTorch_Deep_Learning_Practice（By_LiuEr）/mozijie_notebook.assets/3197cdcad45e6539045c36ef5fbc008.png" alt="3197cdcad45e6539045c36ef5fbc008" style="zoom:25%;" />
+<img src="computer_vision_notebook/PyTorch_Deep_Learning_Practice（By_LiuEr）/mozijie_notebook.assets/3197cdcad45e6539045c36ef5fbc008.png" alt="3197cdcad45e6539045c36ef5fbc008" style="zoom:25%;" />
 
 ### 4.8 使用Pytorch进行线性模型y=w*x的训练
 
@@ -504,7 +504,7 @@ plt.show()
 ```
 **训练图：**
 
-<img alt="image-20250513114105675" src="master_studies/PyTorch_Deep_Learning_Practice（By_LiuEr）/mozijie_notebook.assets/image-20250513114105675.png"/>
+<img alt="image-20250513114105675" src="computer_vision_notebook/PyTorch_Deep_Learning_Practice（By_LiuEr）/mozijie_notebook.assets/image-20250513114105675.png"/>
 
 
 > 反向传播就是网络加深版的梯度下降，其过程：
@@ -523,11 +523,11 @@ plt.show()
 
 - 题目
 
-  <img alt="image-20250513112139627" src="master_studies/PyTorch_Deep_Learning_Practice（By_LiuEr）/mozijie_notebook.assets/image-20250513112139627.png"/>
+  <img alt="image-20250513112139627" src="computer_vision_notebook/PyTorch_Deep_Learning_Practice（By_LiuEr）/mozijie_notebook.assets/image-20250513112139627.png"/>
 
 - 计算图模型
 
-<img src="master_studies/PyTorch_Deep_Learning_Practice（By_LiuEr）/mozijie_notebook.assets/66eb2cd23df06b33eb12f1f3a3e11cd.png"/>
+<img src="computer_vision_notebook/PyTorch_Deep_Learning_Practice（By_LiuEr）/mozijie_notebook.assets/66eb2cd23df06b33eb12f1f3a3e11cd.png"/>
 
 
 
@@ -607,7 +607,7 @@ plt.show()
 
 **训练图：**
 
-<img alt="image-20250513114215544" src="master_studies/PyTorch_Deep_Learning_Practice（By_LiuEr）/mozijie_notebook.assets/image-20250513114215544.png"/>
+<img alt="image-20250513114215544" src="computer_vision_notebook/PyTorch_Deep_Learning_Practice（By_LiuEr）/mozijie_notebook.assets/image-20250513114215544.png"/>
 
 **训练出的解析式：y = 0.0008878321386873722x^2 + 1.9960287809371948x + 0.003689199686050415**
 
@@ -725,17 +725,17 @@ if __name__ == '__main__':
 
 **运行结果（300轮）：**
 
-<img src="master_studies/PyTorch_Deep_Learning_Practice（By_LiuEr）/mozijie_notebook.assets/image-20250527153436865.png" alt="image-20250527153436865"  /><img src="master_studies/PyTorch_Deep_Learning_Practice（By_LiuEr）/mozijie_notebook.assets/image-20250527152735371.png" alt="image-20250527152735371" style="zoom: 80%;" />
+<img src="computer_vision_notebook/PyTorch_Deep_Learning_Practice（By_LiuEr）/mozijie_notebook.assets/image-20250527153436865.png" alt="image-20250527153436865"  /><img src="computer_vision_notebook/PyTorch_Deep_Learning_Practice（By_LiuEr）/mozijie_notebook.assets/image-20250527152735371.png" alt="image-20250527152735371" style="zoom: 80%;" />
 
 ### 5.2 PyTorch相关知识 
 
 ①`nn.Linear`类中对`__call()__`方法进行了实现，且其内部有对函数`forward()`的调用，故在定义模型时需要对`forward()`函数进行实现。  
 
 ②`nn.Linear`类相当于是对线性计算单元的封装，里面包含两个张量类型的成员：权重和偏置项
-<img alt="在这里插入图片描述" src="master_studies/PyTorch_Deep_Learning_Practice（By_LiuEr）/mozijie_notebook.assets/cb324861f423c90299ada34ad4f58252.png"/>
+<img alt="在这里插入图片描述" src="computer_vision_notebook/PyTorch_Deep_Learning_Practice（By_LiuEr）/mozijie_notebook.assets/cb324861f423c90299ada34ad4f58252.png"/>
 
 ③根据下图所示按照MSE规则计算损失函数的过程，它也是一个计算图，是继承自`nn.Module`模块的，我们所调用的`nn.MSELoss`就是继承自该模块的类。
-<img alt="在这里插入图片描述" src="master_studies/PyTorch_Deep_Learning_Practice（By_LiuEr）/mozijie_notebook.assets/7dd651626a9012c8a065981e15823eb3.png"/>
+<img alt="在这里插入图片描述" src="computer_vision_notebook/PyTorch_Deep_Learning_Practice（By_LiuEr）/mozijie_notebook.assets/7dd651626a9012c8a065981e15823eb3.png"/>
 
 **源码详解：**
 
@@ -748,7 +748,7 @@ $$
 \mathrm{MSE}=\frac{1}{\mathrm{N}}\sum_{\mathrm{i}=1}^\mathrm{n}(\mathrm{x_i}-\mathrm{y_i})^2
 $$
 ④代码中模型与类之间的关系：
-<img alt="3b33724582f3c7020e7328b3026abca2" src="master_studies/PyTorch_Deep_Learning_Practice（By_LiuEr）/mozijie_notebook.assets/3b33724582f3c7020e7328b3026abca2.png"/>
+<img alt="3b33724582f3c7020e7328b3026abca2" src="computer_vision_notebook/PyTorch_Deep_Learning_Practice（By_LiuEr）/mozijie_notebook.assets/3b33724582f3c7020e7328b3026abca2.png"/>
 
 ### 5.3 Python类中的\_\_call\_\_()方法
 
@@ -788,7 +788,7 @@ hello 派大星！
 
 > 比较不同优化器下的线性回归并可视化  
 > p.s.因为LBFGS的setp()调用方法具有特殊性，以下并未对LBFGS进行实现  
-> <img alt="在这里插入图片描述" src="master_studies/PyTorch_Deep_Learning_Practice（By_LiuEr）/mozijie_notebook.assets/ada9f9e322964875a9beeea4049a42b8.png"/>
+> <img alt="在这里插入图片描述" src="computer_vision_notebook/PyTorch_Deep_Learning_Practice（By_LiuEr）/mozijie_notebook.assets/ada9f9e322964875a9beeea4049a42b8.png"/>
 
 ```python
 #!/usr/bin/env python
@@ -898,25 +898,25 @@ plt.show()
 
  * 逻辑斯蒂回归方程
 
-   <img src="master_studies/PyTorch_Deep_Learning_Practice（By_LiuEr）/mozijie_notebook.assets/image-20250527203049511.png" alt="image-20250527203049511" style="zoom:50%;" />
+   <img src="computer_vision_notebook/PyTorch_Deep_Learning_Practice（By_LiuEr）/mozijie_notebook.assets/image-20250527203049511.png" alt="image-20250527203049511" style="zoom:50%;" />
 
    当x属于全体实数时，y的值域为[0,1]。
 
-   <img src="master_studies/PyTorch_Deep_Learning_Practice（By_LiuEr）/mozijie_notebook.assets/image-20250527203449262.png" style="zoom:50%;" />
+   <img src="computer_vision_notebook/PyTorch_Deep_Learning_Practice（By_LiuEr）/mozijie_notebook.assets/image-20250527203449262.png" style="zoom:50%;" />
 
    对应的sigmoid曲线如下
 
-   <img src="master_studies/PyTorch_Deep_Learning_Practice（By_LiuEr）/mozijie_notebook.assets/image-20250527203405991.png" alt="image-20250527203405991" style="zoom: 80%;" />
+   <img src="computer_vision_notebook/PyTorch_Deep_Learning_Practice（By_LiuEr）/mozijie_notebook.assets/image-20250527203405991.png" alt="image-20250527203405991" style="zoom: 80%;" />
 
  * 由于sigmoid函数的出现，在解决分类问题的过程中就可以通过**线性模型计算出来的值，叠加一个逻辑斯蒂模型，**就能将y_hat变成我们想要的[0,1]之间。逻辑斯蒂回归模型如下
 
-   <img src="master_studies/PyTorch_Deep_Learning_Practice（By_LiuEr）/mozijie_notebook.assets/image-20250527204203019.png" alt="image-20250527204203019" style="zoom:67%;" />
+   <img src="computer_vision_notebook/PyTorch_Deep_Learning_Practice（By_LiuEr）/mozijie_notebook.assets/image-20250527204203019.png" alt="image-20250527204203019" style="zoom:67%;" />
 
  * 因为模型发生了变化，**损失值的计算方式也要发生相应的变化**；因为线性回归模型只需要**比较两个实数之间的差异**，所以可以使用**均方误差值衡量**；但是逻辑回归得到的结果是在描述事件的概率分布，因此我们的**损失函数也变成比较两个分布之间的差异，这里我们使用交叉熵计算公式。**
 
    **二分类的逻辑斯蒂回归**的**损失函数**如下
 
-   <img src="master_studies/PyTorch_Deep_Learning_Practice（By_LiuEr）/mozijie_notebook.assets/image-20250527205103895.png" alt="image-20250527205103895" style="zoom: 67%;" />
+   <img src="computer_vision_notebook/PyTorch_Deep_Learning_Practice（By_LiuEr）/mozijie_notebook.assets/image-20250527205103895.png" alt="image-20250527205103895" style="zoom: 67%;" />
 
    我们希望loss越小越好
 
@@ -928,7 +928,7 @@ plt.show()
 
  * **小批量的二分类逻辑斯蒂方程**
 
-   <img src="master_studies/PyTorch_Deep_Learning_Practice（By_LiuEr）/mozijie_notebook.assets/image-20250527205739170.png" alt="image-20250527205739170" style="zoom: 50%;" />
+   <img src="computer_vision_notebook/PyTorch_Deep_Learning_Practice（By_LiuEr）/mozijie_notebook.assets/image-20250527205739170.png" alt="image-20250527205739170" style="zoom: 50%;" />
 
  *  
 
@@ -1060,7 +1060,7 @@ plt.show()
 在之前讲的例子中，每一个线性单元所做的工作即对**一个实数输入x**，乘上一个权重之后再加上一个偏置项，（之后再进行非线性映射），在这种情况下——**输入的数据维度是1**，线性单元的**权重维度也是1x1大小的**；  
 
 在实际的问题中，一个数据项含有**多种特征属性**且都与该问题相关联，此时我们输入的**不再是一个实数，而是一个向量**，同样**权重单元也不再是1x1的，而也应该是一个相应维度的向量；**输入与权重的运算就转换成**向量之间的点乘运算**，数与数之间的四则运算也同理转换成**向量/矩阵的四则运算**。 
-<img src="master_studies/PyTorch_Deep_Learning_Practice（By_LiuEr）/mozijie_notebook.assets/6326d4fdb60dfa118a29f963a7bbbb72.png" alt="在这里插入图片描述" style="zoom:150%;" />
+<img src="computer_vision_notebook/PyTorch_Deep_Learning_Practice（By_LiuEr）/mozijie_notebook.assets/6326d4fdb60dfa118a29f963a7bbbb72.png" alt="在这里插入图片描述" style="zoom:150%;" />
 
 ### 7.2 神经网络的本质：找到合适的空间变换
 
@@ -1070,7 +1070,7 @@ plt.show()
 
 ③ 多层神经网络事实上，在**每一层都是一次降维的过程**，如下图所示。他不会一下从8为降到1维，而是**分层逐级降维**，从8维到6维到2维到1维，中间经过了**三层神经网络**，每层的神经网络一般使用一种**非线性的复杂函数**来进行计算。
 
-<img alt="在这里插入图片描述" src="master_studies/PyTorch_Deep_Learning_Practice（By_LiuEr）/mozijie_notebook.assets/93264c6907561d0694ceb7b10f8f8f3e.png"/>  
+<img alt="在这里插入图片描述" src="computer_vision_notebook/PyTorch_Deep_Learning_Practice（By_LiuEr）/mozijie_notebook.assets/93264c6907561d0694ceb7b10f8f8f3e.png"/>  
 对于程序编写来说，多维特征的数据输入，只在**数据集构造**和**模型构造**的代码上会有些许的改动。
 
 ```python
@@ -1091,7 +1091,7 @@ model = Model()
 ### 7.3 项目：多层神经网络实现糖尿病病情预测
 
 【需求描述】
-<img alt="在这里插入图片描述" src="master_studies/PyTorch_Deep_Learning_Practice（By_LiuEr）/mozijie_notebook.assets/138649f3cbdbdd4259fe1b6c0b3ad567.png"/>
+<img alt="在这里插入图片描述" src="computer_vision_notebook/PyTorch_Deep_Learning_Practice（By_LiuEr）/mozijie_notebook.assets/138649f3cbdbdd4259fe1b6c0b3ad567.png"/>
 
 【功能实现】  
 
@@ -1187,7 +1187,7 @@ plt.show()
 
 **训练结果：**
 
-<img alt="image-20250529145155921" src="master_studies/PyTorch_Deep_Learning_Practice（By_LiuEr）/mozijie_notebook.assets/image-20250529145155921.png"/>
+<img alt="image-20250529145155921" src="computer_vision_notebook/PyTorch_Deep_Learning_Practice（By_LiuEr）/mozijie_notebook.assets/image-20250529145155921.png"/>
 
 ## 8.数据集加载 
 
@@ -1237,7 +1237,7 @@ for epoch in range(training_epochs):
 
 ③使用**Loader工具**，按照给定的Batch-Size大小将原始的数据集**划分成以Batch-Size为基本大小的**，**Batch为基本单位的数据单元**
 
-<img alt="在这里插入图片描述" src="master_studies/PyTorch_Deep_Learning_Practice（By_LiuEr）/mozijie_notebook.assets/b13fac19372eb212af54996bb016ae24.png"/>
+<img alt="在这里插入图片描述" src="computer_vision_notebook/PyTorch_Deep_Learning_Practice（By_LiuEr）/mozijie_notebook.assets/b13fac19372eb212af54996bb016ae24.png"/>
 
 
 
@@ -1392,7 +1392,7 @@ if __name__ == '__main__':
 
 **训练结果：**
 
-<img alt="image-20250529145047897" src="master_studies/PyTorch_Deep_Learning_Practice（By_LiuEr）/mozijie_notebook.assets/image-20250529145047897.png"/>
+<img alt="image-20250529145047897" src="computer_vision_notebook/PyTorch_Deep_Learning_Practice（By_LiuEr）/mozijie_notebook.assets/image-20250529145047897.png"/>
 
 ### 8.5 MINST数据集的导入
 
@@ -1400,7 +1400,7 @@ if __name__ == '__main__':
 
 具体如下：
 
-<img src="master_studies/PyTorch_Deep_Learning_Practice（By_LiuEr）/mozijie_notebook.assets/image-20250529150050822.png" alt="image-20250529150050822" style="zoom: 33%;" />
+<img src="computer_vision_notebook/PyTorch_Deep_Learning_Practice（By_LiuEr）/mozijie_notebook.assets/image-20250529150050822.png" alt="image-20250529150050822" style="zoom: 33%;" />
 
 其中最常见的数据集为：MINST
 
@@ -1433,7 +1433,7 @@ for epoch in range(100):
 
 ### 8.6 作业：kaggle竞赛titanic
 
-<img src="master_studies/PyTorch_Deep_Learning_Practice（By_LiuEr）/mozijie_notebook.assets/image-20250529150458033.png" alt="image-20250529150458033" style="zoom: 50%;" />
+<img src="computer_vision_notebook/PyTorch_Deep_Learning_Practice（By_LiuEr）/mozijie_notebook.assets/image-20250529150458033.png" alt="image-20250529150458033" style="zoom: 50%;" />
 
 **暂时不做，学完再做**
 
@@ -1455,11 +1455,11 @@ for epoch in range(100):
 
 这里的Zi是前面线性运算+SIGMOD后的结果，最后再加一个softmax层，softmax层公式如下
 
-<img src="master_studies/PyTorch_Deep_Learning_Practice（By_LiuEr）/mozijie_notebook.assets/image-20250529170512725.png" alt="image-20250529170512725" style="zoom: 50%;" />
+<img src="computer_vision_notebook/PyTorch_Deep_Learning_Practice（By_LiuEr）/mozijie_notebook.assets/image-20250529170512725.png" alt="image-20250529170512725" style="zoom: 50%;" />
 
 **softmax公式计算过程：**
 
-<img alt="image-20250529170457460" src="master_studies/PyTorch_Deep_Learning_Practice（By_LiuEr）/mozijie_notebook.assets/image-20250529170457460.png"/>
+<img alt="image-20250529170457460" src="computer_vision_notebook/PyTorch_Deep_Learning_Practice（By_LiuEr）/mozijie_notebook.assets/image-20250529170457460.png"/>
 ①：将每一个输出值Zi都采用**指数幂的运算**，保证结果都是**正数**； 
 ②：分母是每个指数幂结果的求和，保证最后输出的K个结果的总和为1（本质就是**归一化操作**)**。**
 
@@ -1467,7 +1467,7 @@ for epoch in range(100):
 
  *  主要思想还是参照二分类中的交叉熵损失函数；但要注意的是**交叉熵的计算公式loss = -(ylogy_hat+(1-y)log(1-y_hat))**中虽然是有两项，但实际计算中**有一项的值恒为零**；
  *  参照交叉熵的思想，我们对多分类的标签进行**独热编码（one-hot**），即目标标签值形如\[0,0,…0,0,1,0,…,0\]这样的**稀疏向量**；因此**损失函数实际为loss = -ylogy_hat** 
-    <img src="master_studies/PyTorch_Deep_Learning_Practice（By_LiuEr）/mozijie_notebook.assets/image-20250529171202458.png" alt="image-20250529171202458" style="zoom:50%;" />
+    <img src="computer_vision_notebook/PyTorch_Deep_Learning_Practice（By_LiuEr）/mozijie_notebook.assets/image-20250529171202458.png" alt="image-20250529171202458" style="zoom:50%;" />
 
 ```python
 # numpy实现多分类交叉熵损失函数
@@ -1496,7 +1496,7 @@ loss = criterion(z,y)
 
 **1.引入transforms 实现 PlL lmage to Tensor**
 
-<img src="master_studies/PyTorch_Deep_Learning_Practice（By_LiuEr）/mozijie_notebook.assets/image-20250529173716878.png" alt="image-20250529173716878" style="zoom:50%;" />
+<img src="computer_vision_notebook/PyTorch_Deep_Learning_Practice（By_LiuEr）/mozijie_notebook.assets/image-20250529173716878.png" alt="image-20250529173716878" style="zoom:50%;" />
 
 ```python
 transform = transforms.Compose([
@@ -1626,7 +1626,7 @@ if __name__ == '__main__':
 
 ### 9.3 课后作业:ottp电商产品多分类模型
 
-<img alt="image-20250529181603759" src="master_studies/PyTorch_Deep_Learning_Practice（By_LiuEr）/mozijie_notebook.assets/image-20250529181603759.png"/>
+<img alt="image-20250529181603759" src="computer_vision_notebook/PyTorch_Deep_Learning_Practice（By_LiuEr）/mozijie_notebook.assets/image-20250529181603759.png"/>
 
 > 实验过程中比较费力的几个点：
 >
@@ -1712,7 +1712,7 @@ if __name__ == '__main__':
 
 ### 10.1 CNN的整体计算框架 
 
-<img src="master_studies/PyTorch_Deep_Learning_Practice（By_LiuEr）/mozijie_notebook.assets/image-20250530100958875.png" style="zoom: 67%;" />
+<img src="computer_vision_notebook/PyTorch_Deep_Learning_Practice（By_LiuEr）/mozijie_notebook.assets/image-20250530100958875.png" style="zoom: 67%;" />
 
 ①相较**全连接网络**来说，CNN采用**卷积核的层次架**构是为了**保留输入数据的空间特征信息**； 
 ②CNN从本质上来说，就是通过**网络的叠加对原始数据做特征提取**（Feature Extraction），将**原始数据空间映射到目标特征空间**，再对**映射后得到的特征图**，进**行向量拉伸**，连上一个FC和分类层。
@@ -1725,7 +1725,7 @@ if __name__ == '__main__':
 
 黑白图像为单通道，rgb彩色图像为3通道，有些图像还有4通道等
 
-<img src="master_studies/PyTorch_Deep_Learning_Practice（By_LiuEr）/mozijie_notebook.assets/image-20250530110002159.png" alt="image-20250530110002159" style="zoom:67%;" />
+<img src="computer_vision_notebook/PyTorch_Deep_Learning_Practice（By_LiuEr）/mozijie_notebook.assets/image-20250530110002159.png" alt="image-20250530110002159" style="zoom:67%;" />
 
 **2.卷积的运算过程**
 
@@ -1739,27 +1739,27 @@ if __name__ == '__main__':
 
 **第一次卷积计算**
 
-<img src="master_studies/PyTorch_Deep_Learning_Practice（By_LiuEr）/mozijie_notebook.assets/image-20250530110720762.png" alt="image-20250530110720762" style="zoom:50%;" />
+<img src="computer_vision_notebook/PyTorch_Deep_Learning_Practice（By_LiuEr）/mozijie_notebook.assets/image-20250530110720762.png" alt="image-20250530110720762" style="zoom:50%;" />
 
 **第二次卷积计算**
 
-<img src="master_studies/PyTorch_Deep_Learning_Practice（By_LiuEr）/mozijie_notebook.assets/image-20250530111118277.png" alt="image-20250530111118277" style="zoom:50%;" />
+<img src="computer_vision_notebook/PyTorch_Deep_Learning_Practice（By_LiuEr）/mozijie_notebook.assets/image-20250530111118277.png" alt="image-20250530111118277" style="zoom:50%;" />
 
 **多通道的卷积**
 
 对于多通道的卷积，其实就是分别在每一层进行单通道的卷积（数乘）运算，再将各通道的运算结果按位求和。
 
-<img src="master_studies/PyTorch_Deep_Learning_Practice（By_LiuEr）/mozijie_notebook.assets/image-20250530111755037.png" alt="image-20250530111755037" style="zoom:67%;" />
+<img src="computer_vision_notebook/PyTorch_Deep_Learning_Practice（By_LiuEr）/mozijie_notebook.assets/image-20250530111755037.png" alt="image-20250530111755037" style="zoom:67%;" />
 
 
 
-<img src="master_studies/PyTorch_Deep_Learning_Practice（By_LiuEr）/mozijie_notebook.assets/image-20250530111815561.png" alt="image-20250530111815561" style="zoom: 67%;" />
+<img src="computer_vision_notebook/PyTorch_Deep_Learning_Practice（By_LiuEr）/mozijie_notebook.assets/image-20250530111815561.png" alt="image-20250530111815561" style="zoom: 67%;" />
 
 **多个卷积核，多通道的卷积**
 
 这里的卷积核是**四维**的了，（分别为个数N，通道数C，宽W，高H）
 
-<img src="master_studies/PyTorch_Deep_Learning_Practice（By_LiuEr）/mozijie_notebook.assets/image-20250530112658072.png" alt="image-20250530112658072" style="zoom:67%;" />
+<img src="computer_vision_notebook/PyTorch_Deep_Learning_Practice（By_LiuEr）/mozijie_notebook.assets/image-20250530112658072.png" alt="image-20250530112658072" style="zoom:67%;" />
 
 考虑最一般的卷积操作，有以下要点和结论： 
 ①**卷积核的通道数量**应该和输入数据的**通道数量保持一致**； 
@@ -1805,7 +1805,7 @@ torch.Size([10, 5, 3, 3])		卷积核的个数，通道数，核宽，核高
 
 这样在经过3\*3的卷积核之后，还是会成为5\*5的图像。如下图所示
 
-<img src="master_studies/PyTorch_Deep_Learning_Practice（By_LiuEr）/mozijie_notebook.assets/image-20250530142410309.png" alt="image-20250530142410309" style="zoom:67%;" />
+<img src="computer_vision_notebook/PyTorch_Deep_Learning_Practice（By_LiuEr）/mozijie_notebook.assets/image-20250530142410309.png" alt="image-20250530142410309" style="zoom:67%;" />
 
 ```python
 import torch
@@ -1840,11 +1840,11 @@ tensor([[[[ 91., 168., 224., 215., 127.],
 *  步长改变的是**卷积核每次右移（或下移）中心移动的像素点数**；
 *  不同的stride会使得卷积运算的数**据结果的形状发生相应变化**。
 
-<img src="master_studies/PyTorch_Deep_Learning_Practice（By_LiuEr）/mozijie_notebook.assets/image-20250530143016642.png" alt="image-20250530143016642" style="zoom:50%;" />
+<img src="computer_vision_notebook/PyTorch_Deep_Learning_Practice（By_LiuEr）/mozijie_notebook.assets/image-20250530143016642.png" alt="image-20250530143016642" style="zoom:50%;" />
 
-<img src="master_studies/PyTorch_Deep_Learning_Practice（By_LiuEr）/mozijie_notebook.assets/image-20250530143033791.png" alt="image-20250530143033791" style="zoom:50%;" />
+<img src="computer_vision_notebook/PyTorch_Deep_Learning_Practice（By_LiuEr）/mozijie_notebook.assets/image-20250530143033791.png" alt="image-20250530143033791" style="zoom:50%;" />
 
-<img src="master_studies/PyTorch_Deep_Learning_Practice（By_LiuEr）/mozijie_notebook.assets/image-20250530143045506.png" alt="image-20250530143045506" style="zoom:50%;" />
+<img src="computer_vision_notebook/PyTorch_Deep_Learning_Practice（By_LiuEr）/mozijie_notebook.assets/image-20250530143045506.png" alt="image-20250530143045506" style="zoom:50%;" />
 
 ```python
 conv_layer = torch.nn.Conv2d(1,1,kernel_size=3,padding=1,stride=2,bias = False)
@@ -1852,7 +1852,7 @@ conv_layer = torch.nn.Conv2d(1,1,kernel_size=3,padding=1,stride=2,bias = False)
 
 ### 10.5 Max\_Pooling（最大池化）
 
-<img alt="在这里插入图片描述" src="master_studies/PyTorch_Deep_Learning_Practice（By_LiuEr）/mozijie_notebook.assets/d50f1fe81c68a027c7c50648f1179b34.png"/>
+<img alt="在这里插入图片描述" src="computer_vision_notebook/PyTorch_Deep_Learning_Practice（By_LiuEr）/mozijie_notebook.assets/d50f1fe81c68a027c7c50648f1179b34.png"/>
 
 ①最大池化层就是在给定的kernel\_size的区域中**选择当前最大的值**作为输出中一个元素值； 
 ②最大池化层**没有参数**，只需要**指定kernel\_size的大小即可**； 
@@ -1928,9 +1928,9 @@ inputs,targets = inputs.to(device),targets.to(device)
 
 需要实现的模型示意图
 
-<img alt="image-20250530144542028" src="master_studies/PyTorch_Deep_Learning_Practice（By_LiuEr）/mozijie_notebook.assets/image-20250530144542028.png"/>
+<img alt="image-20250530144542028" src="computer_vision_notebook/PyTorch_Deep_Learning_Practice（By_LiuEr）/mozijie_notebook.assets/image-20250530144542028.png"/>
 
-<img alt="image-20250530144812667" src="master_studies/PyTorch_Deep_Learning_Practice（By_LiuEr）/mozijie_notebook.assets/image-20250530144812667.png"/>
+<img alt="image-20250530144812667" src="computer_vision_notebook/PyTorch_Deep_Learning_Practice（By_LiuEr）/mozijie_notebook.assets/image-20250530144812667.png"/>
 
 **代码实现：**
 
@@ -2053,11 +2053,11 @@ if __name__ == '__main__':
 
 **训练结果：**
 
-<img src="master_studies/PyTorch_Deep_Learning_Practice（By_LiuEr）/mozijie_notebook.assets/image-20250530151716024.png" alt="image-20250530151716024" style="zoom: 80%;" />
+<img src="computer_vision_notebook/PyTorch_Deep_Learning_Practice（By_LiuEr）/mozijie_notebook.assets/image-20250530151716024.png" alt="image-20250530151716024" style="zoom: 80%;" />
 
 ### 10.9 作业：使用更复杂CNN实现MNIST手写数字分类
 
-<img src="master_studies/PyTorch_Deep_Learning_Practice（By_LiuEr）/mozijie_notebook.assets/image-20250530152011425.png" alt="image-20250530152011425" style="zoom: 67%;" />
+<img src="computer_vision_notebook/PyTorch_Deep_Learning_Practice（By_LiuEr）/mozijie_notebook.assets/image-20250530152011425.png" alt="image-20250530152011425" style="zoom: 67%;" />
 
 ```python
 import torch
@@ -2208,7 +2208,7 @@ Accuracy on test set: 98 %
 
 ​	②**面向对象**编程中，使用**类进行功能封装**
 
-<img alt="image-20250601181838102" src="master_studies/PyTorch_Deep_Learning_Practice（By_LiuEr）/mozijie_notebook.assets/image-20250601181838102.png"/>
+<img alt="image-20250601181838102" src="computer_vision_notebook/PyTorch_Deep_Learning_Practice（By_LiuEr）/mozijie_notebook.assets/image-20250601181838102.png"/>
 
 **2、Inception** 
 
@@ -2217,13 +2217,13 @@ Accuracy on test set: 98 %
 因为事先无法知道超参数怎样选择才能使得网络具有最优的结果
 
 因此对**各种可能的超参数结构进行一个罗列**，通过**训练结果自然可以看出哪种超参数更优**。
-<img alt="在这里插入图片描述" src="master_studies/PyTorch_Deep_Learning_Practice（By_LiuEr）/mozijie_notebook.assets/94950c01759dc8d56a31cb6fa7ef96f0.png"/>
+<img alt="在这里插入图片描述" src="computer_vision_notebook/PyTorch_Deep_Learning_Practice（By_LiuEr）/mozijie_notebook.assets/94950c01759dc8d56a31cb6fa7ef96f0.png"/>
 p.s.其中因为**各路分支采取的卷积核宽高不一致**，但是在最终拼接的时候要求图像块的尺寸WXH是一致的，所以需要规定好stride（步长)和padding（补零)。
 
 **3.1x1卷积**
 
 ①它可以**跨越不同通道的相同位置的元素值**，也可以说成是实现了**信息融合**； 
-<img src="master_studies/PyTorch_Deep_Learning_Practice（By_LiuEr）/mozijie_notebook.assets/image-20250601183421171.png" alt="****" style="zoom:67%;" />
+<img src="computer_vision_notebook/PyTorch_Deep_Learning_Practice（By_LiuEr）/mozijie_notebook.assets/image-20250601183421171.png" alt="****" style="zoom:67%;" />
 
 ②1x1卷积最直接的作用就是**改变数据的通道数目**；
 
@@ -2231,22 +2231,22 @@ p.s.其中因为**各路分支采取的卷积核宽高不一致**，但是在最
 
 这里可以看到经过一次1x1卷积后，计算量减少了一个量级
 
-<img src="master_studies/PyTorch_Deep_Learning_Practice（By_LiuEr）/mozijie_notebook.assets/image-20250601183828655.png" style="zoom: 67%;" />
+<img src="computer_vision_notebook/PyTorch_Deep_Learning_Practice（By_LiuEr）/mozijie_notebook.assets/image-20250601183828655.png" style="zoom: 67%;" />
 
 **4.实现** 
 
 **网络构建与前向传播：**
 
-<img src="master_studies/PyTorch_Deep_Learning_Practice（By_LiuEr）/mozijie_notebook.assets/image-20250601184928969.png" alt="image-20250601184928969" style="zoom:67%;" />
+<img src="computer_vision_notebook/PyTorch_Deep_Learning_Practice（By_LiuEr）/mozijie_notebook.assets/image-20250601184928969.png" alt="image-20250601184928969" style="zoom:67%;" />
 
-<img src="master_studies/PyTorch_Deep_Learning_Practice（By_LiuEr）/mozijie_notebook.assets/image-20250601184950096.png" alt="image-20250601184950096" style="zoom:67%;" />
+<img src="computer_vision_notebook/PyTorch_Deep_Learning_Practice（By_LiuEr）/mozijie_notebook.assets/image-20250601184950096.png" alt="image-20250601184950096" style="zoom:67%;" />
 
 **按照通道合并代码**
 
-<img src="master_studies/PyTorch_Deep_Learning_Practice（By_LiuEr）/mozijie_notebook.assets/image-20250601185001273.png" alt="image-20250601185001273" style="zoom:80%;" />
+<img src="computer_vision_notebook/PyTorch_Deep_Learning_Practice（By_LiuEr）/mozijie_notebook.assets/image-20250601185001273.png" alt="image-20250601185001273" style="zoom:80%;" />
 
-<img alt="在这里插入图片描述" src="master_studies/PyTorch_Deep_Learning_Practice（By_LiuEr）/mozijie_notebook.assets/170409ef145b14cbf4fcd3da7e0d1287.png"/>
-<img src="master_studies/PyTorch_Deep_Learning_Practice（By_LiuEr）/mozijie_notebook.assets/image-20250601185250726.png" alt="image-20250601185250726" style="zoom: 80%;" />
+<img alt="在这里插入图片描述" src="computer_vision_notebook/PyTorch_Deep_Learning_Practice（By_LiuEr）/mozijie_notebook.assets/170409ef145b14cbf4fcd3da7e0d1287.png"/>
+<img src="computer_vision_notebook/PyTorch_Deep_Learning_Practice（By_LiuEr）/mozijie_notebook.assets/image-20250601185250726.png" alt="image-20250601185250726" style="zoom: 80%;" />
 
  *  Inception块各个计算分支的实现
 
@@ -2332,12 +2332,12 @@ class InceptionA(nn.Module):
 
 ②另一方面，深层网络在训练之中会**碰到梯度消失的问题**。
 
-<img src="master_studies/PyTorch_Deep_Learning_Practice（By_LiuEr）/mozijie_notebook.assets/image-20250601190413715.png" alt="image-20250601190413715" style="zoom: 67%;" />
+<img src="computer_vision_notebook/PyTorch_Deep_Learning_Practice（By_LiuEr）/mozijie_notebook.assets/image-20250601190413715.png" alt="image-20250601190413715" style="zoom: 67%;" />
 
 2. **解决梯度消失的基本思想**
 
  *  跳连接 
-    <img src="master_studies/PyTorch_Deep_Learning_Practice（By_LiuEr）/mozijie_notebook.assets/image-20250601190836669.png" style="zoom:67%;" />
+    <img src="computer_vision_notebook/PyTorch_Deep_Learning_Practice（By_LiuEr）/mozijie_notebook.assets/image-20250601190836669.png" style="zoom:67%;" />
 
 梯度消失产生的原因：在链式求导法则下，**大量小于1的数字连乘最终会趋向于0**，使得接近输入层的**网络权值无法得到很好的训练**。  
 
@@ -2347,7 +2347,7 @@ class InceptionA(nn.Module):
 
 3. **实现** 
    （1）残差网络块的实现
-   <img alt="在这里插入图片描述" src="master_studies/PyTorch_Deep_Learning_Practice（By_LiuEr）/mozijie_notebook.assets/52349ce0930003086bfa2f4b5dff61cf.png"/>
+   <img alt="在这里插入图片描述" src="computer_vision_notebook/PyTorch_Deep_Learning_Practice（By_LiuEr）/mozijie_notebook.assets/52349ce0930003086bfa2f4b5dff61cf.png"/>
 
 ```python
 # 残差网络块的实现
@@ -2366,7 +2366,7 @@ class ResidualBlock(nn.Module):
 ```
 
 （2）残差网络块在整个深度神经网络中的实现
-<img alt="在这里插入图片描述" src="master_studies/PyTorch_Deep_Learning_Practice（By_LiuEr）/mozijie_notebook.assets/c583f8e57e972414d25a77d93b790fa6.png"/>
+<img alt="在这里插入图片描述" src="computer_vision_notebook/PyTorch_Deep_Learning_Practice（By_LiuEr）/mozijie_notebook.assets/c583f8e57e972414d25a77d93b790fa6.png"/>
 
 ```java
 #利用残差块搭建网络结构
@@ -2399,11 +2399,11 @@ class Net(nn.Module):
 
 1. 阅读论文He K, Zhang X, Ren S, et al. Identity Mappings in Deep Residual Networks[C]，实现几种不同的ResNet的构造方式
 
-   <img src="master_studies/PyTorch_Deep_Learning_Practice（By_LiuEr）/mozijie_notebook.assets/image-20250601191843679.png" alt="image-20250601191843679" style="zoom: 67%;" />
+   <img src="computer_vision_notebook/PyTorch_Deep_Learning_Practice（By_LiuEr）/mozijie_notebook.assets/image-20250601191843679.png" alt="image-20250601191843679" style="zoom: 67%;" />
 
 2. 阅读论文Huang G, Liu Z, Laurens V D M, et al. Densely Connected Convolutional Networks[J]. 2016:2261-2269. 学习Densely-connected卷积网络
 
-<img src="master_studies/PyTorch_Deep_Learning_Practice（By_LiuEr）/mozijie_notebook.assets/image-20250601191905493.png" alt="image-20250601191905493" style="zoom:67%;" />
+<img src="computer_vision_notebook/PyTorch_Deep_Learning_Practice（By_LiuEr）/mozijie_notebook.assets/image-20250601191905493.png" alt="image-20250601191905493" style="zoom:67%;" />
 
 ### 11.4 接下来的路
 
