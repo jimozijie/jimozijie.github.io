@@ -52,7 +52,7 @@ import cv2
 
 **lena.jpg**
 
-<img alt="lena" src="mozijie_notebook.assets/lena.jpg"/>
+<img alt="lena" src="computer_vision_notebook/OpenCV-Python-Tutorial/mozijie_notebook.assets/lena.jpg"/>
 
 **代码：**
 
@@ -90,7 +90,7 @@ print(rf'执行时间：{cv2.getTickCount()/cv2.getTickFrequency() - start_time}
 
 **lena.jpg**
 
-<img alt="lena" src="mozijie_notebook.assets/lena.jpg"/>
+<img alt="lena" src="computer_vision_notebook/OpenCV-Python-Tutorial/mozijie_notebook.assets/lena.jpg"/>
 
 ### 2.1 读入/显示/保存图像
 
@@ -205,6 +205,8 @@ plt.show()  # 展示窗口
 ```
 
 
+
+## 3.视频
 
 
 
