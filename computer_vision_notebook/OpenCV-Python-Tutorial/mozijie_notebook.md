@@ -18,6 +18,10 @@
 >
 > 感谢以上所有老师的开源教程
 
+!> 特别注意：本笔记所有资源文件，图片，视频等均可下载 
+
+
+
 ## 1.简介与安装
 
 ### 1.1 OpenCV简介
@@ -357,6 +361,9 @@ plt.show()  # 展示窗口
 </table>
 
 #### 3.1.2 资源视频demo_video.mp4
+
+
+!> 特别注意：该视频可下载，可倍速播放，代码里需要用到此视频。如果要跑代码可以把视频下载下来
 
 <video controls width="640">
   <source src="computer_vision_notebook/OpenCV-Python-Tutorial/mozijie_notebook.assets/demo_video.mp4" type="video/mp4" />
