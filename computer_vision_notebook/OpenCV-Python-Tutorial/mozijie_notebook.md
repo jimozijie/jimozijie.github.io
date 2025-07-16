@@ -167,7 +167,7 @@ cv2.imwrite('lena_gray.jpg', img)
 
 
 
-### 2.2使用matplotlib读入显示彩色图
+### 2.2 使用matplotlib读入显示彩色图
 
 **代码及笔记：**
 
@@ -207,6 +207,233 @@ plt.show()  # 展示窗口
 
 
 ## 3.视频
+
+### 3.1 用摄像头/文件打开视频
+
+**由于我用的是台式机，而且没装摄像头，我这里就用一个测试视频打开**
+
+
+
+#### 3.1.1 cv2.VideoCapture.get、set详解
+
+>你可以使用函数 cap.get(propId)来获得视频的一些参数信息。
+>
+>这里propId 可以是 0到 18 之间的任何整数。每一个数代表视频的一个属性，**具体可以见下表**
+>
+>其中的一些值可以使用 cap.set(propId,value)来修改，value 就是你想要设置成的新值。
+
+<table> 
+ <thead> 
+  <tr> 
+   <th>param</th> 
+   <th>define</th> 
+  </tr> 
+ </thead> 
+ <tbody> 
+  <tr> 
+   <td>cv2.VideoCapture.get(0)</td> 
+   <td>CV_CAP_PROP_POS_MSEC 视频文件的当前位置（播放）以毫秒为单位</td> 
+  </tr> 
+  <tr> 
+   <td>cv2.VideoCapture.get(1)</td> 
+   <td>CV_CAP_PROP_POS_FRAMES 基于以0开始的被捕获或解码的帧索引</td> 
+  </tr> 
+  <tr> 
+   <td>cv2.VideoCapture.get(2)</td> 
+   <td>CV_CAP_PROP_POS_AVI_RATIO 视频文件的相对位置（播放）：0=电影开始，1=影片的结尾。</td> 
+  </tr> 
+  <tr> 
+   <td>cv2.VideoCapture.get(3)</td> 
+   <td>CV_CAP_PROP_FRAME_WIDTH 在视频流的帧的宽度</td> 
+  </tr> 
+  <tr> 
+   <td>cv2.VideoCapture.get(4)</td> 
+   <td>CV_CAP_PROP_FRAME_HEIGHT 在视频流的帧的高度</td> 
+  </tr> 
+  <tr> 
+   <td>cv2.VideoCapture.get(5)</td> 
+   <td>CV_CAP_PROP_FPS 帧速率</td> 
+  </tr> 
+  <tr> 
+   <td>cv2.VideoCapture.get(6)</td> 
+   <td>CV_CAP_PROP_FOURCC 编解码的4字-字符代码</td> 
+  </tr> 
+  <tr> 
+   <td>cv2.VideoCapture.get(7)</td> 
+   <td>CV_CAP_PROP_FRAME_COUNT 视频文件中的帧数</td> 
+  </tr> 
+  <tr> 
+   <td>cv2.VideoCapture.get(8)</td> 
+   <td>CV_CAP_PROP_FORMAT 返回对象的格式</td> 
+  </tr> 
+  <tr> 
+   <td>cv2.VideoCapture.get(9)</td> 
+   <td>CV_CAP_PROP_MODE 返回后端特定的值，该值指示当前捕获模式</td> 
+  </tr> 
+  <tr> 
+   <td>cv2.VideoCapture.get(10)</td> 
+   <td>CV_CAP_PROP_BRIGHTNESS 图像的亮度(仅适用于照相机)</td> 
+  </tr> 
+  <tr> 
+   <td>cv2.VideoCapture.get(11)</td> 
+   <td>CV_CAP_PROP_CONTRAST 图像的对比度(仅适用于照相机)</td> 
+  </tr> 
+  <tr> 
+   <td>cv2.VideoCapture.get(12)</td> 
+   <td>CV_CAP_PROP_SATURATION 图像的饱和度(仅适用于照相机)</td> 
+  </tr> 
+  <tr> 
+   <td>cv2.VideoCapture.get(13)</td> 
+   <td>CV_CAP_PROP_HUE 色调图像(仅适用于照相机)</td> 
+  </tr> 
+  <tr> 
+   <td>cv2.VideoCapture.get(14)</td> 
+   <td>CV_CAP_PROP_GAIN 图像增益(仅适用于照相机)（Gain在摄影中表示白平衡提升）</td> 
+  </tr> 
+  <tr> 
+   <td>cv2.VideoCapture.get(15)</td> 
+   <td>CV_CAP_PROP_EXPOSURE 曝光(仅适用于照相机)</td> 
+  </tr> 
+  <tr> 
+   <td>cv2.VideoCapture.get(16)</td> 
+   <td>CV_CAP_PROP_CONVERT_RGB 指示是否应将图像转换为RGB布尔标志</td> 
+  </tr> 
+  <tr> 
+   <td>cv2.VideoCapture.get(17)</td> 
+   <td>CV_CAP_PROP_WHITE_BALANCE × 暂时不支持</td> 
+  </tr> 
+  <tr> 
+   <td>cv2.VideoCapture.get(18)</td> 
+   <td>CV_CAP_PROP_RECTIFICATION 立体摄像机的矫正标注（目前只有DC1394 v.2.x后端支持这个功能）</td> 
+  </tr> 
+ </tbody> 
+</table>
+
+<table> 
+ <thead> 
+  <tr> 
+   <th>capture.set</th> 
+   <th>作用</th> 
+  </tr> 
+ </thead> 
+ <tbody> 
+  <tr> 
+   <td>capture.set(cv2.CAP_PROP_FRAME_WIDTH, 1080);</td> 
+   <td>宽度</td> 
+  </tr> 
+  <tr> 
+   <td>capture.set(cv2.CAP_PROP_FRAME_HEIGHT, 960);</td> 
+   <td>高度</td> 
+  </tr> 
+  <tr> 
+   <td>capture.set(cv2.CAP_PROP_FPS, 30);</td> 
+   <td>帧率 帧/秒</td> 
+  </tr> 
+  <tr> 
+   <td>capture.set(cv2.CAP_PROP_BRIGHTNESS, 1);</td> 
+   <td>亮度</td> 
+  </tr> 
+  <tr> 
+   <td>capture.set(cv2.CAP_PROP_CONTRAST,40)</td> 
+   <td>对比度 40</td> 
+  </tr> 
+  <tr> 
+   <td>capture.set(cv2.CAP_PROP_SATURATION, 50);</td> 
+   <td>饱和度 50</td> 
+  </tr> 
+  <tr> 
+   <td>capture.set(cv2.CAP_PROP_HUE, 50);</td> 
+   <td>色调 50</td> 
+  </tr> 
+  <tr> 
+   <td>capture.set(cv2.CAP_PROP_EXPOSURE, 50);</td> 
+   <td>曝光 50 </td> 
+  </tr> 
+ </tbody> 
+</table>
+
+#### 3.1.2 资源视频demo_video.mp4
+
+<video src="computer_vision_notebook/OpenCV-Python-Tutorial/mozijie_notebook.assets/demo_video.mp4"></video>
+
+#### 3.1.3 代码
+
+```python
+#!/usr/bin/env python
+# -*- coding: UTF-8 -*-
+"""
+@Project ：OpenCV-Python-Tutorial 
+@File    ：capture_videos_with_camera.py
+@IDE     ：PyCharm 
+@Author  ：Mozijie
+@Date    ：2025/7/16 上午9:35 
+"""
+import cv2
+from loguru import logger
+
+"""
+为了获取视频，你应该创建一个 VideoCapture 对象。
+他的参数可以是设备的索引号，或者是一个视频文件。
+参数是0，表示打开笔记本的内置摄像头。
+参数是视频文件路径则打开视频，如camera = cv2.VideoCapture("../test.avi")
+设备索引号就是在指定要使用的摄像头。一般的笔记本电脑都有内置摄像头。所以参数就是0。
+你可以通过设置成1 或者其他的来选择别的摄像头。
+"""
+camera = cv2.VideoCapture(rf"./demo_video.mp4")    # 创建相机对象
+
+"""
+有时 cap 可能不能成功的初始化摄像头设备。这种情况下上面的代码会报错。
+你可以使用 cap.isOpened()，来检查是否成功初始化了。如果返回值是True，那就没有问题。
+否则就要使用函数 cap.open()。
+"""
+logger.debug(rf"相机打开状态：{camera.isOpened()}")
+if not camera.isOpened():  # 如果相机未打开，打开它
+    camera.open(rf"./demo_video.mp4")
+
+"""
+你可以使用函数 cap.get(propId)来获得视频的一些参数信息。
+这里propId 可以是 0到 18 之间的任何整数。每一个数代表视频的一个属性
+其中的一些值可以使用 cap.set(propId,value)来修改，value 就是你想要设置成的新值。
+例如，我可以使用 cap.get(3)和 cap.get(4)来查看每一帧的宽和高。默认情况下得到的值是 640X360。
+但是我可以使用 ret=cap.set(3,320)和 ret=cap.set(4,180)来把宽和高改成 320X180。
+"""
+camera_width, camera_height = camera.get(3), camera.get(4)   # 获取视频宽度高度
+camera_fps = camera.get(5)  # 获取视频帧率
+logger.debug(rf'相机宽度{camera_width}，相机高度{camera_height}，视频帧率为{camera_fps}帧/s')   # 打印参数
+
+while True:
+    """
+    cap.read()按帧读取视频，ret,frame是获cap.read()方法的两个返回值。
+    其中ret是布尔值，如果读取帧是正确的则返回True。
+    如果文件读取到结尾，它的返回值就为False。
+    frame就是每一帧的图像，是个三维矩阵。
+    """
+    ret, frame = camera.read()  # 读取一帧图片
+    gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)  # 转化为灰度图
+    cv2.imshow('frame', gray)   # 显示图片
+    if cv2.waitKey(30) & 0xFF == ord('1'):   # 延迟30毫秒，等待按下"1"键退出循环
+        break
+
+camera.release()    # 释放相机
+cv2.destroyAllWindows()     # 删除所有窗口
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
