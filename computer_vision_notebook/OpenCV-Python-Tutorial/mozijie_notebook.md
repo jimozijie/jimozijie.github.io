@@ -358,9 +358,10 @@ plt.show()  # 展示窗口
 
 #### 3.1.2 资源视频demo_video.mp4
 
-[demo_video](computer_vision_notebook/OpenCV-Python-Tutorial/mozijie_notebook.assets/demo_video.mp4 ':include')
+<video controls width="640">
+  <source src="computer_vision_notebook/OpenCV-Python-Tutorial/mozijie_notebook.assets/demo_video.mp4" type="video/mp4" />
+</video>
 
-<video src="computer_vision_notebook/OpenCV-Python-Tutorial/mozijie_notebook.assets/demo_video.mp4"></video>
 
 #### 3.1.3 代码
 
