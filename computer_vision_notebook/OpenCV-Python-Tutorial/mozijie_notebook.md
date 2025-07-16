@@ -4,7 +4,9 @@
 
 ## 0.笔记说明
 
-> 该笔记为本人学习CodecWang大神的OpenCV-Python-Tutorial教程所记录的笔记，也加了一些自己的东西
+> 该笔记为本人学习CodecWang大神的OpenCV-Python-Tutorial教程所记录的笔记
+>
+> 部分代码按照自己的习惯做了修改，也加了一些自己的东西
 >
 > CodecWang大神OpenCV-Python-Tutorial教程的Github网址如下：
 >
@@ -433,9 +435,89 @@ cv2.destroyAllWindows()     # 删除所有窗口
 
 ```
 
+### 3.2 保存视频
+
+**由于我用的是台式机，没有摄像头，所以保存视频代码修改一下**
+
+**改成从demo_video读取图片，改成灰度再保存**
+
+用到的视频还是3.1里面的视频demo_video.mp4
 
 
 
+**代码**
+
+```python
+#!/usr/bin/env python
+# -*- coding: UTF-8 -*-
+"""
+@Project ：OpenCV-Python-Tutorial 
+@File    ：save_video.py
+@IDE     ：PyCharm 
+@Author  ：Mozijie
+@Date    ：2025/7/16 下午2:14 
+"""
+
+"""
+读取一个视频，转为灰度视频保存
+"""
+import cv2
+from loguru import logger
+
+capture = cv2.VideoCapture(rf"./demo_video.mp4")    # 打开视频文件
+
+# 定义编码方式并创建VideoWriter对象
+"""
+cv2.VideoWriter_fourcc 是 OpenCV 中用于定义视频编解码器的函数.
+它将四个字符的编码（FourCC）转换为一个用于视频编码器的整数。
+FourCC 是一种四字符编码，用于指定视频文件中使用的压缩方式。
+'XVID'：常用于 .avi 格式的视频文件。
+'MP4V'：常用于 .mp4 格式的视频文件。
+'MJPG'：适用于使用 Motion JPEG 编码的视频。
+VideoWriter_fourcc返回一个整数，该整数用于创建 cv2.VideoWriter 对象时指定视频编码格式。
+"""
+fourcc = cv2.VideoWriter_fourcc(*'mp4v')    # 编码方式为MP4V
+fps = capture.get(cv2.CAP_PROP_FPS)     # 获取原视频帧率
+width = int(capture.get(cv2.CAP_PROP_FRAME_WIDTH))  # 获取原视频宽度
+height = int(capture.get(cv2.CAP_PROP_FRAME_HEIGHT))    # 获取原视频高度
+output_path = 'mozijie.mp4'     # 文件名称和路径
+frame_size = (width, height)     # 视频像素大小
+"""
+cv2.VideoWriter() 是 OpenCV 提供的一个类，用于将图像帧保存为视频文件。
+它允许设置视频编码格式、帧率、分辨率等参数，非常适合在视频处理任务中生成输出视频文件
+第一个参数是要保存的文件的路径
+fourcc 指定编码器
+fps 要保存的视频的帧率
+frameSize 要保存的文件的画面尺寸
+isColor 指示是黑白画面还是彩色的画面
+"""
+outfile = cv2.VideoWriter(output_path, fourcc, fps, frame_size)  # 创建视频写入对象
+
+while True:
+    ret, frame = capture.read()     # 读取一帧图片
+    if not ret:
+        logger.debug(rf'视频处理完成')
+        break
+
+    gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)  # 转化为灰度图
+
+    # 单通道转三通道
+    gray_3ch = cv2.cvtColor(gray, cv2.COLOR_GRAY2BGR)
+
+    # 写入文件
+    outfile.write(gray_3ch)
+
+    cv2.imshow('gray_3ch', gray_3ch)
+    if cv2.waitKey(1) == ord('q'):
+        break
+
+# 释放所有资源
+capture.release()       # 关闭视频文件
+outfile.release()        # 关闭视频写入器
+cv2.destroyAllWindows()       # 关闭所有OpenCV窗口
+
+logger.debug(rf'视频保存完成：{output_path}')
+```
 
 
 
