@@ -756,7 +756,9 @@ if __name__ == '__main__':
 
 
 
+**运行结果**
 
+<img alt="result" src="computer_vision_notebook/OpenCV-Python-Tutorial/mozijie_notebook.assets/result.jpg"/>
 
 
 
