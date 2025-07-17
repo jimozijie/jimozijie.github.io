@@ -554,6 +554,8 @@ logger.debug(rf'视频保存完成：{output_path}')
 
 ### 27.3分割硬币代码
 
+需要的图片资源：
+
 <img alt="water_coins" src="computer_vision_notebook/OpenCV-Python-Tutorial/mozijie_notebook.assets/water_coins.jpg"/>
 
 ```python
