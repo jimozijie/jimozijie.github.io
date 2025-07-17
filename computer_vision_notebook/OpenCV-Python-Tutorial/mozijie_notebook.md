@@ -521,11 +521,236 @@ logger.debug(rf'视频保存完成：{output_path}')
 
 
 
+## 27.分水岭算法图像分割
 
+### 27.1目标
 
+1. 使用分水岭算法基于掩模的图像分割
+2. 函数：**cv2.watershed()**
 
+### 27.2原理
 
+>任何一副灰度图像都可以被看成拓扑平面，灰度值高的区域可以被看成是山峰，灰度值低的区域可以被看成是山谷。
+>
+>我们向每一个山谷中灌不同颜色的水。随着水的位的升高，不同山谷的水就会相遇汇合，为了防止不同山谷的水汇合，我们需要在水汇合的地方构建起堤坝。
+>
+>不停的灌水，不停的构建堤坝知道所有的山峰都被水淹没。我们构建好的堤坝就是对图像的分。这就是分水岭算法的背后哲理。
+>
+>但是这种方法通常都会得到过度分割的结果，这是由噪声或者图像中其他不规律的因素造成的。
+>
+>为了减少这种影响，OpenCV 采用了基于掩模的分水岭算法，在这种算法中我们要设置那些山谷点会汇合，那些不会。
+>
+>这是一种交互式的图像分割。我们要做的就是给我们已知的对象打上不同的标签。
+>
+>如果某个区域肯定是前景或对象，就使用某个颜色(或灰度值)标签标记它。
+>
+>如果某个区域肯定不是对象而是背景就使用另外一个颜色标签标记。
+>
+>而剩下的不能确定是前景还是背景的区域就用 0标记。这就是我们的标签。
+>
+>然后实施分水岭算法每一次灌水，我们的标签就会被更新，当两个不同颜色的标签相遇时就构建堤坝，直到将所有山峰淹没，最后我们得到的边界对象(堤坝)
+>
+>的值为-1。
 
+### 27.3分割硬币代码
+
+<img alt="water_coins" src="computer_vision_notebook/OpenCV-Python-Tutorial/mozijie_notebook.assets/water_coins.jpg"/>
+
+```python
+#!/usr/bin/env python
+# -*- coding: UTF-8 -*-
+"""
+@Project ：OpenCV-Python-Tutorial 
+@File    ：split_coins.py
+@IDE     ：PyCharm 
+@Author  ：Mozijie
+@Date    ：2025/7/16 下午5:00 
+"""
+import numpy as np
+import cv2
+from matplotlib import pyplot as plt
+from loguru import logger
+
+def mozijie_watershed(img_path):
+
+    # 1. 图像读取与预处理
+    img = cv2.imread(img_path)  # 读取硬币图像
+    gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)  # 转为灰度图像：彩色转单通道灰度
+
+    """
+    2. 图像二值化处理
+    cv2.threshold: 图像阈值处理函数
+    参数说明:
+      gray: 输入灰度图像
+      0: 阈值（这里设为0因为使用OTSU会自动计算最佳阈值）
+      255: 最大值（当像素值超过阈值时赋予的值）
+      cv2.THRESH_BINARY_INV + cv2.THRESH_OTSU:
+          THRESH_BINARY_INV - 反向二值化（小于阈值设为255，大于设为0）
+          THRESH_OTSU - 使用OTSU算法自动确定最佳阈值
+    返回值:
+      ret: 实际使用的阈值
+      thresh: 二值化后的图像
+    """
+    ret, thresh = cv2.threshold(gray, 0, 255, cv2.THRESH_BINARY_INV+cv2.THRESH_OTSU)
+    logger.debug(rf'二值化实际使用的阈值：{ret}')
+
+    # 展示原图与二值化的图
+    # cv2.imshow('原始图像', img)
+    # cv2.imshow('二值化阈值分割后', thresh)
+
+    # 3. 形态学操作去除噪声
+    # np.ones: 创建全为1的数组
+    # 参数说明: (3,3) - 创建3x3的矩阵, np.uint8 - 无符号8位整数类型
+    kernel = np.ones((3, 3), np.uint8)  # 创建3x3的结构元素（用于形态学操作）
+
+    """
+    cv2.morphologyEx: 形态学操作函数
+    参数说明:
+      thresh: 输入二值图像
+      cv2.MORPH_OPEN: 开运算（先腐蚀后膨胀）
+      kernel: 结构元素
+      iterations=2: 执行2次开运算
+    作用: 去除小的噪声点，平滑物体边界
+    """
+    opening = cv2.morphologyEx(thresh, cv2.MORPH_OPEN, kernel, iterations=2)
+    # cv2.imshow('opening', opening)
+
+    # 4. 确定背景区域
+    """
+    cv2.dilate: 膨胀操作函数
+    参数说明:
+      opening: 输入图像
+      kernel: 结构元素
+      iterations=3: 执行3次膨胀
+    作用: 扩大前景区域，确保背景区域被完全覆盖
+    作用：扩大前景区域，填充硬币之间的小孔洞
+    原理：用结构元素扫描图像，将锚点覆盖区域的最大值赋给锚点
+    """
+    sure_bg = cv2.dilate(opening, kernel, iterations=3)
+    # cv2.imshow('sure_bg', sure_bg)
+
+    # 5. 确定前景区域（硬币中心区域）
+    """
+    cv2.distanceTransform: 距离变换函数
+    cv2.distanceTransform(src,distanceType,maskSize)
+    第二个参数 1,2,3 分别表示 CV_DIST_L1, CV_DIST_L2 , CV_DIST_C
+    这里使用的是2
+    作用: 计算每个前景像素到最近背景像素的距离
+    参数说明:
+      opening: 输入二值图像
+      1: 距离类型 (CV_DIST_L2: 曼哈顿距离)
+      5: 掩模大小 (5x5)
+    """
+    # 距离变换的基本含义是计算一个图像中非零像素点到最近的零像素点的距离，
+    # 最常见的距离变换算法就是通过连续的腐蚀操作来实现，
+    # 腐蚀操作的停止条件是所有前景像素都被完全腐蚀。这样根据腐蚀的先后顺序，
+    # 我们就得到各个前景像素点到前景中心骨架像素点的距离。根据各个像素点的距离值，
+    # 设置为不同的灰度值。这样就完成了二值图像的距离变换
+    dist_transform = cv2.distanceTransform(opening, 2, 5)
+    # 由于distanceTransform返回的是浮点数，所以下面要进行一下归一化处理
+    dist_transform = cv2.normalize(dist_transform, None, 0, 255, cv2.NORM_MINMAX)
+    dist_transform = np.uint8(dist_transform)
+    # cv2.imshow('dist_transform', dist_transform)
+
+    # 对距离变换结果进行阈值处理，获取确定的前景区域
+    # 原理: 距离变换值最大的区域是硬币的中心区域
+    ret, sure_fg = cv2.threshold(
+        dist_transform,  # 输入距离变换图像
+        0.7 * dist_transform.max(),  # 阈值设为最大距离的70%
+        255,  # 超过阈值的像素设为255
+        0  # 阈值类型 (0表示二值化)
+    )
+
+    # 6. 确定未知区域（硬币边界区域）
+    sure_fg = np.uint8(sure_fg)  # 将浮点型距离变换结果转为8位无符号整数
+    # cv2.imshow('sure_fg', sure_fg)
+
+    # cv2.subtract: 图像减法操作
+    # 作用: sure_bg - sure_fg，得到硬币边界区域
+    # 原理: 背景区域减去确定的前景区域 = 不确定的边界区域
+    unknown = cv2.subtract(sure_bg, sure_fg)
+    # cv2.imshow('unknown', unknown)
+
+    # 7. 标记连通区域
+    """
+    cv2.connectedComponents: 标记连通区域
+    参数:
+      sure_fg: 二值图像，前景为255，背景为0
+    返回值:
+      ret: 连通区域数量（包括背景）
+      markers: 标记图像，相同连通区域有相同整数标记
+      
+    作用: 识别图像中的独立物体（硬币中心区域）
+    输出:
+    ret: 找到的连通区域数量（包括背景）
+    markers: 与输入图像相同尺寸的数组，背景标记为0，每个物体标记为不同整数（1,2,3,...）
+    """
+    ret, markers = cv2.connectedComponents(sure_fg)
+    logger.debug(f"找到 {ret-1} 个硬币中心区域")  # 减去背景区域
+
+    # 8. 标记未知区域（分水岭算法要求未知区域标记为0）
+    """
+    背景加1: 将背景区域从0变为1（分水岭算法要求背景为1）
+    未知区域设为0: 分水岭算法将未知区域视为边界，标记为0
+    分水岭标记规则:
+    0: 未知区域（边界）
+    1: 背景区域
+    ≥2: 前景物体
+    """
+    markers = markers + 1  # 背景区域加1
+    markers[unknown == 255] = 0  # 未知区域设为0
+
+    # 9. 应用分水岭算法
+    """
+    cv2.watershed: 分水岭算法
+    参数:
+      img: 原始彩色图像（算法需要颜色信息）
+      markers: 输入/输出的标记图像
+    """
+    markers = cv2.watershed(img, markers)
+
+    # 10. 创建彩色分割结果
+    # 创建彩色分割图像
+    segmented = np.zeros_like(img)  # 创建与原始图像相同大小的黑色图像
+
+    # 为每个硬币分配随机颜色
+    coin_count = markers.max() - 1  # 硬币数量（减去背景）
+    logger.debug(f"分水岭算法找到 {coin_count} 个硬币")
+
+    # 生成HSV色调值（0-180范围），均匀分布在色轮上
+    hues = np.linspace(0, 150, coin_count, endpoint=False, dtype=np.uint8)
+
+    # 创建渐变色硬币
+    for i, hue in zip(range(2, markers.max() + 1), hues):
+        # 创建HSV颜色 (Hue, Saturation, Value)
+        # 饱和度设为200（鲜艳），亮度设为220（明亮）
+        hsv_color = np.array([[[hue, 200, 220]]], dtype=np.uint8)
+
+        # 转换为BGR颜色
+        bgr_color = cv2.cvtColor(hsv_color, cv2.COLOR_HSV2BGR)[0][0]
+
+        # 给该硬币区域上色
+        segmented[markers == i] = bgr_color
+
+    # 边界标记为蓝色
+    segmented[markers == -1] = [255, 100, 0]  # 蓝色边界 (BGR格式)
+
+    # 可选：在原始图像上叠加分割结果
+    overlay = cv2.addWeighted(img, 0.7, segmented, 0.3, 0)
+
+    # 显示结果
+    cv2.imshow('Original Image', img)
+    cv2.imshow('Segmented Coins', segmented)
+    cv2.imshow('Overlay Result', overlay)
+    cv2.imwrite('result.jpg', overlay)
+    cv2.waitKey(0)
+    cv2.destroyAllWindows()
+
+if __name__ == '__main__':
+    # pic_path = 'two_dog.png'
+    pic_path = 'water_coins.jpg'
+    mozijie_watershed(pic_path)
+```
 
 
 
