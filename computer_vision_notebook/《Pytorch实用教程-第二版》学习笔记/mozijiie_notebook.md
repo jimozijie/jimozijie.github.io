@@ -17,3 +17,8 @@
 > https://tingsongyu.github.io/PyTorch-Tutorial-2nd/
 >
 > 感谢余霆嵩老师的开源教程
+
+## 8.图像项目案例
+
+### 8.2图像分割—脑MRI胶质瘤分割
+
