@@ -16,7 +16,7 @@
 >
 > 还有一些杂乱的python开发工作（传统模版匹配实现、霍夫变换实现、边缘检测实现、pyside6前端代码微调、pymodbus通信模块开发）
 >
-> 涉及机器学习、深度学习、PyTorch、opnencv、yolo、tensorrt-yolo、TensorRT
+> 涉及机器学习、深度学习、PyTorch、opencv、yolo、tensorrt-yolo、TensorRT
 
 ## 3.竞赛经历
 
