@@ -28,7 +28,11 @@
 
 熟悉 Python 数据分析与可视化常用库，包括 Pandas、Matplotlib 等；
 
-熟悉 机器学习与深度学习相关框架，包括 Scikit-learn、PyTorch，掌握常用分类、目标检测及图像分割模型原理、实现、源码优化；
+熟悉 机器学习与深度学习相关框架，包括 Scikit-learn、PyTorch；
+
+掌握常用分类、目标检测及图像分割模型(yolov11/MobileNetV3/ResNet/EfficientNetV2/U-Net等)的原理、实现、源码优化；
+
+掌握常用神经网络（CNN/GNN等）的实现与改进；
 
 熟悉计算机视觉库 OpenCV，具备实际图像处理与算法开发经验；
 
