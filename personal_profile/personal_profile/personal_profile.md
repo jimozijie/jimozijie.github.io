@@ -24,7 +24,7 @@
 
 熟悉 Python 编程语言，具备扎实的编程基础与良好的代码风格；
 
-熟悉 Python 全栈开发，掌握 Django 框架进行后端服务构建，能够使用 PySide6 开发图形用户界面（GUI）应用；
+熟悉 Python web后端开发，掌握 Django 框架进行后端服务构建，能够使用 PySide6 开发图形用户界面（GUI）应用；
 
 熟悉 Python 数据分析与可视化常用库，包括 Pandas、Matplotlib 等；
 
