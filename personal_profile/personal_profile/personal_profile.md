@@ -18,7 +18,25 @@
 >
 > 涉及机器学习、深度学习、PyTorch、opencv、yolo、tensorrt-yolo、TensorRT
 
-## 3.竞赛经历
+## 3.技术栈
+
+**Python相关技术栈：** 
+熟悉 Python 编程语言，具备扎实的编程基础与良好的代码风格；
+熟悉 Python 全栈开发，掌握 Django 框架进行后端服务构建，能够使用 PySide6 开发图形用户界面（GUI）应用；
+熟悉 Python 数据分析与可视化常用库，包括 Pandas、Matplotlib 等；
+熟悉 机器学习与深度学习相关框架，包括 Scikit-learn、PyTorch，掌握常用分类、目标检测及图像分割模型原理、实现、源码优化；
+熟悉计算机视觉库 OpenCV，具备实际图像处理与算法开发经验；
+熟悉 YOLO 系列目标检测模型，具备基于 TensorRT 的模型加速部署经验。
+
+**Java相关技术栈：** 
+熟悉 Java 编程语言基础，掌握面向对象程序设计思想与常用数据结构；
+熟悉 Java Web 相关开发技术，了解 Servlet、JSP 等基本组件；
+熟悉 SpringBoot 框架，能够进行基础企业级应用开发；
+熟悉 MyBatis 与 MyBatisPlus 持久层框架，具备数据库交互开发能力；
+熟悉 Docker 容器化技术，了解镜像构建与容器部署流程；
+熟悉 Linux 常用命令，掌握基本的环境配置与项目部署操作。
+
+## 4.竞赛经历
 
 2023.5——2023.6 美国大学生数学建模竞赛(H奖)  队长 
 
