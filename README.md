@@ -12,6 +12,9 @@
 
 
 > 点击左侧侧边栏查看文章
+>
+> 我的个人简历：
+>   https://jimozijie.github.io/#/personal_profile/personal_profile/personal_profile
 > 
 > 我的平台：
 >   1. B站：https://space.bilibili.com/145083815?spm_id_from=333.1007.0.0
