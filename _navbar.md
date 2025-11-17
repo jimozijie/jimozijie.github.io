@@ -10,5 +10,5 @@
 * 联系我
     * [邮箱](contacts/email.md)
 * 关于我
-    * [墨子杰个人简介](personal_profile/personal_profile/personal_profile.md)
+    * [墨子杰个人简历](personal_profile/personal_profile/personal_profile.md)
 
