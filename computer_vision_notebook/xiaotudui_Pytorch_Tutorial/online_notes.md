@@ -26,13 +26,13 @@
 dir(torch)
 ```
 
-<img alt="img" src="computer_vision_notebook/小土堆Pytorch教程/离线版本个人笔记.assets/c244e06ea939f8c5551adbab2ec4599f.png"/>
+<img alt="img" src="computer_vision_notebook/xiaotudui_Pytorch_Tutorial/离线版本个人笔记.assets/c244e06ea939f8c5551adbab2ec4599f.png"/>
 
 ```python
 dir(torch.cuda)
 ```
 
-<img alt="img" src="computer_vision_notebook/小土堆Pytorch教程/离线版本个人笔记.assets/ec1607713d5bba9184da5307cf9a1362.png"/>
+<img alt="img" src="computer_vision_notebook/xiaotudui_Pytorch_Tutorial/离线版本个人笔记.assets/ec1607713d5bba9184da5307cf9a1362.png"/>
 
 
 
@@ -42,14 +42,14 @@ dir(torch.cuda.is_available)
 
 可以看到**输出的前后都带有双下划线__**，这是一种规范，说明这个变量不容许篡改，即它不再是一个分隔区，而是一个确确实实的函数**（相当于工具，可以用help()函数）**
 
-<img alt="img" src="computer_vision_notebook/小土堆Pytorch教程/离线版本个人笔记.assets/c610bb5fe4eeeca79dce48359059107d.png"/>
+<img alt="img" src="computer_vision_notebook/xiaotudui_Pytorch_Tutorial/离线版本个人笔记.assets/c610bb5fe4eeeca79dce48359059107d.png"/>
 
 ```python
 # 注意is_available 不带括号
 help(torch.cuda.is_available)
 ```
 
-<img alt="img" src="computer_vision_notebook/小土堆Pytorch教程/离线版本个人笔记.assets/54f3ae3ec225df1858f6256997b8cb9e.png"/>
+<img alt="img" src="computer_vision_notebook/xiaotudui_Pytorch_Tutorial/离线版本个人笔记.assets/54f3ae3ec225df1858f6256997b8cb9e.png"/>
 
 返回一个布尔值（True或False），表明cuda是否可用
 
@@ -73,7 +73,7 @@ Dataloader：打包（batch\_size），为后面的神经网络提供不同的�
 
 数据集 hymenoptera\_data（识别蚂蚁和蜜蜂的数据集，二分类）
 
-<img src="computer_vision_notebook/小土堆Pytorch教程/离线版本个人笔记.assets/7c465cd5e04796acc6bbe5548ee19f83.png"/>
+<img src="computer_vision_notebook/xiaotudui_Pytorch_Tutorial/离线版本个人笔记.assets/7c465cd5e04796acc6bbe5548ee19f83.png"/>
 
 1.  train 里有两个文件夹：ants 和 bees，其中分别都是一些蚂蚁和蜜蜂的图片
 2.  train\_images是一个文件夹，train\_labels是另一个文件夹，如OCR数据集
@@ -237,7 +237,7 @@ tensorboard --logdir=logs  # logdir=事件文件所在文件夹名
 
 结果如图：
 
-<img src="computer_vision_notebook/小土堆Pytorch教程/离线版本个人笔记.assets/09b9b70312a681a4c383a9de2329f446.png"/>
+<img src="computer_vision_notebook/xiaotudui_Pytorch_Tutorial/离线版本个人笔记.assets/09b9b70312a681a4c383a9de2329f446.png"/>
 
 为了防止和别人冲突（一台服务器上有好几个人训练，默认打开的都是6006端口），也可以指定端口，命令如下：
 
@@ -380,7 +380,7 @@ for i in range(10):
 writer.close()  # 关闭SummaryWriter，确保所有数据都被写入日志文件
 ```
 
-<img src="computer_vision_notebook/小土堆Pytorch教程/离线版本个人笔记.assets/image-20251117122418704.png" alt="image-20251117122418704" style="zoom:80%;" />
+<img src="computer_vision_notebook/xiaotudui_Pytorch_Tutorial/离线版本个人笔记.assets/image-20251117122418704.png" alt="image-20251117122418704" style="zoom:80%;" />
 
 
 
@@ -464,7 +464,7 @@ for step,data in enumerate(test_loader):
 writer.close()  # 关闭SummaryWriter，确保所有数据都被写入日志文件
 ```
 
-<img src="computer_vision_notebook/小土堆Pytorch教程/离线版本个人笔记.assets/image-20251117122210771.png" alt="image-20251117122210771" style="zoom: 80%;" /><img src="computer_vision_notebook/小土堆Pytorch教程/离线版本个人笔记.assets/image-20251117122221856.png" alt="image-20251117122221856" style="zoom: 80%;" />
+<img src="computer_vision_notebook/xiaotudui_Pytorch_Tutorial/离线版本个人笔记.assets/image-20251117122210771.png" alt="image-20251117122210771" style="zoom: 80%;" /><img src="computer_vision_notebook/xiaotudui_Pytorch_Tutorial/离线版本个人笔记.assets/image-20251117122221856.png" alt="image-20251117122221856" style="zoom: 80%;" />
 
 ## 8. nn.Module的使用
 
@@ -524,7 +524,7 @@ if __name__ == '__main__':
     print(y)  # 输出结果应为 tensor([2., 3., 4.])
 ```
 
-<img src="computer_vision_notebook/小土堆Pytorch教程/离线版本个人笔记.assets/image-20251117133639180.png" alt="image-20251117133639180" style="zoom:80%;" />
+<img src="computer_vision_notebook/xiaotudui_Pytorch_Tutorial/离线版本个人笔记.assets/image-20251117133639180.png" alt="image-20251117133639180" style="zoom:80%;" />
 
 ## 9. 卷积层函数conv2d
 
@@ -538,13 +538,13 @@ torch.nn 和 torch.nn.functional 的区别：前者是后者的封装，更利�
 
 点击 torch.nn.functional - Convolution functions - conv2d
 
-<img src="computer_vision_notebook/小土堆Pytorch教程/离线版本个人笔记.assets/d8ef5c71a35ba63eb3ff194d7419a840.png"/>
+<img src="computer_vision_notebook/xiaotudui_Pytorch_Tutorial/离线版本个人笔记.assets/d8ef5c71a35ba63eb3ff194d7419a840.png"/>
 
 ### 9.1 stride（步进） 
 
 可以是单个数，或元组（sH,sW） — 控制横向步进和纵向步进
 
-<img src="computer_vision_notebook/小土堆Pytorch教程/离线版本个人笔记.assets/bb61dd9b746dfa4e1b0c242166e88bbd.png"/>
+<img src="computer_vision_notebook/xiaotudui_Pytorch_Tutorial/离线版本个人笔记.assets/bb61dd9b746dfa4e1b0c242166e88bbd.png"/>
 
 当 stride = 2 时，横向和纵向都是2，输出是一个2×2的矩阵
 
@@ -552,7 +552,7 @@ torch.nn 和 torch.nn.functional 的区别：前者是后者的封装，更利�
 
 ### 9.2 reshape函数
 
-<img src="computer_vision_notebook/小土堆Pytorch教程/离线版本个人笔记.assets/10ef473a94000c0224b25727df5f2393.png"/>
+<img src="computer_vision_notebook/xiaotudui_Pytorch_Tutorial/离线版本个人笔记.assets/10ef473a94000c0224b25727df5f2393.png"/>
 
  *  input：尺寸要求是batch，几个通道，高，宽（4个参数）
  *  weight：尺寸要求是输出，in\_channels（groups一般为1），高，宽（4个参数）
@@ -600,7 +600,7 @@ print(output)   #输出卷积结果
 
 结果为：
 
-<img src="computer_vision_notebook/小土堆Pytorch教程/离线版本个人笔记.assets/06cd9c460ee55694045b58bf13f7f001.png"/>
+<img src="computer_vision_notebook/xiaotudui_Pytorch_Tutorial/离线版本个人笔记.assets/06cd9c460ee55694045b58bf13f7f001.png"/>
 
 当将步进 stride 改为 2 时：
 
@@ -609,7 +609,7 @@ output2 = F.conv2d(input,kernel,stride=2)
 print(output2)
 ```
 
-<img src="computer_vision_notebook/小土堆Pytorch教程/离线版本个人笔记.assets/e080efb32c25c972b49c60fa7cfcc8d0.png"/>
+<img src="computer_vision_notebook/xiaotudui_Pytorch_Tutorial/离线版本个人笔记.assets/e080efb32c25c972b49c60fa7cfcc8d0.png"/>
 
 \---------------------------------------------------------------------------------------------------------------------------------
 
@@ -619,7 +619,7 @@ print(output2)
 
 padding=1：将输入图像左右上下两边都拓展一个像素，空的地方默认为0
 
-<img src="computer_vision_notebook/小土堆Pytorch教程/离线版本个人笔记.assets/681fe3cd55633d859a854cef4f608026.png"/>
+<img src="computer_vision_notebook/xiaotudui_Pytorch_Tutorial/离线版本个人笔记.assets/681fe3cd55633d859a854cef4f608026.png"/>
 
 代码实现：
 
@@ -630,7 +630,7 @@ print(output3)
 
 输出结果如下：可以看出输出尺寸变大
 
-<img src="computer_vision_notebook/小土堆Pytorch教程/离线版本个人笔记.assets/39d45373ccdbdba369cec4bbf6bb9d82.png" style="zoom:80%;" />
+<img src="computer_vision_notebook/xiaotudui_Pytorch_Tutorial/离线版本个人笔记.assets/39d45373ccdbdba369cec4bbf6bb9d82.png" style="zoom:80%;" />
 
 
 

@@ -14,8 +14,8 @@
 - 计算机视觉相关课程与项目笔记
   - [1.《OpenCV-Python-Tutorial》学习笔记](computer_vision_notebook/OpenCV-Python-Tutorial/mozijie_notebook.md)
   - [2.《刘二PyTorch深度学习实践》学习笔记](computer_vision_notebook/PyTorch_Deep_Learning_Practice（By_LiuEr）/mozijie_notebook.md)
-  - [3.《小土堆Pytorch教程》学习笔记](computer_vision_notebook/小土堆Pytorch教程/网站版本笔记.md)
-  - [4.《Pytorch实用教程-第二版》学习笔记](computer_vision_notebook/《Pytorch实用教程-第二版》学习笔记/mozijiie_notebook.md)
+  - [3.《小土堆Pytorch教程》学习笔记](computer_vision_notebook/xiaotudui_Pytorch_Tutorial/online_notes)
+  - [4.《Pytorch实用教程-第二版》学习笔记](computer_vision_notebook/Pytorch_Practical_Tutorial_v2_notes/mozijiie_notebook.md)
   
 - java相关课程与项目笔记
   - [1.《黑马-苍穹外卖课程项目》学习笔记](java_notebook/苍穹外卖/mozijie_notebook.md)
