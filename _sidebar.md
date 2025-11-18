@@ -18,4 +18,6 @@
   - [4.《Pytorch实用教程-第二版》学习笔记](computer_vision_notebook/Pytorch_Practical_Tutorial_v2_notes/mozijiie_notebook.md)
   
 - java相关课程与项目笔记
-  - [1.《黑马-苍穹外卖课程项目》学习笔记](java_notebook/苍穹外卖/mozijie_notebook.md)
+  - [1.《黑马-Java基础讲义1》](java_notebook/Java_foundation_1/java_foundation_1.md)
+  - [2.《黑马-苍穹外卖课程项目》学习笔记](java_notebook/苍穹外卖/mozijie_notebook.md)
+  
