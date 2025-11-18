@@ -634,7 +634,366 @@ print(output3)
 
 
 
+## 10. 卷积层函数conv2d
 
+```python
+#!/usr/bin/env python
+# -*- coding: UTF-8 -*-
+'''
+@Project ：xiaotudui-pytorch 
+@File    ：10.nn_conv2d.py
+@IDE     ：PyCharm 
+@Author  ：mozijie
+@Date    ：2025/11/17 下午2:03 
+'''
+
+# CIFAR10数据集
+import torch
+import torchvision
+from torch import nn
+from torch.nn import Conv2d
+from torch.utils.data import DataLoader
+from torch.utils.tensorboard import SummaryWriter
+
+# 这里用测试数据集，因为训练数据集太大了
+dataset = torchvision.datasets.CIFAR10("./data",
+                                       train=False,
+                                       transform=torchvision.transforms.ToTensor(),
+                                       download=True)
+dataloader = DataLoader(dataset, batch_size=64)
+
+
+# 搭建神经网络MozijieNet，继承自nn.Module
+class MozijieNet(nn.Module):
+    def __init__(self):
+        super(MozijieNet, self).__init__()
+        # 因为是彩色图片，所以in_channels=3
+        self.conv1 = Conv2d(in_channels=3,
+                            out_channels=6,
+                            kernel_size=3,
+                            stride=1,
+                            padding=0)  # 卷积层conv1
+
+    def forward(self, x):  # 输出为x
+        x = self.conv1(x)
+        return x
+
+mozijie_net = MozijieNet()  # 初始化网络
+# 打印一下网络结构
+print(mozijie_net)
+# Tudui((conv1): Conv2d(3, 6, kernel_size=(3, 3), stride=(1, 1)))
+
+writer = SummaryWriter("logs_mozijienet_conv2d")
+for step, data in enumerate(dataloader):
+    imgs, targets = data # 获取图片和标签
+    output = mozijie_net(imgs) # 将图片输入网络，获得输出
+    # 输入大小 torch.Size([64, 3, 32, 32])  batch_size=64，
+    # in_channels=3（彩色图像），每张图片是32×32的
+    print(imgs.shape)
+    # 经过卷积后的输出大小 torch.Size([64, 6, 30, 30])
+    # 卷积后变成6个channels，因为用两个卷积核来卷积
+    # 原始图像减小，所以是30×30的
+    print(output.shape)
+    writer.add_images("input", imgs, step)
+
+    # 6个channel无法显示。torch.Size([64, 6, 30, 30]) ——> [xxx,3,30,30]
+    # 第一个值不知道为多少时写-1，会根据后面值的大小进行计算
+    output = torch.reshape(output, (-1, 3, 30, 30))
+    writer.add_images("output", output, step)
+```
+
+
+
+<img src="computer_vision_notebook/xiaotudui_Pytorch_Tutorial/离线版本个人笔记.assets/image-20251117143130103.png" alt="image-20251117143130103" style="zoom:80%;" />
+
+## 11. 最大池化操作
+
+[torch.nn — PyTorch 1.10 documentation][torch.nn _ PyTorch 1.10 documentation 2]
+
+[Pooling layers][torch.nn _ PyTorch 1.10 documentation 2]
+
+ *  MaxPool：最大池化（下采样）
+ *  MaxUnpool：上采样
+ *  AvgPool：平均池化
+ *  AdaptiveMaxPool2d：自适应最大池化
+
+最常用：[MaxPool2d — PyTorch 1.10 documentation][MaxPool2d _ PyTorch 1.10 documentation]
+
+### 11.1 MaxPool2d参数 
+
+```java
+CLASS torch.nn.MaxPool2d(kernel_size, stride=None, padding=0, dilation=1, return_indices=False, ceil_mode=False)
+# kernel_size 池化核
+```
+
+<img src="computer_vision_notebook/xiaotudui_Pytorch_Tutorial/离线版本个人笔记.assets/c3d7859d665b58ac619e3a561c09b5b6.png" style="zoom:80%;" />
+
+> 注意，卷积中stride默认为1，而池化中stride默认为kernel\_size 
+
+### 11.2 ceil\_mode参数
+
+<img src="computer_vision_notebook/xiaotudui_Pytorch_Tutorial/离线版本个人笔记.assets/1d7ca459e3f458cb4d3503cee6de7049.png"/>
+
+Ceil\_mode 默认情况下为 False，对于最大池化一般只需设置 kernel\_size 即可 
+
+\--------------------------------------------------------------------------------------------------------------------------------
+
+### 11.3 输入输出维度计算公式 
+
+<img src="computer_vision_notebook/xiaotudui_Pytorch_Tutorial/离线版本个人笔记.assets/6e9adfae757477691859cc5730548f12.png" style="zoom:80%;" />
+
+\--------------------------------------------------------------------------------------------------------------------------------
+
+```python
+#!/usr/bin/env python
+# -*- coding: UTF-8 -*-
+'''
+@Project ：xiaotudui-pytorch 
+@File    ：11.nn_maxpool.py
+@IDE     ：PyCharm 
+@Author  ：mozijie
+@Date    ：2025/11/18 下午3:01 
+'''
+import torch
+import torchvision
+from torch import nn
+from torch.nn import MaxPool2d
+from torch.utils.data import DataLoader
+from torch.utils.tensorboard import SummaryWriter
+
+# 加载CIFAR-10测试数据集
+dataset = torchvision.datasets.CIFAR10("./data",train=False,download=True,transform=torchvision.transforms.ToTensor())
+dataloader = DataLoader(dataset,batch_size=64)
+
+#最大池化无法对long数据类型进行实现,
+# 利用dtype=torch.float32将input变成浮点数的tensor数据类型
+input = torch.tensor([[1,2,0,3,1],
+                      [0,1,2,3,1],
+                      [1,2,1,0,0],
+                      [5,2,3,1,1],
+                      [2,1,0,1,1]],dtype=torch.float32)
+
+#-1表示torch自动计算batch_size
+input = torch.reshape(input,(-1,1,5,5))
+print(input.shape)
+
+# 搭建神经网络
+class MozijieNet(nn.Module):
+    def __init__(self):
+        super(MozijieNet, self).__init__()
+        """
+        MaxPool2d参数说明：
+        kernel_size: 池化核的大小，可以是单个整数或一个整数元组，表示高度和宽度。
+        stride: 池化操作的步幅。如果未指定，则默认为kernel_size。
+        padding: 在输入的每一条边补充的零的数量。可以是单个整数或一个整数元组。
+        dilation: 控制池化窗口元素之间的间距。默认值为1，表示没有间距。
+        return_indices: 如果设置为True，池化操作将返回池化窗口中最大元素的索引。默认值为False。
+        ceil_mode: 如果设置为True，输出大小将通过向上取整计算。
+        """
+        self.maxpool1 = MaxPool2d(kernel_size=3,ceil_mode=True)
+    def forward(self,input):
+        output = self.maxpool1(input)
+        return output
+
+# 创建神经网络
+mozijie = MozijieNet()
+# 前向传播
+output = mozijie(input)
+print(output)
+""""
+我们可以看到，经过最大池化操作后，输出的尺寸变小了。原始输入的尺寸是(1, 1, 5, 5)，
+经过3x3的最大池化后，输出的尺寸变为(1, 1, 2, 2)。
+这是因为最大池化操作在每个3x3的区域内选取了最大的值，从而减少了空间尺寸。
+他的实际意义就是降低特征图的尺寸，从而减少计算量，同时保留重要的特征信息。
+"""
+
+# 在CIFAR-10数据集上使用最大池化
+mozijie2 = MozijieNet()
+writer = SummaryWriter("./logs_maxpool_simple")
+for step, data in enumerate(dataloader):
+    imgs, targets = data
+    print(rf"正在处理第{step}批图片")
+    writer.add_images("input",imgs,step)
+    # output尺寸池化后不会有多个channel，原来是3维的图片，
+    # 经过最大池化后还是3维的，不需要像卷积一样还要reshape操作
+    # （影响通道数的是卷积核个数）
+    output = mozijie2(imgs)
+    writer.add_images("output",output,step)
+
+writer.close()
+```
+
+<img src="computer_vision_notebook/xiaotudui_Pytorch_Tutorial/离线版本个人笔记.assets/image-20251118151105110.png" alt="image-20251118151105110" style="zoom:80%;" />
+
+<img src="computer_vision_notebook/xiaotudui_Pytorch_Tutorial/离线版本个人笔记.assets/image-20251118155149709.png" alt="image-20251118155149709" style="zoom:80%;" />
+
+### 11.4 为什么要进行最大池化？最大池化的作用是什么？ 
+
+最大池化的目的是保留输入的特征，同时把数据量减小（数据维度变小），对于整个网络来说，进行计算的参数变少，会训练地更快
+
+ *  如上面案例中输入是5x5的，但输出是3x3的，甚至可以是1x1的
+ *  类比：1080p的视频为输入图像，经过池化可以得到720p，也能满足绝大多数需求，传达视频内容的同时，文件尺寸会大大缩小
+
+池化一般跟在卷积后，卷积层是用来提取特征的，一般有相应特征的位置是比较大的数字，最大池化可以提取出这一部分有相应特征的信息
+
+池化不影响通道数
+
+池化后一般再进行非线性激活
+
+## 12. 非线性激活
+
+ *  [Padding Layers][]（对输入图像进行填充的各种方式）  
+    几乎用不到，nn.ZeroPad2d（在输入tensor数据类型周围用0填充）  
+    nn.ConstantPad2d（用常数填充）  
+    在 Conv2d 中可以实现，故不常用
+ *  [Non-linear Activations (weighted sum, nonlinearity)][Non-linear Activations _weighted sum_ nonlinearity]
+ *  [Non-linear Activations (other)][Non-linear Activations _other]
+
+非线性激活：给神经网络引入一些非线性的特征
+
+非线性越多，才能训练出符合各种曲线或特征的模型（提高泛化能力）
+
+\--------------------------------------------------------------------------------------------------------------------------------
+
+### 12.1 RELU激活函数 
+
+[ReLU — PyTorch 1.10 documentation][ReLU _ PyTorch 1.10 documentation]
+
+<img src="computer_vision_notebook/xiaotudui_Pytorch_Tutorial/离线版本个人笔记.assets/5d376ad0c12bc2863d0813da02d32cf9.png" style="zoom: 50%;" />
+
+输入：(N,\*) N 为 batch\_size，\*不限制
+
+代码举例：RELU 
+
+```java
+#!/usr/bin/env python
+# -*- coding: UTF-8 -*-
+'''
+@Project ：xiaotudui-pytorch 
+@File    ：12.nn_relu.py
+@IDE     ：PyCharm 
+@Author  ：mozijie
+@Date    ：2025/11/18 下午4:04 
+'''
+import torch
+from torch import nn
+from torch.nn import ReLU
+
+# 创建输入张量
+input = torch.tensor([[1,-0.5],
+                      [-1,3]])
+
+input = torch.reshape(input,(-1,1,2,2))
+print(input.shape)   #torch.Size([1, 1, 2, 2])
+print(input)
+
+# 搭建神经网络
+class MozijieNet(nn.Module):
+    def __init__(self):
+        super(MozijieNet, self).__init__()
+        """
+        ReLu参数说明：
+        inplace: 一个布尔值，表示是否进行原地操作。
+        如果设置为True，则会直接修改输入张量，节省内存空间；
+        如果为False，则会创建一个新的张量来存储结果。默认值为False。
+        作用：ReLU（Rectified Linear Unit）是一种常用的激活函数，
+        定义为f(x)=max(0,x)。
+        它的主要作用是引入非线性特性，使神经网络能够学习和表示复杂的函数关系。
+        ReLU函数在输入为正值时保持不变，而在输入为负值时输出为零。
+        这种特性有助于缓解梯度消失问题，加快训练速度，并提高模型的表达能力。
+        """
+        self.relu1 = ReLU()  #inplace默认为False
+    def forward(self,input):
+        output = self.relu1(input)
+        return output
+
+# 创建网络
+mozijie = MozijieNet()
+output = mozijie(input)
+print(output)
+```
+
+运行结果：
+
+<img src="computer_vision_notebook/xiaotudui_Pytorch_Tutorial/离线版本个人笔记.assets/image-20251118161342967.png" alt="image-20251118161342967" style="zoom:80%;" />
+
+跟输入对比可以看到：小于0的值被0截断，大于0的值仍然保留
+
+
+
+### 12.2 Sigmoid激活函数
+
+[Sigmoid — PyTorch 1.10 documentation][Sigmoid _ PyTorch 1.10 documentation]
+
+<img src="computer_vision_notebook/xiaotudui_Pytorch_Tutorial/离线版本个人笔记.assets/8c10e39c553646a94b9f37f4e328fa40.png" style="zoom:80%;" />
+
+<img src="computer_vision_notebook/xiaotudui_Pytorch_Tutorial/离线版本个人笔记.assets/e3f1fa283d549dbe5daf6c0b148e84a6.png" style="zoom:50%;" />
+
+输入：(N,\*) N 为 batch\_size，\*不限制
+
+```python
+#!/usr/bin/env python
+# -*- coding: UTF-8 -*-
+'''
+@Project ：xiaotudui-pytorch 
+@File    ：12.nn_sigmoid.py
+@IDE     ：PyCharm 
+@Author  ：mozijie
+@Date    ：2025/11/18 下午4:14 
+'''
+import torchvision.datasets
+from torch import nn
+from torch.nn import Sigmoid
+from torch.utils.data import DataLoader
+from torch.utils.tensorboard import SummaryWriter
+
+# 加载数据集
+dataset = torchvision.datasets.CIFAR10("./data",train=False,download=True,transform=torchvision.transforms.ToTensor())
+dataloader = DataLoader(dataset,batch_size=64)
+
+# 搭建神经网络
+class MozijieNet(nn.Module):
+    def __init__(self):
+        super(MozijieNet, self).__init__()
+        """
+        Sigmoid参数说明：
+        inplace: 布尔值，表示是否进行原地操作。如果设置为True，则会直接修改输入张量以节省内存；
+        如果为False，则会创建一个新的张量来存储结果。默认值为False。
+        公式：Sigmoid(x) = 1 / (1 + exp(-x))
+        作用：将输入值映射到0和1之间，常用于二分类任务的输出层，以及神经网络中的激活函数。
+        适用场景：适用于需要将输出限制在0到1范围内的场景，例如概率预测。
+        影响：使用Sigmoid函数可以引入非线性，使神经网络能够学习复杂的模式。
+        然而，Sigmoid函数在输入值较大或较小时会导致梯度消失问题，影响深层网络的训练效果。
+        计算示例：
+        输入：x = 0
+        计算：Sigmoid(0) = 1 / (1 + exp(0)) = 1 / (1 + 1) = 0.5
+        输出：0.5
+        这个例子展示了当输入为0时，Sigmoid函数的输出为0.5，位于0和1的中间位置。
+        """
+        self.sigmoid1 = Sigmoid()  #inplace默认为False
+    def forward(self,input):
+        output = self.sigmoid1(input)
+        return output
+
+# 创建网络
+mozijie = MozijieNet()
+
+# 写入tensorboard
+writer = SummaryWriter("./logs_sigmoid")
+step = 0
+for data in dataloader:
+    imgs,targets = data
+    writer.add_images("input",imgs,global_step=step)
+    output = mozijie(imgs)
+    writer.add_images("output",output,step)
+    step = step + 1
+
+writer.close()
+```
+
+<img src="computer_vision_notebook/xiaotudui_Pytorch_Tutorial/离线版本个人笔记.assets/image-20251118161656334.png" alt="image-20251118161656334" style="zoom:80%;" />
+
+## 13. 
 
 
 
