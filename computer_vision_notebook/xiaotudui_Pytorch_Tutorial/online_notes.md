@@ -10,8 +10,7 @@
 
    [PyTorch深度学习快速入门教程（绝对通俗易懂！）【小土堆】_哔哩哔哩_bilibili](https://www.bilibili.com/video/BV1hE411t7RN/?spm_id_from=333.1387.0.0)
 
-3. 
-
+3. 笔记中的代码可在我的Gitee仓库中找到：https://gitee.com/ji-mo-zijie/xiaotudui_pytorch_tutorial_notes
 
 
 ## 1. Python中的两大法宝函数dir()和help()
@@ -993,9 +992,1335 @@ writer.close()
 
 <img src="computer_vision_notebook/xiaotudui_Pytorch_Tutorial/离线版本个人笔记.assets/image-20251118161656334.png" alt="image-20251118161656334" style="zoom:80%;" />
 
-## 13. 
 
 
+## 13. 线性层Linear Layers
+
+#### 13.1 Linear Layers
+
+[Linear — PyTorch 1.10 documentation](https://pytorch.org/docs/stable/generated/torch.nn.Linear.html#torch.nn.Linear)
+
+<img src="computer_vision_notebook/xiaotudui_Pytorch_Tutorial/online_notes.assets/aafedc3ab8ef18e590d1f7dbb2ec26ee.png" style="zoom: 50%;" /> 
+
+K和b在训练过程中神经网络会自行调整，以达到比较合理的预测
+
+<img src="computer_vision_notebook/xiaotudui_Pytorch_Tutorial/online_notes.assets/d981e547dcdc53a87653ccd7b6a11402.png" style="zoom: 80%;" />
+
+<img src="computer_vision_notebook/xiaotudui_Pytorch_Tutorial/online_notes.assets/468def0355031268851b3eb92e6a1646.png" style="zoom: 80%;" />
+
+**vgg16 model**
+
+<img src="computer_vision_notebook/xiaotudui_Pytorch_Tutorial/online_notes.assets/42f40356f44a0767958de07aa46323d3.png" style="zoom:50%;" />
+
+<img src="computer_vision_notebook/xiaotudui_Pytorch_Tutorial/online_notes.assets/ed4d36ef6a5936a1d4547fac7fe2fe93.png"/>
+
+```python
+#!/usr/bin/env python
+# -*- coding: UTF-8 -*-
+'''
+@Project ：xiaotudui-pytorch 
+@File    ：13.nn_linear.py
+@IDE     ：PyCharm 
+@Author  ：mozijie
+@Date    ：2025/11/21 下午12:52 
+'''
+
+import torch
+import torchvision.datasets
+from torch import nn
+from torch.nn import Linear
+from torch.utils.data import DataLoader
+
+# 加载数据集
+dataset = torchvision.datasets.CIFAR10("./data",train=False,transform=torchvision.transforms.ToTensor(),download=True)
+dataloader = DataLoader(dataset,batch_size=64,drop_last=True)
+
+class MozijieNet(nn.Module):
+    def __init__(self):
+        super(MozijieNet, self).__init__()
+        """
+        nn.Linear参数说明：
+        in_features: 输入特征的数量，即输入张量的最后一个维度的大小。
+        out_features: 输出特征的数量，即输出张量的最后一个维度的大小。
+        bias: 布尔值，表示是否添加偏置项。如果设置为True，则会添加一个偏置向量；
+        如果为False，则不添加。默认值为True。
+        作用：线性变换层，用于将输入特征映射到输出特征空间，常用于神经网络的全连接层。
+        适用场景：适用于需要进行线性变换的场景，如分类任务的输出层、回归任务等。
+        影响：线性层可以学习输入特征与输出特征之间的线性关系，是神经网络中的基本构建块之一。
+        计算示例：
+        输入：input = torch.randn(64, 196608)  # 假设批量大小为64，输入特征为196608
+        计算：
+        linear = nn.Linear(196608, 10)  # 定义线性层
+        output = linear(input)  # 前向传播
+        输出：output的形状为(64, 10)，表示每个输入样本映射到10个输出特征。
+        这个例子展示了如何使用nn.Linear层将输入特征映射到输出特征空间。
+        通过学习权重和偏置，线性层能够捕捉输入与输出之间的线性关系。
+        """
+        self.linear1 = Linear(196608,10)
+    def forward(self,input):
+        output = self.linear1(input)
+        return output
+
+mozijie = MozijieNet()
+
+for data in dataloader:
+    imgs,targets = data
+    print(imgs.shape)  #torch.Size([64, 3, 32, 32])
+    """
+    torch.flatten(input, start_dim=0, end_dim=-1) → Tensor
+    将输入张量展平为一维张量，或者从指定的起始维度到结束维度展平为二维张量。
+    参数说明：
+    input: 要展平的输入张量。
+    start_dim: 指定从哪个维度开始展平，默认为0。
+    end_dim: 指定到哪个维度结束展平，默认为-1，表示最后一个维度。
+    返回值：
+    返回展平后的张量。
+    """
+    output = torch.flatten(imgs)   #摊平
+    print(output.shape)   #torch.Size([196608])
+    output = mozijie(output)
+    print(output.shape)   #torch.Size([10])
+```
+
+<img src="computer_vision_notebook/xiaotudui_Pytorch_Tutorial/online_notes.assets/image-20251121131036466.png" alt="image-20251121131036466" style="zoom:80%;" />
+
+#### 13.2 pytorch内置的一些网络模型 
+
+ *  图片相关：torchvision [torchvision.models — Torchvision 0.11.0 documentation][torchvision.models]  
+    分类、语义分割、目标检测、实例分割、人体关键节点识别（姿态估计）等等
+ *  文本相关：torchtext 无
+ *  语音相关：torchaudio [torchaudio.models — Torchaudio 0.10.0 documentation][torchaudio.models _ Torchaudio 0.10.0 documentation]
+
+## 14. 简单模型搭建和 Sequential 的使用 
+
+### 14.1 Sequential 
+
+Containers中有Module、Sequential等
+
+Sequential 是一个搭建网络模型的好工具，他可以一次性将很多模块写在一起
+
+[Sequential — PyTorch 1.10 documentation][Sequential _ PyTorch 1.10 documentation]
+
+Example：
+
+```java
+# Using Sequential to create a small model. When `model` is run,
+# input will first be passed to `Conv2d(1,20,5)`. The output of
+# `Conv2d(1,20,5)` will be used as the input to the first
+# `ReLU`; the output of the first `ReLU` will become the input
+# for `Conv2d(20,64,5)`. Finally, the output of
+# `Conv2d(20,64,5)` will be used as input to the second `ReLU`
+model = nn.Sequential(
+          nn.Conv2d(1,20,5),
+          nn.ReLU(),
+          nn.Conv2d(20,64,5),
+          nn.ReLU()
+        )
+```
+
+好处：代码简洁易懂
+
+\---------------------------------------------------------------------------------------------------------------------------------
+
+### 14.2 搭建CIFAR10_Model
+
+CIFAR 10：根据图片内容，识别其究竟属于哪一类（10代表有10个类别）
+
+[CIFAR-10 and CIFAR-100 datasets](https://www.cs.toronto.edu/~kriz/cifar.html)
+
+<img src="computer_vision_notebook/xiaotudui_Pytorch_Tutorial/online_notes.assets/358e7bc80876463b7ff84bec85df047d.png"/>
+
+第一次卷积：首先加了几圈 padding（图像大小不变，还是32x32），然后卷积了32次
+
+ *  [Conv2d — PyTorch 1.10 documentation](https://pytorch.org/docs/stable/generated/torch.nn.Conv2d.html#torch.nn.Conv2d )
+ *  输入尺寸是32x32，经过卷积后尺寸不变，如何设置参数？ —— padding=2，stride=1
+ * 计算公式：<img src="computer_vision_notebook/xiaotudui_Pytorch_Tutorial/online_notes.assets/6ace0be8065ba2441f39ec56cbb60e8b.png"/>
+
+**重要说明：**
+
+**几个卷积核就是几通道的，一个卷积核作用于RGB三个通道后会把得到的三个矩阵的对应值相加，也就是说会合并，所以一个卷积核会产生一个通道**
+
+**任何卷积核在设置padding的时候为保持输出尺寸不变都是卷积核大小的一半**
+
+**通道变化时通过调整卷积核的个数来实现的，在 nn.conv2d 的参数中有 out_channel 这个参数，就是对应输出通道**
+
+**kernel 的内容是不一样的，可以理解为不同的特征抓取，因此一个核会产生一个channel**
+
+```python
+#!/usr/bin/env python
+# -*- coding: UTF-8 -*-
+'''
+@Project ：xiaotudui-pytorch 
+@File    ：14.nn_seq.py
+@IDE     ：PyCharm 
+@Author  ：mozijie
+@Date    ：2025/11/21 下午1:16 
+'''
+import torch
+from torch import nn
+from torch.nn import Conv2d, MaxPool2d, Flatten, Linear, Sequential
+
+class MozijieNet(nn.Module):
+    def __init__(self):
+        super(MozijieNet, self).__init__()
+        self.model1 = Sequential(
+            Conv2d(3,32,5,padding=2),
+            MaxPool2d(2),
+            Conv2d(32,32,5,padding=2),
+            MaxPool2d(2),
+            Conv2d(32,64,5,padding=2),
+            MaxPool2d(2),
+            Flatten(),
+            Linear(1024,64),
+            Linear(64,10)
+        )
+
+    def forward(self,x):   #x为input
+        x = self.model1(x)
+        return x
+
+mozijie = MozijieNet()
+print(mozijie)
+
+input = torch.ones((64,3,32,32))  #全是1，batch_size=64,3通道，32x32
+output = mozijie(input)
+print(output.shape)
+```
+
+<img src="computer_vision_notebook/xiaotudui_Pytorch_Tutorial/online_notes.assets/image-20251121134245919.png" alt="image-20251121134245919" style="zoom: 67%;" />
+
+### 14.3 引入 tensorboard 可视化模型结构 
+
+```python
+#!/usr/bin/env python
+# -*- coding: UTF-8 -*-
+'''
+@Project ：xiaotudui-pytorch 
+@File    ：14.nn_seq_tensorboard.py
+@IDE     ：PyCharm 
+@Author  ：mozijie
+@Date    ：2025/11/21 下午1:16 
+'''
+import torch
+from torch import nn
+from torch.nn import Conv2d, MaxPool2d, Flatten, Linear, Sequential
+from torch.utils.tensorboard import SummaryWriter
+
+class MozijieNet(nn.Module):
+    def __init__(self):
+        super(MozijieNet, self).__init__()
+        self.model1 = Sequential(
+            Conv2d(3,32,5,padding=2),
+            MaxPool2d(2),
+            Conv2d(32,32,5,padding=2),
+            MaxPool2d(2),
+            Conv2d(32,64,5,padding=2),
+            MaxPool2d(2),
+            Flatten(),
+            Linear(1024,64),
+            Linear(64,10)
+        )
+
+    def forward(self,x):   #x为input
+        x = self.model1(x)
+        return x
+
+mozijie = MozijieNet()
+print(mozijie)
+
+input = torch.ones((64,3,32,32))  #全是1，batch_size=64,3通道，32x32
+output = mozijie(input)
+print(output.shape)
+
+# 写入tensorboard计算图
+writer = SummaryWriter("./logs_seq")
+writer.add_graph(mozijie,input)   # add_graph 计算图
+writer.close()
+```
+
+打开网址，双击图片中的矩形，可以放大每个部分：
+
+<img src="computer_vision_notebook/xiaotudui_Pytorch_Tutorial/online_notes.assets/ab07d2b5d4525cc9adf45640a3cb02f0.png" style="zoom: 80%;" />
+
+## 15. 损失函数与反向传播
+
+### 15.1 CrossEntropyLoss（交叉熵损失） 
+
+适用于训练分类问题，有C个类别
+
+例：三分类问题，person，dog，cat
+
+<img src="computer_vision_notebook/xiaotudui_Pytorch_Tutorial/online_notes.assets/5e817733bc16eb6c5ef8100e3fd43646.png"/>
+
+ **公式中的 log 其实是ln**
+
+```python
+#!/usr/bin/env python
+# -*- coding: UTF-8 -*-
+'''
+@Project ：xiaotudui-pytorch 
+@File    ：15.nn_loss.py
+@IDE     ：PyCharm 
+@Author  ：mozijie
+@Date    ：2025/11/21 下午2:02 
+'''
+import torch
+from torch.nn import L1Loss, MSELoss, CrossEntropyLoss
+
+# L1LOSS 计算公式： 1/n * Σ|yi - xi|
+# 计算时要求数据类型为浮点数，不能是整型的long
+inputs = torch.tensor([1,2,3],dtype=torch.float32)
+
+targets = torch.tensor([1,2,5],dtype=torch.float32)
+
+inputs = torch.reshape(inputs,(1,1,1,3))   # 1 batch_size, 1 channel, 1行3列
+targets = torch.reshape(targets,(1,1,1,3))
+
+loss = L1Loss()
+result = loss(inputs,targets)
+print(result)
+
+
+# MSELOSS 计算公式： 1/n * Σ(yi - xi)^2
+inputs = torch.tensor([1,2,3],dtype=torch.float32)
+targets = torch.tensor([1,2,5],dtype=torch.float32)
+
+inputs = torch.reshape(inputs,(1,1,1,3))   # 1 batch_size, 1 channel, 1行3列
+targets = torch.reshape(targets,(1,1,1,3))
+
+loss_mse = MSELoss()
+result_mse = loss_mse(inputs,targets)
+print(result_mse)
+
+# CrossEntropyLoss 计算交叉熵损失
+# 适用于多分类问题，输入是未经过softmax的logits，标签是类别的索引
+x = torch.tensor([0.1,0.2,0.3])
+y = torch.tensor([1])
+x = torch.reshape(x,(1,3))
+loss_cross = CrossEntropyLoss()
+result_cross = loss_cross(x,y)
+print(result_cross)
+```
+
+
+
+### 15.2 神经网络引入Loss Function
+
+```python
+#!/usr/bin/env python
+# -*- coding: UTF-8 -*-
+'''
+@Project ：xiaotudui-pytorch 
+@File    ：15.nn_loss_net.py
+@IDE     ：PyCharm 
+@Author  ：mozijie
+@Date    ：2025/11/21 下午2:09 
+'''
+
+import torchvision.datasets
+from torch import nn
+from torch.nn import Conv2d, MaxPool2d, Flatten, Linear, Sequential
+from torch.utils.data import DataLoader
+
+dataset = torchvision.datasets.CIFAR10("./data",train=False,transform=torchvision.transforms.ToTensor(),download=True)
+dataloader = DataLoader(dataset,batch_size=1)
+
+class MozijieNet(nn.Module):
+    def __init__(self):
+        super(MozijieNet, self).__init__()
+        self.model1 = Sequential(
+            Conv2d(3,32,5,padding=2),
+            MaxPool2d(2),
+            Conv2d(32,32,5,padding=2),
+            MaxPool2d(2),
+            Conv2d(32,64,5,padding=2),
+            MaxPool2d(2),
+            Flatten(),
+            Linear(1024,64),
+            Linear(64,10)
+        )
+
+    def forward(self,x):   # x为input
+        x = self.model1(x)
+        return x
+
+loss = nn.CrossEntropyLoss()
+
+mozijie = MozijieNet()
+
+for data in dataloader:
+    imgs,targets = data
+    outputs = mozijie(imgs)
+    result_loss = loss(outputs,targets)
+    print(result_loss)  # 神经网络输出与真实输出的误差
+    result_loss.backward() # 反向传播计算梯度
+    
+```
+
+
+
+<img src="computer_vision_notebook/xiaotudui_Pytorch_Tutorial/online_notes.assets/image-20251121141143935.png" alt="image-20251121141143935" style="zoom:80%;" />
+
+
+
+
+
+## 16. 优化器
+
+当使用损失函数时，可以调用损失函数的 backward，得到反向传播，反向传播可以求出每个需要调节的参数对应的梯度，有了梯度就可以利用优化器，优化器根据梯度对参数进行调整，以达到整体误差降低的目的
+
+[torch.optim — PyTorch 1.10 documentation](https://pytorch.org/docs/stable/optim.html)
+
+**搭建CIFAR10-Model，结合损失函数和优化器，也就是完整的训练过程**
+
+```python
+#!/usr/bin/env python
+# -*- coding: UTF-8 -*-
+'''
+@Project ：xiaotudui-pytorch 
+@File    ：16.nn_optim.py
+@IDE     ：PyCharm 
+@Author  ：mozijie
+@Date    ：2025/11/21 下午7:02 
+'''
+
+import torch
+import torchvision.datasets
+from torch import nn
+from torch.nn import Conv2d, MaxPool2d, Flatten, Linear, Sequential
+from torch.utils.data import DataLoader
+
+# 加载数据集并转为tensor数据类型
+dataset = torchvision.datasets.CIFAR10("./data",train=False,transform=torchvision.transforms.ToTensor(),download=True)
+dataloader = DataLoader(dataset,batch_size=1)
+
+
+class MozijieNet(nn.Module):
+    def __init__(self):
+        super(MozijieNet, self).__init__()
+        self.model1 = Sequential(
+            Conv2d(3,32,5,padding=2),
+            MaxPool2d(2),
+            Conv2d(32,32,5,padding=2),
+            MaxPool2d(2),
+            Conv2d(32,64,5,padding=2),
+            MaxPool2d(2),
+            Flatten(),
+            Linear(1024,64),
+            Linear(64,10)
+        )
+
+    def forward(self,x):   # x为input，forward前向传播
+        x = self.model1(x)
+        return x
+
+# 计算loss
+loss = nn.CrossEntropyLoss()
+
+# 搭建网络
+mozijie = MozijieNet()
+
+# 设置优化器
+"""
+SGD随机梯度下降法参数说明：
+params: 要优化的参数，可以是一个可迭代对象（如模型的参数）或单个参数张量。
+lr: 学习率，控制每次参数更新的步长大小。
+momentum: 动量因子，默认为0。用于加速SGD在相关方向上的收敛，并减少震荡。
+weight_decay: 权重衰减，默认为0。用于L2正则化，防止过拟合。
+dampening: 抑制动量的衰减，默认为0。
+nesterov: 布尔值，表示是否使用Nesterov动量，默认为False。
+作用：SGD是一种常用的优化算法，用于通过计算梯度来更新神经网络的参数，以最小化损失函数。
+适用场景：适用于各种神经网络训练任务，尤其是在大规模数据集上表现良好。
+影响：SGD通过逐步调整参数，有助于模型更好地拟合训练数据，提高泛化能力
+"""
+optim = torch.optim.SGD(params=mozijie.parameters(), lr=0.01)  # SGD随机梯度下降法
+
+# 训练20轮
+for epoch in range(20):
+    running_loss = 0.0  # 在每一轮开始前将loss设置为0
+    for data in dataloader:
+        imgs,targets = data  # imgs为输入，放入神经网络中
+        outputs = mozijie(imgs)  # outputs为输入通过神经网络得到的输出，targets为实际输出
+        result_loss = loss(outputs,targets) # 计算神经网络输出与真实输出的误差，即loss
+        optim.zero_grad()  # 把网络模型中每一个可以调节的参数对应梯度设置为0
+        result_loss.backward()  # backward反向传播求出每一个节点的梯度，是对result_loss，而不是对loss
+        optim.step()  # 对每个参数进行调优
+        running_loss = running_loss + result_loss  # 每一轮所有loss的和
+    print(rf"第{epoch}轮损失值为：{running_loss}")
+```
+
+**训练结果：**
+
+<img src="computer_vision_notebook/xiaotudui_Pytorch_Tutorial/online_notes.assets/image-20251121191714471.png" alt="image-20251121191714471" style="zoom:80%;" />
+
+## 17. 现有网络模型的使用及修改
+
+<img src="computer_vision_notebook/xiaotudui_Pytorch_Tutorial/online_notes.assets/7ef9b12c9811e18382f3a0707c7061e7.png" style="zoom:67%;" />
+
+本节主要讲解 torchvision
+
+<img src="computer_vision_notebook/xiaotudui_Pytorch_Tutorial/online_notes.assets/97c607e002abb077178a76b1f1aae673.png"/>
+
+本节主要讲解 Classification 里的 VGG 模型，数据集仍为 CIFAR10 数据集（主要用于分类）
+
+[torchvision.models — Torchvision 0.11.0 documentation](https://pytorch.org/vision/stable/models.html#id2)
+
+\---------------------------------------------------------------------------------------------------------------------------------
+
+### 17.1 数据集 ImageNet 
+
+使用torchvision下载ImageNet数据集前必须要先有 package scipy
+
+```bash
+pip install scipy
+```
+
+
+
+**ImageNet参数及下载** 
+
+<img src="computer_vision_notebook/xiaotudui_Pytorch_Tutorial/online_notes.assets/88ff0dd66a7b617c0ae714538f076d11.png" style="zoom:80%;" />
+
+下载 ImageNet 数据集：
+
+```python
+#!/usr/bin/env python
+# -*- coding: UTF-8 -*-
+'''
+@Project ：xiaotudui-pytorch 
+@File    ：17.model_pretrained.py
+@IDE     ：PyCharm 
+@Author  ：mozijie
+@Date    ：2025/11/21 下午7:43 
+'''
+import torchvision.datasets
+
+# 加载ImageNet训练数据集，并将图像转换为张量
+"""
+ImageNet数据集包含大量标注好的图像，常用于训练和评估图像分类模型。
+参数说明：
+root: 数据集存储的根目录。
+split: 指定加载训练集（'train'）还是验证集（'val'）。
+download: 布尔值，指定是否从互联网下载数据集（如果本地不存在）。
+transform: 应用于图像数据的转换操作，这里使用ToTensor将图像转换为张量。
+"""
+
+torchvision.datasets.ImageFolder()
+train_data = torchvision.datasets.ImageNet(
+    root="./data_image_net",
+    split='train',
+    download=True,
+    transform=torchvision.transforms.ToTensor()
+)
+```
+
+运行后会报错：
+
+```python
+RuntimeError: The archive ILSVRC2012_devkit_t12.tar.gz is not present in the root directory or is corrupted. You need to download it externally and place it in ./data_image_net.
+
+进程已结束，退出代码为 1
+```
+
+**这种直接下载的方式有问题，无法下载，如果想下载数据用下面的方法，我在这里就不下载了**
+
+迅雷下载地址：
+
+[Imagenet完整数据集下载](https://blog.csdn.net/u014515463/article/details/80748125?spm=1001.2014.3001.5502)
+
+第二种下载方法：
+
+[下载、处理、加载ImageNet数据集（全网最详细）_imagenet数据集下载-CSDN博客](https://blog.csdn.net/weixin_47160526/article/details/132037269)
+
+### 17.2 VGG16 模型 
+
+VGG 11/13/16/19 常用16和19
+
+**参数 pretrained=True/False** 
+
+<img src="computer_vision_notebook/xiaotudui_Pytorch_Tutorial/online_notes.assets/376f1914fd61c92a328f8fa415b8e895.png" style="zoom:80%;" />
+
+ *  pretrained 为 False 的情况下，只是加载网络模型，参数都为默认参数，不需要下载
+ *  为 True 时需要从网络中下载，卷积层、池化层对应的参数等等**（在ImageNet数据集中训练好的模型权重）**
+
+```python
+import torchvision.models
+
+vgg16_false = torchvision.models.vgg16(pretrained=False)  # 另一个参数progress显示进度条，默认为True
+vgg16_true = torchvision.models.vgg16(pretrained=True)
+print('ok')
+```
+
+**总结：** 
+
+ *  设置为 False 的情况，相当于网络模型中的参数都是初始化的、默认的
+ *  设置为 True 时，网络模型中的参数在imageNet数据集上是训练好的，能达到比较好的效果
+
+\---------------------------------------------------------------------------------------------------------------------------------
+
+**vgg16 网络架构** 
+
+```python
+from torchvision.models import vgg16, VGG16_Weights
+
+vgg16_true = vgg16(weights=VGG16_Weights.DEFAULT)    # 加载带预训练权重的VGG16模型
+vgg16_false = vgg16(weights=None)      #加载非预训练的VGG16模型
+
+print(vgg16_true)
+```
+
+输出：
+
+```python
+VGG(
+  (features): Sequential(
+# 输入图片先经过卷积，输入是3通道的、输出是64通道的，卷积核大小是3×3的
+    (0): Conv2d(3, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+# 非线性
+    (1): ReLU(inplace=True)
+# 卷积、非线性、池化...
+    (2): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+    (3): ReLU(inplace=True)
+    (4): MaxPool2d(kernel_size=2, stride=2, padding=0, dilation=1, ceil_mode=False)
+    (5): Conv2d(64, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+    (6): ReLU(inplace=True)
+    (7): Conv2d(128, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+    (8): ReLU(inplace=True)
+    (9): MaxPool2d(kernel_size=2, stride=2, padding=0, dilation=1, ceil_mode=False)
+    (10): Conv2d(128, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+    (11): ReLU(inplace=True)
+    (12): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+    (13): ReLU(inplace=True)
+    (14): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+    (15): ReLU(inplace=True)
+    (16): MaxPool2d(kernel_size=2, stride=2, padding=0, dilation=1, ceil_mode=False)
+    (17): Conv2d(256, 512, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+    (18): ReLU(inplace=True)
+    (19): Conv2d(512, 512, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+    (20): ReLU(inplace=True)
+    (21): Conv2d(512, 512, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+    (22): ReLU(inplace=True)
+    (23): MaxPool2d(kernel_size=2, stride=2, padding=0, dilation=1, ceil_mode=False)
+    (24): Conv2d(512, 512, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+    (25): ReLU(inplace=True)
+    (26): Conv2d(512, 512, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+    (27): ReLU(inplace=True)
+    (28): Conv2d(512, 512, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+    (29): ReLU(inplace=True)
+    (30): MaxPool2d(kernel_size=2, stride=2, padding=0, dilation=1, ceil_mode=False)
+  )
+  (avgpool): AdaptiveAvgPool2d(output_size=(7, 7))
+  (classifier): Sequential(
+    (0): Linear(in_features=25088, out_features=4096, bias=True)
+    (1): ReLU(inplace=True)
+    (2): Dropout(p=0.5, inplace=False)
+    (3): Linear(in_features=4096, out_features=4096, bias=True)
+    (4): ReLU(inplace=True)
+    (5): Dropout(p=0.5, inplace=False)
+# 最后线性层输出为1000（vgg16也是一个分类模型，能分出1000个类别）
+    (6): Linear(in_features=4096, out_features=1000, bias=True)
+  )
+)
+```
+
+[ImageNet][ImageNet 1]
+
+<img src="computer_vision_notebook/xiaotudui_Pytorch_Tutorial/online_notes.assets/a4905bd17ccf7523d2863ae06fa86c65.png"/>
+
+ImageNet是一个分类数量为1000类的数据集
+
+\---------------------------------------------------------------------------------------------------------------------------------
+
+### 17.3 修改VGG网络结构 
+
+```java
+train_data = torchvision.datasets.CIFAR10(root="./dataset",train=True,transform=torchvision.transforms.ToTensor(),download=True)
+```
+
+CIFAR10 把数据分成了10类，而 vgg16 模型把数据分成了 1000 类，如何应用这个网络模型呢？
+
+ *  把最后线性层的 out\_features 从1000改为10
+ *  在最后的线性层下面再加一层，in\_features为1000，out\_features为10
+
+利用现有网络去改动它的结构，避免写 vgg16
+
+很多框架会把 vgg16 当做前置的网络结构，提取一些特殊的特征，再在后面加一些网络结构，实现功能
+
+**添加** 
+
+以 vgg16\_true 为例讲解，实现上面的第二种思路：
+
+```java
+# 给 vgg16 添加一个线性层，输入1000个类别，输出10个类别
+vgg16_true.add_module('add_linear',nn.Linear(in_features=1000,out_features=10))
+print(vgg16_true)
+```
+
+结果如图：
+
+<img src="computer_vision_notebook/xiaotudui_Pytorch_Tutorial/online_notes.assets/47d45e88cd3e8e61c0e2cd10c08447b1.png" style="zoom: 67%;" />
+
+如果想将 module 添加至 classifier 里：
+
+```java
+# 给 vgg16 添加一个线性层，输入1000个类别，输出10个类别
+vgg16_true.classifier.add_module('add_linear',nn.Linear(in_features=1000,out_features=10))
+print(vgg16_true)
+```
+
+结果如图：
+
+<img src="computer_vision_notebook/xiaotudui_Pytorch_Tutorial/online_notes.assets/f6239502f0f39242e741f42e14c5a213.png" style="zoom: 67%;" />
+
+\---------------------------------------------------------------------------------------------------------------------------------
+
+**修改** 
+
+以上为添加，那么如何修改呢？
+
+以 vgg16\_false 为例：
+
+```python
+vgg16_false = torchvision.models.vgg16(pretrained=False)  
+print(vgg16_false)
+```
+
+结果如下：
+
+```java
+(classifier): Sequential(
+    (0): Linear(in_features=25088, out_features=4096, bias=True)
+    (1): ReLU(inplace=True)
+    (2): Dropout(p=0.5, inplace=False)
+    (3): Linear(in_features=4096, out_features=4096, bias=True)
+    (4): ReLU(inplace=True)
+    (5): Dropout(p=0.5, inplace=False)
+    (6): Linear(in_features=4096, out_features=1000, bias=True)
+  )
+)
+```
+
+想将最后一层 Linear 的 out\_features 改为10：
+
+```java
+vgg16_false.classifier[6] = nn.Linear(4096,10)
+print(vgg16_false)
+```
+
+结果如下：
+
+<img src="computer_vision_notebook/xiaotudui_Pytorch_Tutorial/online_notes.assets/19225351d63f92a9aa2783e8d980c46f.png" style="zoom:67%;" />
+
+本节：
+
+ *  如何加载现有的一些 pytorch 提供的网络模型
+ *  如何对网络模型中的结构进行修改，包括添加自己想要的一些网络模型结构
+
+**完整代码**
+
+```python
+#!/usr/bin/env python
+# -*- coding: UTF-8 -*-
+'''
+@Project ：xiaotudui-pytorch 
+@File    ：17.model_pretrained.py
+@IDE     ：PyCharm 
+@Author  ：mozijie
+@Date    ：2025/11/21 下午7:43 
+'''
+import torchvision.datasets
+import torch
+from torchvision.models import vgg16, VGG16_Weights
+
+# 加载ImageNet训练数据集，并将图像转换为张量
+"""
+ImageNet数据集包含大量标注好的图像，常用于训练和评估图像分类模型。
+参数说明：
+root: 数据集存储的根目录。
+split: 指定加载训练集（'train'）还是验证集（'val'）。
+download: 布尔值，指定是否从互联网下载数据集（如果本地不存在）。
+transform: 应用于图像数据的转换操作，这里使用ToTensor将图像转换为张量。
+"""
+# train_data = torchvision.datasets.ImageNet(
+#     root="./data_image_net",
+#     split='train',
+#     download=True,
+#     transform=torchvision.transforms.ToTensor()
+# )
+"""
+VGG16的预训练是在ImageNet上面训练的
+"""
+vgg16_true = vgg16(weights=VGG16_Weights.DEFAULT)    # 加载带预训练权重的VGG16模型
+vgg16_false = vgg16(weights=None)      #加载非预训练的VGG16模型
+
+# 打印未修改的模型结构
+print(vgg16_true)
+
+train_data = torchvision.datasets.CIFAR10(
+    "./data",
+    train=True,
+    transform=torchvision.transforms.ToTensor(),
+    download=True
+)
+
+# 1.新增
+# 在模型后面添加一个新的线性层，用于适应CIFAR-10的10个类别
+"""
+add_module参数说明：
+name: 新增模块的名称，作为该模块在模型中的标识符。
+module: 要添加的模块，可以是任何继承自torch.nn.Module的子类实例。
+作用：将一个新的子模块添加到现有的神经网络模型中，使其能够扩展功能或改变结构。
+适用场景：适用于需要动态修改模型结构的场景，如在预训练模型后添加自定义层以适应特定任务。
+"""
+vgg16_true.classifier.add_module("add_linear", torch.nn.Linear(in_features=1000, out_features=10))
+# 重新打印修改后的模型结构
+print(vgg16_true)
+
+# 2.修改
+# 或者直接修改最后一层分类器
+vgg16_false.classifier[6] = torch.nn.Linear(in_features=4096, out_features=10)
+print(vgg16_false)
+```
+
+
+
+## 18. 模型的保存与读取 
+
+### 18.1 两种方式保存模型 
+
+```python
+#!/usr/bin/env python
+# -*- coding: UTF-8 -*-
+'''
+@Project ：xiaotudui-pytorch 
+@File    ：18.model_save.py
+@IDE     ：PyCharm 
+@Author  ：mozijie
+@Date    ：2025/11/21 下午10:33 
+'''
+import torch
+import torchvision
+from torch import nn
+
+# 网络中模型的参数是没有经过训练的、初始化的参数
+vgg16 = torchvision.models.vgg16(weights = None)
+# 保存方式1,模型结构+模型参数
+torch.save(vgg16, "vgg16_method1.pth")
+
+# 保存方式2，模型参数（官方推荐）
+# 把vgg16的状态保存为字典形式（Python中的一种数据格式）
+torch.save(vgg16.state_dict(), "vgg16_method2.pth")
+
+# 陷阱
+class MozijieNet(nn.Module):
+    def __init__(self):
+        super(MozijieNet, self).__init__()
+        self.conv1 = nn.Conv2d(3, 64, kernel_size=3)
+
+    def forward(self, x):
+        x = self.conv1(x)
+        return x
+
+mozijie = MozijieNet()
+torch.save(mozijie, "mozijie_method1.pth"
+```
+
+运行后项目下会多出以下3个文件：
+
+<img src="computer_vision_notebook/xiaotudui_Pytorch_Tutorial/online_notes.assets/image-20251121224838209.png" alt="image-20251121224838209" style="zoom:80%;" />
+
+### 18.2 两种方式加载模型 
+
+```python
+#!/usr/bin/env python
+# -*- coding: UTF-8 -*-
+'''
+@Project ：xiaotudui-pytorch 
+@File    ：18.model_load.py
+@IDE     ：PyCharm 
+@Author  ：mozijie
+@Date    ：2025/11/21 下午10:34 
+'''
+import torch
+
+# 方式1-》保存方式1，加载模型
+import torchvision
+from torch import nn
+"""
+这里的weights_only参数是为了防止加载模型时只加载权重参数而忽略模型结构。
+当weights_only=False时，表示加载整个模型，包括模型结构和权重参数。
+当weights_only=True时，表示只加载模型的权重参数，而不包括模型结构。
+"""
+model = torch.load("vgg16_method1.pth",weights_only=False)
+# print(model)
+
+# 方式2，加载模型
+vgg16 = torchvision.models.vgg16(weights = None)
+vgg16.load_state_dict(torch.load("vgg16_method2.pth",weights_only=False))
+# model = torch.load("vgg16_method2.pth")
+# print(vgg16)
+
+"""
+陷阱1:用方式1保存的话，加载时要让程序能够访问到其定义模型的类，否则会报错
+"""
+
+class MozijieNet(nn.Module):
+    def __init__(self):
+        super(MozijieNet, self).__init__()
+        self.conv1 = nn.Conv2d(3, 64, kernel_size=3)
+
+    def forward(self, x):
+        x = self.conv1(x)
+        return x
+
+model = torch.load('mozijie_method1.pth',weights_only=False)
+print(model)
+```
+
+
+
+<img src="computer_vision_notebook/xiaotudui_Pytorch_Tutorial/online_notes.assets/image-20251121225100043.png" alt="image-20251121225100043" style="zoom:80%;" />
+
+
+
+## 19. 完整模型训练
+
+### **19.1 model代码**
+
+```python
+#!/usr/bin/env python
+# -*- coding: UTF-8 -*-
+'''
+@Project ：xiaotudui-pytorch 
+@File    ：19.model.py
+@IDE     ：PyCharm 
+@Author  ：mozijie
+@Date    ：2025/11/21 下午10:59 
+'''
+import torch
+from torch import nn
+
+# 搭建神经网络
+class MozijieNet(nn.Module):
+    def __init__(self):
+        super(MozijieNet, self).__init__()
+        self.model = nn.Sequential(
+            nn.Conv2d(3, 32, 5, 1, 2),
+            nn.MaxPool2d(2),
+            nn.Conv2d(32, 32, 5, 1, 2),
+            nn.MaxPool2d(2),
+            nn.Conv2d(32, 64, 5, 1, 2),
+            nn.MaxPool2d(2),
+            nn.Flatten(),
+            nn.Linear(64*4*4, 64),
+            nn.Linear(64, 10)
+        )
+
+    def forward(self, x):
+        x = self.model(x)
+        return x
+
+
+if __name__ == '__main__':
+    mzj = MozijieNet()
+    input = torch.ones((64, 3, 32, 32))
+    output = mzj(input)
+    print(output.shape)
+```
+
+### 19.2 train代码
+
+```python
+#!/usr/bin/env python  
+# -*- coding: UTF-8 -*-  
+'''
+@Project ：xiaotudui-pytorch  
+@File    ：19.train.py        
+@IDE     ：PyCharm             
+@Author  ：mozijie             
+@Date    ：2025/11/21 下午10:59 
+'''
+import torch  # 导入 PyTorch 主包，提供张量与自动求导等功能
+import torchvision  # 导入 torchvision，包含数据集与图像处理工具
+from torch.utils.tensorboard import SummaryWriter  # 从 tensorboard 工具集中导入日志记录器 SummaryWriter
+from torch import nn  # 导入 nn（neural network）模块用于构建网络结构与层
+from torch.utils.data import DataLoader  # 导入 DataLoader 用于批量加载数据集
+
+
+class MozijieNet(nn.Module):  # 定义一个自定义的神经网络模型类，继承 nn.Module
+    def __init__(self):  # 构造函数，在实例化时初始化网络结构
+        super(MozijieNet, self).__init__()  # 调用父类构造函数，注册参数与子模块
+        self.model = nn.Sequential(  # 使用 nn.Sequential 搭建前馈网络，按顺序执行各层
+            nn.Conv2d(3, 32, 5, 1, 2),      # 卷积层1：输入通道3(RGB)，输出通道32，卷积核5，步长1，padding=2 保持尺寸；输出 (B,32,32,32)
+            nn.MaxPool2d(2),                # 最大池化1：核大小2，步长2，空间尺寸减半；输出 (B,32,16,16)
+            nn.Conv2d(32, 32, 5, 1, 2),     # 卷积层2：输入通道32，输出通道32，保持空间尺寸；输出 (B,32,16,16)
+            nn.MaxPool2d(2),                # 最大池化2：再次减半；输出 (B,32,8,8)
+            nn.Conv2d(32, 64, 5, 1, 2),     # 卷积层3：通道数升至64，尺寸保持；输出 (B,64,8,8)
+            nn.MaxPool2d(2),                # 最大池化3：尺寸减半；输出 (B,64,4,4)
+            nn.Flatten(),                   # 展平层：将 (B,64,4,4) 展开为 (B, 64*4*4=1024)
+            nn.Linear(64*4*4, 64),          # 全连接层1：输入1024特征，输出64，进行特征抽象
+            nn.Linear(64, 10)               # 全连接层2：输入64，输出10，对应10个类别（如 CIFAR10）
+        )
+
+    def forward(self, x):  # 定义前向传播逻辑，输入张量 x 经网络得到输出
+        x = self.model(x)  # 调用顺序容器执行各层计算
+        return x
+
+
+# 准备数据集（训练集）
+train_data = torchvision.datasets.CIFAR10(  # 调用 CIFAR10 数据集类
+    root="./data",                        # 数据集存储根目录（若不存在将自动创建）
+    train=True,                            # 指定为训练集
+    transform=torchvision.transforms.ToTensor(),  # 将 PIL/Image 转换为张量并归一化到 [0,1]
+    download=True                          # 若本地无数据则自动下载
+)
+# 准备数据集（测试集）
+test_data = torchvision.datasets.CIFAR10(   # 调用 CIFAR10 数据集类
+    root="./data",                        # 同一根目录
+    train=False,                           # 指定为测试集
+    transform=torchvision.transforms.ToTensor(),  # 同样进行张量转换
+    download=True                          # 自动下载测试集数据
+)
+
+# length 长度
+train_data_size = len(train_data)  # 训练集样本总数（CIFAR10 为 50000）
+test_data_size = len(test_data)    # 测试集样本总数（CIFAR10 为 10000）
+
+print("训练数据集的长度为：{}".format(train_data_size))  # 打印训练集大小
+print("测试数据集的长度为：{}".format(test_data_size))    # 打印测试集大小
+
+
+# 利用 DataLoader 来加载数据集 
+train_dataloader = DataLoader(train_data, batch_size=64)  # 构造训练集 DataLoader，每批 64 张图片
+test_dataloader = DataLoader(test_data, batch_size=64)    # 构造测试集 DataLoader，每批 64 张图片
+
+# 创建网络模型 
+mzj = MozijieNet()  # 得到一个网络对象，用于后续训练与推理
+
+# 定义用于分类任务的损失函数（交叉熵）
+loss_fn = nn.CrossEntropyLoss() 
+
+# 优化器  
+learning_rate = 1e-2  # 设置学习率为 0.01
+optimizer = torch.optim.SGD(mzj.parameters(), lr=learning_rate)  # 使用随机梯度下降优化模型参数
+
+# 设置训练网络的一些参数  
+# 记录训练的次数 
+total_train_step = 0  
+# 记录测试的次数 
+total_test_step = 0 
+# 训练的轮数
+epoch = 10  # 将整个训练集迭代 10 次
+
+# 创建 TensorBoard 日志记录器，用于可视化损失与准确率
+writer = SummaryWriter("./logs_train")  # 输出日志目录为 ./logs_train
+
+for i in range(epoch):  # 外层循环，遍历每一个训练轮次 epoch
+    print("-------第 {} 轮训练开始-------".format(i+1))  
+
+    # 切换模型到训练模式（启用 dropout/batchnorm 等）
+    mzj.train()  # 调用 train() 方法
+    for data in train_dataloader:  # 遍历训练数据的每个批次
+        imgs, targets = data            # 解包当前批次：imgs 为图像张量 (B,3,32,32)，targets 为标签 (B)
+        outputs = mzj(imgs)             # 前向传播得到 logits 输出 (B,10)
+        loss = loss_fn(outputs, targets)  # 计算当前批次的交叉熵损失
+
+        # 反向传播与参数更新
+        optimizer.zero_grad()  # 清空上一批次残留的梯度
+        loss.backward()        # 反向传播计算当前梯度
+        optimizer.step()       # 使用优化器根据梯度更新参数
+
+        total_train_step = total_train_step + 1  # 训练步计数器加 1
+        if total_train_step % 100 == 0:  # 每 100 个批次打印一次当前损失并记录
+            print("训练次数：{}, Loss: {}".format(total_train_step, loss.item()))  # 打印当前训练次数与对应损失
+            writer.add_scalar("train_loss", loss.item(), total_train_step)       # 写入 TensorBoard 标量（训练损失）
+
+    # 进入测试阶段，不更新参数
+    mzj.eval()  # 切换为评估模式（禁用 dropout/batchnorm 的训练行为）
+    total_test_loss = 0  # 初始化本轮测试集总损失累加器
+    total_accuracy = 0   # 初始化本轮测试集总正确样本数
+    with torch.no_grad():  # 关闭梯度计算，节省显存与加速推理
+        for data in test_dataloader:  # 遍历测试集每一个批次
+            imgs, targets = data               # 获取测试批次数据与标签
+            outputs = mzj(imgs)                # 前向传播得到输出 logits
+            loss = loss_fn(outputs, targets)   # 计算该批次的损失
+            total_test_loss = total_test_loss + loss.item()  # 累加损失（使用标量值）
+            accuracy = (outputs.argmax(1) == targets).sum().item()  # 计算该批次预测正确的样本数并转为 Python 标量
+            total_accuracy = total_accuracy + accuracy       # 累加所有批次的正确样本数
+
+    print("整体测试集上的Loss: {}".format(total_test_loss))  # 打印整个测试集的总损失（未取平均）
+    print("整体测试集上的正确率: {}".format(total_accuracy/test_data_size))  # 打印准确率（正确样本数/总样本数）
+    writer.add_scalar("test_loss", total_test_loss, total_test_step)            # 记录测试损失到 TensorBoard
+    writer.add_scalar("test_accuracy", total_accuracy/test_data_size, total_test_step)  # 记录测试准确率
+    total_test_step = total_test_step + 1  # 测试轮计数器加 1
+
+    torch.save(mzj, "mozijie_{}.pth".format(i))  # 保存当前轮次的整个模型对象到文件（包含结构+参数）
+    print("模型已保存")  # 打印保存提示
+
+writer.close()  # 关闭 SummaryWriter，确保缓冲数据写入磁盘
+
+```
+
+<img src="computer_vision_notebook/xiaotudui_Pytorch_Tutorial/online_notes.assets/image-20251123231709460.png" alt="image-20251123231709460" style="zoom:80%;" />
+
+<img src="computer_vision_notebook/xiaotudui_Pytorch_Tutorial/online_notes.assets/image-20251123233455090.png" alt="image-20251123233455090" style="zoom:80%;" />
+
+<img src="computer_vision_notebook/xiaotudui_Pytorch_Tutorial/online_notes.assets/image-20251123233530499.png" alt="image-20251123233530499" style="zoom:80%;" />
+
+<img src="computer_vision_notebook/xiaotudui_Pytorch_Tutorial/online_notes.assets/image-20251123233541845.png" alt="image-20251123233541845" style="zoom:80%;" />
+
+## 20.使用GPU训练模型
+
+**这里只介绍最常用的那种方式**
+
+**要在以下四个地方使用：**
+
+```python
+import torch
+
+# 设置设备（GPU 优先，否则使用 CPU）
+device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+print("Using device:", device)
+
+"""
+要在以下三个地方后面加上.to(device)
+"""
+```
+
+<img src="computer_vision_notebook/xiaotudui_Pytorch_Tutorial/online_notes.assets/87c3182ff1bc4887d622759a15e2d2f0.png" style="zoom:67%;" />
+
+```python
+#!/usr/bin/env python
+# -*- coding: UTF-8 -*-
+'''
+@Project ：xiaotudui-pytorch 
+@File    ：20.train_gpu.py
+@IDE     ：PyCharm 
+@Author  ：mozijie
+@Date    ：2025/11/23 下午11:28 
+'''
+
+
+
+
+import torch  # 导入 PyTorch 主包，提供张量与自动求导等功能
+import torchvision  # 导入 torchvision，包含数据集与图像处理工具
+from torch.utils.tensorboard import SummaryWriter  # 从 tensorboard 工具集中导入日志记录器 SummaryWriter
+from torch import nn  # 导入 nn（neural network）模块用于构建网络结构与层
+from torch.utils.data import DataLoader  # 导入 DataLoader 用于批量加载数据集
+
+# 设置设备（GPU 优先，否则使用 CPU）
+device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+print("Using device:", device)
+
+class MozijieNet(nn.Module):  # 定义一个自定义的神经网络模型类，继承 nn.Module
+    def __init__(self):  # 构造函数，在实例化时初始化网络结构
+        super(MozijieNet, self).__init__()  # 调用父类构造函数，注册参数与子模块
+        self.model = nn.Sequential(  # 使用 nn.Sequential 搭建前馈网络，按顺序执行各层
+            nn.Conv2d(3, 32, 5, 1, 2),      # 卷积层1：输入通道3(RGB)，输出通道32，卷积核5，步长1，padding=2 保持尺寸；输出 (B,32,32,32)
+            nn.MaxPool2d(2),                # 最大池化1：核大小2，步长2，空间尺寸减半；输出 (B,32,16,16)
+            nn.Conv2d(32, 32, 5, 1, 2),     # 卷积层2：输入通道32，输出通道32，保持空间尺寸；输出 (B,32,16,16)
+            nn.MaxPool2d(2),                # 最大池化2：再次减半；输出 (B,32,8,8)
+            nn.Conv2d(32, 64, 5, 1, 2),     # 卷积层3：通道数升至64，尺寸保持；输出 (B,64,8,8)
+            nn.MaxPool2d(2),                # 最大池化3：尺寸减半；输出 (B,64,4,4)
+            nn.Flatten(),                   # 展平层：将 (B,64,4,4) 展开为 (B, 64*4*4=1024)
+            nn.Linear(64*4*4, 64),          # 全连接层1：输入1024特征，输出64，进行特征抽象
+            nn.Linear(64, 10)               # 全连接层2：输入64，输出10，对应10个类别（如 CIFAR10）
+        )
+
+    def forward(self, x):  # 定义前向传播逻辑，输入张量 x 经网络得到输出
+        x = self.model(x)  # 调用顺序容器执行各层计算
+        return x
+
+
+# 准备数据集（训练集）
+train_data = torchvision.datasets.CIFAR10(  # 调用 CIFAR10 数据集类
+    root="./data",                        # 数据集存储根目录（若不存在将自动创建）
+    train=True,                            # 指定为训练集
+    transform=torchvision.transforms.ToTensor(),  # 将 PIL/Image 转换为张量并归一化到 [0,1]
+    download=True                          # 若本地无数据则自动下载
+)
+# 准备数据集（测试集）
+test_data = torchvision.datasets.CIFAR10(   # 调用 CIFAR10 数据集类
+    root="./data",                        # 同一根目录
+    train=False,                           # 指定为测试集
+    transform=torchvision.transforms.ToTensor(),  # 同样进行张量转换
+    download=True                          # 自动下载测试集数据
+)
+
+# length 长度
+train_data_size = len(train_data)  # 训练集样本总数（CIFAR10 为 50000）
+test_data_size = len(test_data)    # 测试集样本总数（CIFAR10 为 10000）
+
+print("训练数据集的长度为：{}".format(train_data_size))  # 打印训练集大小
+print("测试数据集的长度为：{}".format(test_data_size))    # 打印测试集大小
+
+
+# 利用 DataLoader 来加载数据集
+train_dataloader = DataLoader(train_data, batch_size=64)  # 构造训练集 DataLoader，每批 64 张图片
+test_dataloader = DataLoader(test_data, batch_size=64)    # 构造测试集 DataLoader，每批 64 张图片
+
+# 创建网络模型
+mzj = MozijieNet()  # 得到一个网络对象，用于后续训练与推理
+mzj = mzj.to(device)  # 将模型移动到指定设备（GPU 或 CPU）
+
+# 定义用于分类任务的损失函数（交叉熵）
+loss_fn = nn.CrossEntropyLoss()
+loss_fn = loss_fn.to(device)  # 将损失函数移动到指定设备
+
+# 优化器
+learning_rate = 1e-2  # 设置学习率为 0.01
+optimizer = torch.optim.SGD(mzj.parameters(), lr=learning_rate)  # 使用随机梯度下降优化模型参数
+
+# 设置训练网络的一些参数
+# 记录训练的次数
+total_train_step = 0
+# 记录测试的次数
+total_test_step = 0
+# 训练的轮数
+epoch = 10  # 将整个训练集迭代 10 次
+
+# 创建 TensorBoard 日志记录器，用于可视化损失与准确率
+writer = SummaryWriter("./logs_train_gpu")  # 输出日志目录为 ./logs_train
+
+for i in range(epoch):  # 外层循环，遍历每一个训练轮次 epoch
+    print("-------第 {} 轮训练开始-------".format(i+1))
+
+    # 切换模型到训练模式（启用 dropout/batchnorm 等）
+    mzj.train()  # 调用 train() 方法
+    for data in train_dataloader:  # 遍历训练数据的每个批次
+        imgs, targets = data            # 解包当前批次：imgs 为图像张量 (B,3,32,32)，targets 为标签 (B)
+        imgs = imgs.to(device)        # 将输入图像张量移动到指定设备
+        targets = targets.to(device)  # 将目标标签张量移动到指定设备
+        outputs = mzj(imgs)             # 前向传播得到 logits 输出 (B,10)
+        loss = loss_fn(outputs, targets)  # 计算当前批次的交叉熵损失
+
+        # 反向传播与参数更新
+        optimizer.zero_grad()  # 清空上一批次残留的梯度
+        loss.backward()        # 反向传播计算当前梯度
+        optimizer.step()       # 使用优化器根据梯度更新参数
+
+        total_train_step = total_train_step + 1  # 训练步计数器加 1
+        if total_train_step % 100 == 0:  # 每 100 个批次打印一次当前损失并记录
+            print("训练次数：{}, Loss: {}".format(total_train_step, loss.item()))  # 打印当前训练次数与对应损失
+            writer.add_scalar("train_loss", loss.item(), total_train_step)       # 写入 TensorBoard 标量（训练损失）
+
+    # 进入测试阶段，不更新参数
+    mzj.eval()  # 切换为评估模式（禁用 dropout/batchnorm 的训练行为）
+    total_test_loss = 0  # 初始化本轮测试集总损失累加器
+    total_accuracy = 0   # 初始化本轮测试集总正确样本数
+    with torch.no_grad():  # 关闭梯度计算，节省显存与加速推理
+        for data in test_dataloader:  # 遍历测试集每一个批次
+            imgs, targets = data               # 获取测试批次数据与标签
+            imgs = imgs.to(device)        # 将输入图像张量移动到指定设备
+            targets = targets.to(device)  # 将目标标签张量移动到指定设备
+            outputs = mzj(imgs)                # 前向传播得到输出 logits
+            loss = loss_fn(outputs, targets)   # 计算该批次的损失
+            total_test_loss = total_test_loss + loss.item()  # 累加损失（使用标量值）
+            accuracy = (outputs.argmax(1) == targets).sum().item()  # 计算该批次预测正确的样本数并转为 Python 标量
+            total_accuracy = total_accuracy + accuracy       # 累加所有批次的正确样本数
+
+    print("整体测试集上的Loss: {}".format(total_test_loss))  # 打印整个测试集的总损失（未取平均）
+    print("整体测试集上的正确率: {}".format(total_accuracy/test_data_size))  # 打印准确率（正确样本数/总样本数）
+    writer.add_scalar("test_loss", total_test_loss, total_test_step)            # 记录测试损失到 TensorBoard
+    writer.add_scalar("test_accuracy", total_accuracy/test_data_size, total_test_step)  # 记录测试准确率
+    total_test_step = total_test_step + 1  # 测试轮计数器加 1
+
+    torch.save(mzj, "mozijie_{}.pth".format(i))  # 保存当前轮次的整个模型对象到文件（包含结构+参数）
+    print("模型已保存")  # 打印保存提示
+
+writer.close()  # 关闭 SummaryWriter，确保缓冲数据写入磁盘
+
+```
+
+<img src="computer_vision_notebook/xiaotudui_Pytorch_Tutorial/online_notes.assets/image-20251123233648758.png" alt="image-20251123233648758" style="zoom:80%;" />
+
+
+
+## 21. 使用训练好的模型测试
+
+```python
+#!/usr/bin/env python
+# -*- coding: UTF-8 -*-
+'''
+@Project ：xiaotudui-pytorch 
+@File    ：21.test.py
+@IDE     ：PyCharm 
+@Author  ：mozijie
+@Date    ：2025/11/23 下午11:50 
+'''
+import torch  # 导入 PyTorch 主包，提供张量与自动求导等功能
+import torchvision  # 导入 torchvision，包含数据集与图像处理工具
+from torch import nn  # 导入 nn（neural network）模块用于构建网络结构与层
+from PIL import Image
+
+# 设置设备（GPU 优先，否则使用 CPU）
+device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+print("Using device:", device)
+
+class MozijieNet(nn.Module):  # 定义一个自定义的神经网络模型类，继承 nn.Module
+    def __init__(self):  # 构造函数，在实例化时初始化网络结构
+        super(MozijieNet, self).__init__()  # 调用父类构造函数，注册参数与子模块
+        self.model = nn.Sequential(  # 使用 nn.Sequential 搭建前馈网络，按顺序执行各层
+            nn.Conv2d(3, 32, 5, 1, 2),      # 卷积层1：输入通道3(RGB)，输出通道32，卷积核5，步长1，padding=2 保持尺寸；输出 (B,32,32,32)
+            nn.MaxPool2d(2),                # 最大池化1：核大小2，步长2，空间尺寸减半；输出 (B,32,16,16)
+            nn.Conv2d(32, 32, 5, 1, 2),     # 卷积层2：输入通道32，输出通道32，保持空间尺寸；输出 (B,32,16,16)
+            nn.MaxPool2d(2),                # 最大池化2：再次减半；输出 (B,32,8,8)
+            nn.Conv2d(32, 64, 5, 1, 2),     # 卷积层3：通道数升至64，尺寸保持；输出 (B,64,8,8)
+            nn.MaxPool2d(2),                # 最大池化3：尺寸减半；输出 (B,64,4,4)
+            nn.Flatten(),                   # 展平层：将 (B,64,4,4) 展开为 (B, 64*4*4=1024)
+            nn.Linear(64*4*4, 64),          # 全连接层1：输入1024特征，输出64，进行特征抽象
+            nn.Linear(64, 10)               # 全连接层2：输入64，输出10，对应10个类别（如 CIFAR10）
+        )
+
+    def forward(self, x):  # 定义前向传播逻辑，输入张量 x 经网络得到输出
+        x = self.model(x)  # 调用顺序容器执行各层计算
+        return x
+
+
+# 创建网络模型
+mzj = MozijieNet()  # 得到一个网络对象，用于后续训练与推理
+mzj = mzj.to(device)  # 将模型移动到指定设备（GPU 或 CPU）
+
+
+test_img_path = rf"test_img/bird.png"  # 测试图像路径
+
+img = Image.open(test_img_path)  # 使用 PIL 库打开图像文件
+img = img.convert('RGB')    # 转换为 RGB 模式，确保有3个通道
+transform = torchvision.transforms.Compose(
+    [torchvision.transforms.Resize((32,32)),  # 32x32大小的PIL Image
+    torchvision.transforms.ToTensor()])  # 转为Tensor数据类型
+img = transform(img)
+print(img.shape)
+
+img = torch.reshape(img,(1,3,32,32))  # 调整张量形状以匹配模型输入要求（批量大小为1，3通道，32x32尺寸）
+img = img.to(device)  # 将图像张量移动到指定设备（GPU 或 CPU）
+print(img.shape)
+
+model = torch.load(r"mozijie_9.pth",weights_only=False,map_location=device)  # 加载保存的模型参数文件
+model = model.to(device)  # 将模型移动到指定设备（GPU 或 CPU）
+model.eval()  # 模型转化为测试类型
+with torch.no_grad():  # 节约内存和性能
+    output = model(img) # 前向传播，得到模型输出
+
+print(output.argmax(1)) # 输出预测类别索引
+
+
+```
+
+<img src="computer_vision_notebook/xiaotudui_Pytorch_Tutorial/online_notes.assets/image-20251124000708865.png" alt="image-20251124000708865" style="zoom:80%;" />
+
+<img src="computer_vision_notebook/xiaotudui_Pytorch_Tutorial/online_notes.assets/image-20251124000751722.png" alt="image-20251124000751722" style="zoom:80%;" />
+
+
+
+**这里我们可以看到第二类是bird，鸟，说明我们预测正确**
+
+
+
+## 22. 看看开源项目
+
+略
 
 
 
