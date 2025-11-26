@@ -525,7 +525,7 @@ if __name__ == '__main__':
 
 <img src="computer_vision_notebook/xiaotudui_Pytorch_Tutorial/离线版本个人笔记.assets/image-20251117133639180.png" alt="image-20251117133639180" style="zoom:80%;" />
 
-## 9. 卷积层函数conv2d
+## 9. 卷积操作
 
 [torch.nn — PyTorch 1.10 documentation][torch.nn _ PyTorch 1.10 documentation 1]
 
