@@ -18,15 +18,19 @@
 >
 > 涉及机器学习、深度学习、PyTorch、opencv、yolo、tensorrt-yolo、TensorRT
 
+2026.2——至今 长鑫存储技术有限公司-TD Intelligent Process Intern-大模型方向（实习）
+
+> 由于公司要求及涉及竞业协议，工作内容保密
+
 ## 3.技术栈
 
 **Python相关技术栈：** 
 
-熟悉 Python 编程语言，具备扎实的编程基础与良好的代码风格，能够使用 PySide6 开发图形用户界面（GUI）应用；熟悉Python web后端开发，掌握 Django 框架进行后端服务构建；
+熟悉 Python 编程语言，具备扎实的编程基础与良好的代码风格，能够使用 PySide6 开发图形用户界面（GUI）应用；熟悉Python web后端开发，掌握 Django 框架进行后端服务构建,掌握 Fastapi 框架进行后端服务构建；
 
 熟悉 机器学习与深度学习相关框架，包括 Scikit-learn、PyTorch，掌握 Python 数据分析与可视化常用库，包括 Pandas、Matplotlib 等；
 
-掌握常用神经网络（CNN/GNN等）的实现与改进，掌握常用分类、目标检测及图像分割模型(yolov11/MobileNetV3/ResNet/EfficientNetV2/U-Net等)的原理、实现、源码优化；熟悉 YOLO 系列目标检测模型，具备基于 TensorRT 的模型加速部署经验。
+掌握常用神经网络（CNN/RNN等）的实现与改进，掌握常用分类、目标检测及图像分割模型(yolov11/MobileNetV3/ResNet/U-Net/VIT等)的原理、实现、源码优化；掌握常用大模型(transformer，bert等)的原理、实现、源码优化。熟悉 YOLO 系列目标检测模型，具备基于 TensorRT 的模型加速部署经验。
 
 熟悉计算机视觉库 OpenCV，具备实际图像处理与算法开发经验；
 
