@@ -18,9 +18,9 @@
 >
 > 涉及机器学习、深度学习、PyTorch、opencv、yolo、tensorrt-yolo、TensorRT
 
-2026.2——至今 长鑫存储技术有限公司-TD Intelligent Process Intern-图像算法实习生
+2026.2——至今 长鑫存储技术有限公司-TD Intelligent Process Intern-智能研发算法实习生
 
-> 主要从事半导体图像算法研发工作
+> 主要从事半导体智能研发、半导体图像算法研发工作
 
 ## 3.英语能力和技术栈
 
