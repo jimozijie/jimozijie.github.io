@@ -82,60 +82,82 @@
 <!--图片放大插件-->
 <script src="node_modules/medium-zoom/dist/medium-zoom.min.js"></script>
 
-<!-- Giscus 评论系统 -->
-<script src="https://giscus.app/client.js"
-        data-repo="jimozijie/jimozijie.github.io"
-        data-repo-id="R_kgDOOtMfxg"
-        data-category="Announcements"
-        data-category-id="DIC_kwDOOtMfxs4DAC15"
-        data-mapping="pathname"
-        data-strict="0"
-        data-reactions-enabled="1"
-        data-emit-metadata="0"
-        data-input-position="bottom"
-        data-theme="preferred_color_scheme"
-        data-lang="zh-CN"
-        crossorigin="anonymous"
-        async>
-</script>
-
-<!-- Docsify Giscus 插件：每次路由切换时重新加载评论 -->
+<!-- Docsify Giscus 评论插件 -->
 <script>
-  // 将 giscus 移入 docsify 内容区域的容器
-  function moveGiscusToContent() {
-    var giscus = document.querySelector('.giscus');
+  var giscusConfig = {
+    repo: 'jimozijie/jimozijie.github.io',
+    repoId: 'R_kgDOOtMfxg',
+    category: 'Announcements',
+    categoryId: 'DIC_kwDOOtMfxs4DAC15',
+    mapping: 'pathname',
+    strict: '0',
+    reactionsEnabled: '1',
+    emitMetadata: '0',
+    inputPosition: 'bottom',
+    theme: 'preferred_color_scheme',
+    lang: 'zh-CN',
+  };
+
+  var giscusScriptLoaded = false;
+
+  function loadGiscus() {
+    // 移除旧的 giscus 容器（如果有）
+    var old = document.getElementById('giscus-container');
+    if (old) old.remove();
+
     var content = document.querySelector('.markdown-section');
-    if (giscus && content) {
-      content.appendChild(giscus);
+    if (!content) return;
+
+    // 创建新容器
+    var container = document.createElement('div');
+    container.id = 'giscus-container';
+    content.appendChild(container);
+
+    if (!giscusScriptLoaded) {
+      // 首次加载：插入 giscus script
+      var script = document.createElement('script');
+      script.src = 'https://giscus.app/client.js';
+      script.setAttribute('data-repo', giscusConfig.repo);
+      script.setAttribute('data-repo-id', giscusConfig.repoId);
+      script.setAttribute('data-category', giscusConfig.category);
+      script.setAttribute('data-category-id', giscusConfig.categoryId);
+      script.setAttribute('data-mapping', giscusConfig.mapping);
+      script.setAttribute('data-strict', giscusConfig.strict);
+      script.setAttribute('data-reactions-enabled', giscusConfig.reactionsEnabled);
+      script.setAttribute('data-emit-metadata', giscusConfig.emitMetadata);
+      script.setAttribute('data-input-position', giscusConfig.inputPosition);
+      script.setAttribute('data-theme', giscusConfig.theme);
+      script.setAttribute('data-lang', giscusConfig.lang);
+      script.setAttribute('crossorigin', 'anonymous');
+      script.async = true;
+      container.appendChild(script);
+      giscusScriptLoaded = true;
+    } else {
+      // 后续路由切换：把 giscus 移入新容器，并通知更新页面
+      var giscus = document.querySelector('.giscus');
+      if (giscus) {
+        container.appendChild(giscus);
+      }
+      // 通过 postMessage 切换到新页面的评论
+      setTimeout(function () {
+        var giscusFrame = document.querySelector('iframe.giscus-frame');
+        if (giscusFrame) {
+          giscusFrame.contentWindow.postMessage({
+            giscus: {
+              setConfig: {
+                term: location.pathname,
+              }
+            }
+          }, 'https://giscus.app');
+        }
+      }, 300);
     }
   }
 
-  // 初次加载
-  window.addEventListener('load', function () {
-    setTimeout(moveGiscusToContent, 1500);
-  });
-
-  // Docsify 路由切换时重新加载 giscus
-  var giscusLoaded = false;
+  // Docsify 插件：每次路由完成后加载评论
   window.$docsify.plugins = (window.$docsify.plugins || []).concat(function (hook) {
-    hook.afterEach(function (html) {
-      if (giscusLoaded) {
-        // 通知 giscus 切换到新页面
-        setTimeout(function () {
-          var giscusFrame = document.querySelector('iframe.giscus-frame');
-          if (giscusFrame) {
-            giscusFrame.contentWindow.postMessage({
-              giscus: {
-                setConfig: {
-                  term: location.pathname,
-                }
-              }
-            }, 'https://giscus.app');
-          }
-          moveGiscusToContent();
-        }, 500);
-      }
-      giscusLoaded = true;
+    hook.doneEach(function () {
+      loadGiscus();
     });
   });
 </script>
