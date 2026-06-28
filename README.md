@@ -10,6 +10,10 @@
 
 如果能对你有所帮助，十分荣幸！！
 
+---
+
+> 觉得有帮助？去 GitHub 给个 Star 吧！[⭐ Star 本站](https://github.com/jimozijie/jimozijie.github.io)
+
 
 > 点击左侧侧边栏查看文章
 >
