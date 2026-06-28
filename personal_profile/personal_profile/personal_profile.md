@@ -26,7 +26,7 @@
 
 **通过CET-6，良好的英文读写能力**
 
-**Python相关技术栈：** 
+**Python相关技术栈：**
 
 熟悉 Python 编程语言，具备扎实的编程基础与良好的代码风格，能够使用 PySide6 开发图形用户界面（GUI）应用；熟悉Python web后端开发，掌握 Django、Fastapi 、Flask框架进行后端服务构建；
 
@@ -36,9 +36,7 @@
 
 熟悉计算机视觉库 OpenCV，具备实际图像处理与算法开发经验；
 
-
-
-**Java相关技术栈：** 
+**Java相关技术栈：**
 
 熟悉 Java 编程语言基础，掌握面向对象程序设计思想与常用数据结构；熟悉 Java Web 相关开发技术，了解 Servlet、JSP 等基本组件；
 
@@ -54,9 +52,9 @@ EI会议论文1篇
 
 ## 5.竞赛/获奖经历
 
-2025.10——2025.11 安徽大学校级研究生一等奖学金 
+2025.10——2025.11 安徽大学校级研究生一等奖学金
 
-2023.5——2023.6 美国大学生数学建模竞赛(H奖)  队长 
+2023.5——2023.6 美国大学生数学建模竞赛(H奖)  队长
 
 2023.3——2023.4 中国高校计算机大赛-团体程序设计天梯赛 省一(全省第4) 核心成员
 
@@ -66,11 +64,57 @@ EI会议论文1篇
 
 2021.10——2021.10 海南大学校级三好学生+优秀学生干部+三等奖学金
 
+---
 
+<!-- 动画时间轴 -->
+<div class="timeline-section">
+<h3>成长轨迹</h3>
+<div class="timeline">
+  <div class="timeline-item">
+    <div class="timeline-dot"></div>
+    <div class="timeline-content">
+      <span class="timeline-date">2020.9</span>
+      <h4>海南大学 · 本科</h4>
+      <p>网络工程，开启编程之路</p>
+    </div>
+  </div>
+  <div class="timeline-item">
+    <div class="timeline-dot"></div>
+    <div class="timeline-content">
+      <span class="timeline-date">2024.3</span>
+      <h4>科大讯飞 · 实习</h4>
+      <p>智能语音研发部，助理软件开发工程师</p>
+    </div>
+  </div>
+  <div class="timeline-item">
+    <div class="timeline-dot"></div>
+    <div class="timeline-content">
+      <span class="timeline-date">2024.7</span>
+      <h4>数自星智能 · 工作</h4>
+      <p>AOI视觉检测算法、深度学习模型部署</p>
+    </div>
+  </div>
+  <div class="timeline-item">
+    <div class="timeline-dot"></div>
+    <div class="timeline-content">
+      <span class="timeline-date">2025.9</span>
+      <h4>安徽大学 · 硕士</h4>
+      <p>人工智能，联合培养</p>
+    </div>
+  </div>
+  <div class="timeline-item">
+    <div class="timeline-dot"></div>
+    <div class="timeline-content">
+      <span class="timeline-date">2026.2</span>
+      <h4>长鑫存储 · 实习</h4>
+      <p>智能研发算法实习生，半导体图像算法</p>
+    </div>
+  </div>
+</div>
+</div>
 
-
-
-
-
-
-
+<!-- 技能雷达图 -->
+<div class="radar-section">
+<h3>技能图谱</h3>
+<div id="radar-chart" style="width:100%;max-width:500px;margin:0 auto;height:400px;"></div>
+</div>

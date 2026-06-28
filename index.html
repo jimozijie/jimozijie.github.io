@@ -104,6 +104,73 @@
       from { opacity: 0; transform: translateY(20px); }
       to   { opacity: 1; transform: translateY(0); }
     }
+
+    /* 个人简介 - 时间轴 */
+    .timeline-section { margin: 30px 0; }
+    .timeline { position: relative; padding: 10px 0; }
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 18px;
+      top: 0;
+      bottom: 0;
+      width: 3px;
+      background: linear-gradient(to bottom, #74b9ff, #0984e3);
+      border-radius: 2px;
+    }
+    .timeline-item {
+      position: relative;
+      margin: 20px 0;
+      padding-left: 50px;
+      opacity: 0;
+      transform: translateX(-20px);
+      animation: slideIn 0.5s ease forwards;
+    }
+    .timeline-item:nth-child(1) { animation-delay: 0.1s; }
+    .timeline-item:nth-child(2) { animation-delay: 0.25s; }
+    .timeline-item:nth-child(3) { animation-delay: 0.4s; }
+    .timeline-item:nth-child(4) { animation-delay: 0.55s; }
+    .timeline-item:nth-child(5) { animation-delay: 0.7s; }
+    @keyframes slideIn {
+      to { opacity: 1; transform: translateX(0); }
+    }
+    .timeline-dot {
+      position: absolute;
+      left: 12px;
+      top: 6px;
+      width: 15px;
+      height: 15px;
+      border-radius: 50%;
+      background: #0984e3;
+      border: 3px solid #fff;
+      box-shadow: 0 0 0 3px #74b9ff;
+    }
+    .timeline-content {
+      background: #f8f9fa;
+      border-radius: 8px;
+      padding: 12px 18px;
+      border-left: 4px solid #0984e3;
+      transition: box-shadow 0.3s, transform 0.3s;
+    }
+    .timeline-content:hover {
+      box-shadow: 0 4px 15px rgba(9,132,227,0.2);
+      transform: translateX(4px);
+    }
+    .timeline-date {
+      display: inline-block;
+      background: linear-gradient(135deg, #74b9ff, #0984e3);
+      color: #fff;
+      font-size: 12px;
+      padding: 2px 10px;
+      border-radius: 12px;
+      margin-bottom: 6px;
+    }
+    .timeline-content h4 { margin: 4px 0; color: #2d3436; }
+    .timeline-content p { margin: 2px 0 0; color: #636e72; font-size: 14px; }
+
+    /* 个人简介 - 雷达图 */
+    .radar-section { margin: 30px 0; }
+    .radar-section h3 { text-align: center; }
   </style>
 </head>
 
@@ -126,6 +193,24 @@
     maxLevel: 4,
     // 自定义侧边栏后默认不会再生成目录，设置生成目录的最大层级（建议配置为2-4）
     subMaxLevel: 2,
+    // 不蒜子访客统计
+    plugins: [
+      function (hook) {
+        var footer = [
+          '<hr/>',
+          '<footer style="text-align:center;font-size:13px;color:#999;">',
+          '<span id="busuanzi_container_site_pv">本站总访问量 <span id="busuanzi_value_site_pv"></span> 次</span>',
+          ' | ',
+          '<span id="busuanzi_container_site_uv">本站总访客数 <span id="busuanzi_value_site_uv"></span> 人</span>',
+          ' | ',
+          '<span id="busuanzi_container_page_pv">本文阅读量 <span id="busuanzi_value_page_pv"></span> 次</span>',
+          '</footer>'
+        ].join('');
+        hook.afterEach(function (html) {
+          return html + footer;
+        });
+      }
+    ],
     // 小屏设备下合并导航栏到侧边栏
     mergeNavbar: true,
     /*搜索相关设置*/
@@ -173,6 +258,8 @@
 
 <!--图片放大插件-->
 <script src="node_modules/medium-zoom/dist/medium-zoom.min.js"></script>
+<!--不蒜子访客统计-->
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 
 <!-- Docsify Giscus 评论插件 -->
 <script>
@@ -246,12 +333,58 @@
     }
   }
 
-  // Docsify 插件：每次路由完成后加载评论
+  // Docsify 插件：每次路由完成后加载评论 + 雷达图
   window.$docsify.plugins = (window.$docsify.plugins || []).concat(function (hook) {
     hook.doneEach(function () {
       loadGiscus();
+      initRadarChart();
     });
   });
+</script>
+
+<!-- ECharts 雷达图 -->
+<script src="https://cdn.jsdelivr.net/npm/echarts@5/dist/echarts.min.js"></script>
+<script>
+  var radarChart = null;
+  function initRadarChart() {
+    var dom = document.getElementById('radar-chart');
+    if (!dom || dom.offsetWidth === 0) return;
+
+    if (radarChart) {
+      radarChart.dispose();
+    }
+    radarChart = echarts.init(dom);
+    radarChart.setOption({
+      tooltip: { trigger: 'item' },
+      radar: {
+        indicator: [
+          { name: 'Python', max: 100 },
+          { name: '深度学习/PyTorch', max: 100 },
+          { name: '计算机视觉/OpenCV', max: 100 },
+          { name: '目标检测/YOLO', max: 100 },
+          { name: 'Java/SpringBoot', max: 100 },
+          { name: '模型部署/TensorRT', max: 100 },
+          { name: '数据分析/可视化', max: 100 },
+          { name: 'Web后端开发', max: 100 }
+        ],
+        shape: 'circle',
+        splitNumber: 5,
+        axisName: { color: '#555', fontSize: 12 },
+        splitArea: { areaStyle: { color: ['rgba(116,185,255,0.05)', 'rgba(116,185,255,0.1)'] } }
+      },
+      series: [{
+        type: 'radar',
+        data: [{
+          value: [92, 88, 85, 90, 72, 80, 78, 75],
+          name: '技能掌握度',
+          areaStyle: { color: 'rgba(9,132,227,0.25)' },
+          lineStyle: { color: '#0984e3', width: 2 },
+          itemStyle: { color: '#0984e3' }
+        }]
+      }]
+    });
+    window.addEventListener('resize', function () { radarChart && radarChart.resize(); });
+  }
 </script>
 </body>
 

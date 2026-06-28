@@ -1,6 +1,6 @@
 <!-- _coverpage.md 封面 -->
 
-![logo](res/pictures/profile_picture.jpg)
+<img class="avatar" src="res/pictures/profile_picture.jpg" />
 
 # 墨子杰编程 <small>Wiki</small>
 
