@@ -15,9 +15,16 @@
   <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/docsify/lib/themes/vue.css">
   <!-- 封面页自定义样式 -->
   <style>
-    /* 封面背景渐变 - 更淡的蓝 + 更明显的渐变 */
+    /* 封面背景渐变 - 更淡的蓝 + 更明显的渐变（用伪元素实现，让 canvas 粒子在渐变之上） */
     .cover.show {
-      background: linear-gradient(135deg, #d6eef8 0%, #4a9edb 50%, #1a6fb5 100%) !important;
+      background: transparent !important;
+    }
+    .cover.show::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: linear-gradient(135deg, #d6eef8 0%, #4a9edb 50%, #1a6fb5 100%);
+      z-index: 0;
     }
 
     /* 头像圆形 + 边框 */
@@ -171,10 +178,137 @@
     /* 个人简介 - 雷达图 */
     .radar-section { margin: 30px 0; }
     .radar-section h3 { text-align: center; }
+
+    /* ===== 封面页背景粒子 canvas ===== */
+    .cover.show {
+      position: relative;
+      z-index: 1;
+    }
+    #cover-particles {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 1;
+    }
+    .cover.show .cover-main {
+      position: relative;
+      z-index: 2;
+    }
+
+    /* ===== 右侧悬浮工具栏 ===== */
+    #floating-toolbar {
+      position: fixed;
+      right: 20px;
+      top: 50%;
+      transform: translateY(-50%);
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      z-index: 9997;
+      opacity: 0;
+      transition: opacity 0.5s;
+    }
+    #floating-toolbar.visible {
+      opacity: 1;
+    }
+    .ft-btn {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.92);
+      border: 1px solid rgba(0,0,0,0.06);
+      box-shadow: 0 3px 12px rgba(0,0,0,0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 17px;
+      color: #4a9edb;
+      transition: all 0.25s ease;
+      position: relative;
+    }
+    .ft-btn:hover {
+      background: #4a9edb;
+      color: #fff;
+      transform: scale(1.12);
+      box-shadow: 0 5px 18px rgba(74,158,219,0.35);
+    }
+    .ft-btn[title]:hover::after {
+      content: attr(title);
+      position: absolute;
+      right: 52px;
+      white-space: nowrap;
+      background: rgba(0,0,0,0.75);
+      color: #fff;
+      padding: 4px 10px;
+      border-radius: 4px;
+      font-size: 12px;
+      pointer-events: none;
+    }
+
+    /* ===== 封面页数据看板 ===== */
+    #cover-stats {
+      position: fixed;
+      bottom: 28px;
+      left: 28px;
+      display: flex;
+      gap: 14px;
+      z-index: 2;
+      opacity: 0;
+      transition: opacity 0.8s 1s;
+    }
+    #cover-stats.visible { opacity: 1; }
+    .stat-card {
+      background: rgba(255,255,255,0.18);
+      backdrop-filter: blur(6px);
+      border: 1px solid rgba(255,255,255,0.25);
+      border-radius: 12px;
+      padding: 10px 18px;
+      text-align: center;
+      color: #fff;
+      min-width: 86px;
+    }
+    .stat-card .stat-num {
+      font-size: 20px;
+      font-weight: 700;
+      line-height: 1.2;
+    }
+    .stat-card .stat-label {
+      font-size: 12px;
+      opacity: 0.85;
+      margin-top: 2px;
+    }
+
+    /* 笔记页工具栏样式适配 */
+    body:not(.cover-page) #floating-toolbar .ft-btn {
+      background: rgba(255,255,255,0.95);
+      border: 1px solid rgba(0,0,0,0.08);
+      box-shadow: 0 3px 12px rgba(0,0,0,0.12);
+    }
   </style>
 </head>
 
 <body>
+<!-- 封面背景粒子（初始占位，JS 会把它移入 .cover.show） -->
+<canvas id="cover-particles"></canvas>
+
+<!-- 右侧悬浮工具栏 -->
+<div id="floating-toolbar">
+  <div class="ft-btn" id="ft-font" title="切换字体">A</div>
+  <div class="ft-btn" id="ft-random" title="随机笔记">🎲</div>
+  <div class="ft-btn" id="ft-top" title="回到顶部">↑</div>
+</div>
+
+<!-- 封面数据看板 -->
+<div id="cover-stats">
+  <div class="stat-card"><div class="stat-num" id="stat-notes">0</div><div class="stat-label">篇笔记</div></div>
+  <div class="stat-card"><div class="stat-num" id="stat-days">0</div><div class="stat-label">运行天</div></div>
+  <div class="stat-card"><div class="stat-num" id="stat-words">0</div><div class="stat-label">总字数</div></div>
+</div>
+
 <!-- 定义加载时候的动作 -->
 <div id="app">加载中...</div>
 <script>
@@ -241,7 +375,7 @@
 <script src="//cdn.jsdelivr.net/npm/prismjs@1/components/prism-sql.js"></script>
 
 <!--图片放大插件-->
-<script src="node_modules/medium-zoom/dist/medium-zoom.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/medium-zoom@1/dist/medium-zoom.min.js"></script>
 
 <!-- Docsify Giscus 评论插件 -->
 <script>
@@ -262,17 +396,17 @@
   var giscusScriptLoaded = false;
 
   function loadGiscus() {
-    // 移除旧的 giscus 容器（如果有）
-    var old = document.getElementById('giscus-container');
-    if (old) old.remove();
-
-    var content = document.querySelector('.markdown-section');
+    // 把 giscus 容器挂在固定的 .content 上，避免 SPA 路由切换时 iframe 被重建导致 ERR_ABORTED
+    var content = document.querySelector('.content');
     if (!content) return;
 
-    // 创建新容器
-    var container = document.createElement('div');
-    container.id = 'giscus-container';
-    content.appendChild(container);
+    var container = document.getElementById('giscus-container');
+    if (!container) {
+      container = document.createElement('div');
+      container.id = 'giscus-container';
+      container.style.marginTop = '40px';
+      content.appendChild(container);
+    }
 
     if (!giscusScriptLoaded) {
       // 首次加载：插入 giscus script
@@ -293,57 +427,50 @@
       script.async = true;
       container.appendChild(script);
       giscusScriptLoaded = true;
-    } else {
-      // 后续路由切换：把 giscus 移入新容器，并通知更新页面
-      var giscus = document.querySelector('.giscus');
-      if (giscus) {
-        container.appendChild(giscus);
-      }
-      // 通过 postMessage 切换到新页面的评论
-      setTimeout(function () {
-        var giscusFrame = document.querySelector('iframe.giscus-frame');
-        if (giscusFrame) {
-          giscusFrame.contentWindow.postMessage({
-            giscus: {
-              setConfig: {
-                term: location.pathname,
-              }
-            }
-          }, 'https://giscus.app');
-        }
-      }, 300);
     }
+
+    // 通过 postMessage 切换到当前页面的评论
+    setTimeout(function () {
+      var giscusFrame = document.querySelector('iframe.giscus-frame');
+      if (giscusFrame && giscusFrame.contentWindow) {
+        giscusFrame.contentWindow.postMessage({
+          giscus: {
+            setConfig: {
+              term: location.pathname,
+            }
+          }
+        }, 'https://giscus.app');
+      }
+    }, 300);
   }
 
-  // 不蒜子访客统计：每次路由切换后插入 footer 并重新加载脚本
+  // 不蒜子访客统计：只在首次加载脚本，把 footer 挂在固定 .content 上避免重建
+  var busuanziLoaded = false;
   function loadBusuanzi() {
-    var section = document.querySelector('.markdown-section');
-    if (!section) return;
+    var content = document.querySelector('.content');
+    if (!content) return;
 
-    // 移除旧的 footer
-    var oldFooter = document.getElementById('busuanzi-footer');
-    if (oldFooter) oldFooter.remove();
+    var footer = document.getElementById('busuanzi-footer');
+    if (!footer) {
+      footer = document.createElement('div');
+      footer.id = 'busuanzi-footer';
+      footer.innerHTML = '<hr/><footer style="text-align:center;font-size:13px;color:#999;">' +
+        '<span id="busuanzi_container_site_pv">本站总访问量 <span id="busuanzi_value_site_pv"></span> 次</span>' +
+        ' | ' +
+        '<span id="busuanzi_container_site_uv">本站总访客数 <span id="busuanzi_value_site_uv"></span> 人</span>' +
+        '</footer>';
+      content.appendChild(footer);
+    }
 
-    // 插入新的 footer
-    var footer = document.createElement('div');
-    footer.id = 'busuanzi-footer';
-    footer.innerHTML = '<hr/><footer style="text-align:center;font-size:13px;color:#999;">' +
-      '<span id="busuanzi_container_site_pv">本站总访问量 <span id="busuanzi_value_site_pv"></span> 次</span>' +
-      ' | ' +
-      '<span id="busuanzi_container_site_uv">本站总访客数 <span id="busuanzi_value_site_uv"></span> 人</span>' +
-      ' | ' +
-      '<span id="busuanzi_container_page_pv">本文阅读量 <span id="busuanzi_value_page_pv"></span> 次</span>' +
-      '</footer>';
-    section.appendChild(footer);
-
-    // 移除旧的不蒜子脚本，重新加载
-    var oldScript = document.getElementById('busuanzi-script');
-    if (oldScript) oldScript.remove();
-    var script = document.createElement('script');
-    script.id = 'busuanzi-script';
-    script.async = true;
-    script.src = '//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js';
-    document.body.appendChild(script);
+    // 首次加载不蒜子脚本；之后复用，不再重复创建（避免 ERR_ABORTED）
+    if (!busuanziLoaded) {
+      busuanziLoaded = true;
+      var script = document.createElement('script');
+      script.id = 'busuanzi-script';
+      script.async = true;
+      script.src = '//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js';
+      document.body.appendChild(script);
+    }
   }
 
   // Docsify 插件：每次路由完成后加载评论 + 雷达图 + 不蒜子
@@ -371,19 +498,21 @@
     radarChart.setOption({
       tooltip: { trigger: 'item' },
       radar: {
+        center: ['50%', '55%'],
+        radius: '58%',
         indicator: [
           { name: 'Python', max: 100 },
-          { name: '深度学习/PyTorch', max: 100 },
-          { name: '计算机视觉/OpenCV', max: 100 },
-          { name: '目标检测/YOLO', max: 100 },
-          { name: 'Java/SpringBoot', max: 100 },
-          { name: '模型部署/TensorRT', max: 100 },
-          { name: '数据分析/可视化', max: 100 },
-          { name: 'Web后端开发', max: 100 }
+          { name: '深度学习\nPyTorch', max: 100 },
+          { name: '计算机视觉\nOpenCV', max: 100 },
+          { name: '目标检测\nYOLO', max: 100 },
+          { name: 'Java\nSpringBoot', max: 100 },
+          { name: '模型部署\nTensorRT', max: 100 },
+          { name: '数据分析\n可视化', max: 100 },
+          { name: 'Web后端', max: 100 }
         ],
         shape: 'circle',
         splitNumber: 5,
-        axisName: { color: '#555', fontSize: 12 },
+        axisName: { color: '#555', fontSize: 12, overflow: 'break' },
         splitArea: { areaStyle: { color: ['rgba(116,185,255,0.05)', 'rgba(116,185,255,0.1)'] } }
       },
       series: [{
@@ -399,6 +528,226 @@
     });
     window.addEventListener('resize', function () { radarChart && radarChart.resize(); });
   }
+</script>
+
+<!-- ===== 封面背景粒子动画 ===== -->
+<script>
+  (function () {
+    var canvas = document.getElementById('cover-particles');
+    if (!canvas) return;
+    var ctx = canvas.getContext('2d');
+    var particles = [];
+    var maxParticles = 60;
+    var connectionDist = 120;
+    var mouse = { x: null, y: null };
+
+    function moveCanvasIntoCover() {
+      var cover = document.querySelector('.cover.show');
+      if (cover && canvas.parentNode !== cover) {
+        cover.insertBefore(canvas, cover.firstChild);
+      }
+    }
+
+    function resize() {
+      var cover = canvas.parentElement;
+      if (cover && cover.classList.contains('cover')) {
+        canvas.width = cover.offsetWidth;
+        canvas.height = cover.offsetHeight;
+      } else {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+      }
+    }
+
+    // 初始化和路由变化时都把 canvas 移入 cover
+    moveCanvasIntoCover();
+    window.$docsify.plugins = (window.$docsify.plugins || []).concat(function (hook) {
+      hook.doneEach(moveCanvasIntoCover);
+    });
+    window.addEventListener('resize', resize);
+    resize();
+
+    window.addEventListener('mousemove', function (e) {
+      mouse.x = e.clientX;
+      mouse.y = e.clientY;
+    });
+    window.addEventListener('mouseleave', function () {
+      mouse.x = null;
+      mouse.y = null;
+    });
+
+    for (var i = 0; i < maxParticles; i++) {
+      particles.push({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        vx: (Math.random() - 0.5) * 0.6,
+        vy: (Math.random() - 0.5) * 0.6,
+        r: Math.random() * 2 + 1.5
+      });
+    }
+
+    function draw() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      for (var i = 0; i < particles.length; i++) {
+        var p = particles[i];
+        p.x += p.vx;
+        p.y += p.vy;
+        if (p.x < 0 || p.x > canvas.width) p.vx *= -1;
+        if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
+
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+        ctx.fillStyle = 'rgba(255,255,255,0.55)';
+        ctx.fill();
+
+        // 鼠标附近粒子高亮
+        if (mouse.x !== null) {
+          var dMouse = Math.hypot(p.x - mouse.x, p.y - mouse.y);
+          if (dMouse < 150) {
+            ctx.beginPath();
+            ctx.moveTo(p.x, p.y);
+            ctx.lineTo(mouse.x, mouse.y);
+            ctx.strokeStyle = 'rgba(255,255,255,' + (0.25 * (1 - dMouse / 150)) + ')';
+            ctx.stroke();
+          }
+        }
+
+        for (var j = i + 1; j < particles.length; j++) {
+          var q = particles[j];
+          var d = Math.hypot(p.x - q.x, p.y - q.y);
+          if (d < connectionDist) {
+            ctx.beginPath();
+            ctx.moveTo(p.x, p.y);
+            ctx.lineTo(q.x, q.y);
+            ctx.strokeStyle = 'rgba(255,255,255,' + (0.2 * (1 - d / connectionDist)) + ')';
+            ctx.stroke();
+          }
+        }
+      }
+      requestAnimationFrame(draw);
+    }
+    draw();
+  })();
+</script>
+
+<!-- ===== 右侧悬浮工具栏 + 数据看板逻辑 ===== -->
+<script>
+  (function () {
+    var toolbar = document.getElementById('floating-toolbar');
+    var coverStats = document.getElementById('cover-stats');
+
+    // 所有真实笔记路径（从 _sidebar.md 提取）
+    var notes = [
+      { path: 'personal_profile/personal_profile/personal_profile.md', hash: '#/personal_profile/personal_profile/personal_profile' },
+      { path: 'mozijie_notebook/Python_Work_Accumulation/1.python工作积累.md', hash: '#/mozijie_notebook/Python_Work_Accumulation/1.python工作积累' },
+      { path: 'mozijie_notebook/Java_Work_Accumulation/2.java工作积累.md', hash: '#/mozijie_notebook/Java_Work_Accumulation/2.java工作积累' },
+      { path: 'master_studies/计算机视觉-深度学习-pytorch学习路线/computer_vision_learning_path.md', hash: '#/master_studies/计算机视觉-深度学习-pytorch学习路线/computer_vision_learning_path' },
+      { path: 'master_studies/实用的科研插件/practical_research_plugin.md', hash: '#/master_studies/实用的科研插件/practical_research_plugin' },
+      { path: 'computer_vision_notebook/OpenCV-Python-Tutorial/mozijie_notebook.md', hash: '#/computer_vision_notebook/OpenCV-Python-Tutorial/mozijie_notebook' },
+      { path: 'computer_vision_notebook/PyTorch_Deep_Learning_Practice（By_LiuEr）/mozijie_notebook.md', hash: '#/computer_vision_notebook/PyTorch_Deep_Learning_Practice（By_LiuEr）/mozijie_notebook' },
+      { path: 'computer_vision_notebook/xiaotudui_Pytorch_Tutorial/online_notes.md', hash: '#/computer_vision_notebook/xiaotudui_Pytorch_Tutorial/online_notes' },
+      { path: 'computer_vision_notebook/Pytorch_Practical_Tutorial_v2_notes/mozijiie_notebook.md', hash: '#/computer_vision_notebook/Pytorch_Practical_Tutorial_v2_notes/mozijiie_notebook' },
+      { path: 'java_notebook/Java_foundation_1/java_foundation_1.md', hash: '#/java_notebook/Java_foundation_1/java_foundation_1' },
+      { path: 'java_notebook/苍穹外卖/mozijie_notebook.md', hash: '#/java_notebook/苍穹外卖/mozijie_notebook' }
+    ];
+
+    function updateToolbarVisibility() {
+      var cover = document.querySelector('.cover.show');
+      if (cover) {
+        document.body.classList.add('cover-page');
+        toolbar.classList.add('visible');
+        coverStats && coverStats.classList.add('visible');
+      } else {
+        document.body.classList.remove('cover-page');
+        toolbar.classList.add('visible');      // 笔记页也显示工具栏
+        coverStats && coverStats.classList.remove('visible');
+      }
+    }
+
+    // Docsify 路由变化时更新
+    window.$docsify.plugins = (window.$docsify.plugins || []).concat(function (hook) {
+      hook.doneEach(updateToolbarVisibility);
+    });
+
+    // 字体大小切换
+    var fontBtn = document.getElementById('ft-font');
+    var fontSizes = [14, 15, 16, 17, 18];
+    var fontIndex = 2;
+    fontBtn.addEventListener('click', function () {
+      fontIndex = (fontIndex + 1) % fontSizes.length;
+      document.documentElement.style.fontSize = fontSizes[fontIndex] + 'px';
+    });
+
+    // 随机笔记
+    document.getElementById('ft-random').addEventListener('click', function () {
+      var item = notes[Math.floor(Math.random() * notes.length)];
+      window.location.hash = item.hash;
+    });
+
+    // 回到顶部
+    document.getElementById('ft-top').addEventListener('click', function () {
+      var content = document.querySelector('.content');
+      if (content) content.scrollTo({ top: 0, behavior: 'smooth' });
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+
+    // 封面数据看板：笔记数量 + 运行天数
+    if (coverStats) {
+      animateNum('stat-notes', notes.length);
+
+      // 运行天数：从 2025-05-20 开始算
+      var start = new Date('2025-05-20');
+      var days = Math.floor((Date.now() - start.getTime()) / (1000 * 60 * 60 * 24));
+      animateNum('stat-days', days);
+
+      // 总字数：异步 fetch 所有笔记文件统计真实字数
+      countWordsReal().then(function (count) {
+        animateNum('stat-words', count, true);
+      });
+    }
+
+    async function countWordsReal() {
+      var total = 0;
+      for (var i = 0; i < notes.length; i++) {
+        try {
+          var res = await fetch(notes[i].path);
+          if (!res.ok) continue;
+          var text = await res.text();
+          // 移除代码块、行内代码、图片、链接、HTML 标签
+          text = text.replace(/```[\s\S]*?```/g, ' ');
+          text = text.replace(/`[^`]+`/g, ' ');
+          text = text.replace(/!\[[\s\S]*?\]\([\s\S]*?\)/g, ' ');
+          text = text.replace(/\[[\s\S]*?\]\([\s\S]*?\)/g, ' ');
+          text = text.replace(/<[^>]+>/g, ' ');
+          // 中文字符 + 英文单词
+          var cn = text.match(/[\u4e00-\u9fa5]/g) || [];
+          var en = text.match(/[a-zA-Z0-9_]+/g) || [];
+          total += cn.length + en.length;
+        } catch (e) {
+          // 忽略错误
+        }
+      }
+      return total;
+    }
+
+    function animateNum(id, target, isK) {
+      var el = document.getElementById(id);
+      if (!el) return;
+      var duration = 1500;
+      var startTime = null;
+      function step(t) {
+        if (!startTime) startTime = t;
+        var p = Math.min((t - startTime) / duration, 1);
+        var val = Math.floor(target * (1 - Math.pow(1 - p, 3)));
+        el.textContent = isK ? (val / 1000).toFixed(1) + 'k' : val;
+        if (p < 1) requestAnimationFrame(step);
+      }
+      requestAnimationFrame(step);
+    }
+
+    // 初始检查
+    setTimeout(updateToolbarVisibility, 500);
+  })();
 </script>
 </body>
 

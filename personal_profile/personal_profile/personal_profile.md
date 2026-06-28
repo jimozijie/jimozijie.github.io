@@ -116,5 +116,5 @@ EI会议论文1篇
 <!-- 技能雷达图 -->
 <div class="radar-section">
 <h3>技能图谱</h3>
-<div id="radar-chart" style="width:100%;max-width:500px;margin:0 auto;height:400px;"></div>
+<div id="radar-chart" style="width:100%;max-width:640px;margin:0 auto;height:440px;"></div>
 </div>

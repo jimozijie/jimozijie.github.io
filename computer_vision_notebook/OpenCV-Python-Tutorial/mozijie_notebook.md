@@ -367,7 +367,7 @@ plt.show()  # 展示窗口
 
 !> 特别注意：该视频可下载，可倍速播放，代码里需要用到此视频。如果要跑代码可以把视频下载下来
 
-<video controls width="640">
+<video controls width="640" preload="metadata">
   <source src="computer_vision_notebook/OpenCV-Python-Tutorial/mozijie_notebook.assets/demo_video.mp4" type="video/mp4" />
 </video>
 
